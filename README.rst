@@ -1,7 +1,7 @@
 SmartHome
 ==============================
 
-For the SmartHome cmain controller
+For the SmartHome main controller
 
 
 LICENSE: BSD
