@@ -45,6 +45,8 @@ THIRD_PARTY_APPS = (
 LOCAL_APPS = (
     'SmartHome.users',  # custom users app
     # Your stuff: custom apps go here
+    'SmartHome.api',   #Rest api
+    'SmartHome.node',  #node management
 )
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
