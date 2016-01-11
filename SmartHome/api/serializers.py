@@ -7,6 +7,9 @@ from .models import House, Nodes, NodeState, CurrentState, IRcommend
 from rest_framework import serializers
 
 class HouseSerializer(serializers.HyperlinkedModelSerializer):
+	GroupID = CharField(max_length=10)
+	Name = CharField(max_length=10)
+
     class Meta:
         model = House
         fields = ('GroupID', 'Name')
