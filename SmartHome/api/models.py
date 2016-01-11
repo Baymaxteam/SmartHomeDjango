@@ -19,7 +19,7 @@ class Nodes(models.Model):
     								 on_delete=models.SET_NULL,
     								 blank=True, null=True)
     Added = models.DateTimeField(auto_now_add=True)
-    Updated = DateField(auto_now = True)
+    Updated = models.DateTimeField(auto_now = True)
 
 class NodeState(models.Model):
 	NodeID = models.ForeignKey(Nodes, related_name='states',
