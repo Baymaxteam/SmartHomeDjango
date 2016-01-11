@@ -6,34 +6,43 @@
 from .models import House, Nodes, NodeState, CurrentState, IRcommend
 from rest_framework import serializers
 
-class HouseSerializer(serializers.HyperlinkedModelSerializer):
-	GroupID = CharField(max_length=10)
-	Name = CharField(max_length=10)
+class HouseSerializer(serializers.ModelSerializer):
+	GroupID = serializers.CharField(max_length=10)
+	Name = serializers.CharField(max_length=10)
+	
+	class Meta:
+		model = House
+		fields = ('GroupID', 'Name')
 
-    class Meta:
-        model = House
-        fields = ('GroupID', 'Name')
+	def create(self, validated_data):
+		return House.objects.create(**validated_data)
+
+	def update(self, instance, validated_data):
+		instance.GroupID = validated_data.get('GroupID', instance.GroupID)
+		instance.Name = validated_data.get('Name', instance.Name)
+		instance.save()
+		return instance
 
 
-class NodesSerializer(serializers.HyperlinkedModelSerializer):
+class NodesSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = Nodes
 		fields = ('ID', 'Address', 'Type', 'Appliances', 'Group','Added', 'Updated')
 
 
-class NodeStateSerializer(serializers.HyperlinkedModelSerializer):
+class NodeStateSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = NodeState
 		fields = ('NodeID', 'State', 'Added')
 
 
-class CurrentStateSerializer(serializers.HyperlinkedModelSerializer):
+class CurrentStateSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = CurrentState
 		fields = ('NodeID', 'State', 'Added')
 
 
-class IRcommendSerializer(serializers.HyperlinkedModelSerializer):
+class IRcommendSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = IRcommend
 		fields = ('NodeID', 'Commend', 'RawCode')

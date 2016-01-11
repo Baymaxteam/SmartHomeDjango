@@ -21,7 +21,7 @@ urlpatterns = [
     url(r'^accounts/', include('allauth.urls')),
 
     # Your stuff: custom urls includes go here
-    #(r'^api/', include('SmartHome.api.urls')),
+    url(r'^api/', include('SmartHome.api.urls')),
 
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
