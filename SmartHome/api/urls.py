@@ -4,5 +4,5 @@ from . import views
 
 urlpatterns = [
     url(r'^house/$', views.House_list),
-    url(r'^house/(?P<pk>[0-9]+)/$', views.House_detail),
+    url(r'^house/(?P<GroupID>\w+)/$', views.House_detail),
 ]

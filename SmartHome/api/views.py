@@ -39,9 +39,9 @@ def House_list(request):
 
 		
 @csrf_exempt
-def House_detail(request, pk): #pk = primaryKey
+def House_detail(request, GroupID): #pk = primaryKey
 	try:
-		house = House.objects.get(pk=pk)
+		house = House.objects.get(GroupID = GroupID)
 	except House.DoesNotExist:
 		return HttpResponse(status=404)
 
