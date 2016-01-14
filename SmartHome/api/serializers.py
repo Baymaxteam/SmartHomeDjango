@@ -26,11 +26,23 @@ class HouseSerializer(serializers.ModelSerializer):
 
 class NodesSerializer(serializers.ModelSerializer):
 	# CharField(max_length=None, min_length=None, allow_blank=False, allow_null=True, trim_whitespace=True)
+	ID = serializers.IntegerField(min_value = 0)
+	Address = serializers.IntegerField(min_value = 0)
+	Type = serializers.CharField(max_length=3)
+	Group = serializers.CharField(allow_blank=True, allow_null=True)
+	Added = serializers.DateTimeField()
+	Updated = serializers.DateTimeField()
+### 未完成 ###
 	class Meta:
 		model = Nodes
 		fields = ('ID', 'Address', 'Type', 'Appliances', 'Group','Added', 'Updated')
 
 	def create(self, validated_data):
+		Group = validated_data.get['Group']
+		try:
+			house = House.objects.get(GroupID = Group)
+		except House.DoesNotExist:
+			house = None
 
 		return Nodes.objects.create(**validated_data)
 		
