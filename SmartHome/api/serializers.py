@@ -25,9 +25,25 @@ class HouseSerializer(serializers.ModelSerializer):
 
 
 class NodesSerializer(serializers.ModelSerializer):
+	# CharField(max_length=None, min_length=None, allow_blank=False, allow_null=True, trim_whitespace=True)
 	class Meta:
 		model = Nodes
 		fields = ('ID', 'Address', 'Type', 'Appliances', 'Group','Added', 'Updated')
+
+	def create(self, validated_data):
+
+		return Nodes.objects.create(**validated_data)
+		
+	def update(self, instance, validated_data):
+		instance.ID = validated_data.get('ID', instance.ID)
+		instance.Address = validated_data.get('Address', instance.Address)
+		instance.Type = validated_data.get('Type', instance.Type)
+		instance.Appliances = validated_data.get('Appliances', instance.Appliances)
+		instance.Group = validated_data.get('Group', instance.Group)
+		instance.Added = validated_data.get('Added', instance.Added)
+		instance.Updated = validated_data.get('Updated', instance.Updated)
+		instance.save()
+		return instance
 
 
 class NodeStateSerializer(serializers.ModelSerializer):

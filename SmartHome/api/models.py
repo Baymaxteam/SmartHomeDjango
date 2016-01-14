@@ -7,7 +7,7 @@ class House(models.Model):
     GroupID = models.CharField(max_length=10)
     Name = models.CharField(max_length=10)
 
-    def __str__(self): # 改變print(object)的呈現方式
+    def __str__(self): # 改變print(object)的呈現方式，Debug方便
         return self.Name
 
 

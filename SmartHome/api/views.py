@@ -27,15 +27,16 @@ def House_list(request):
 	elif request.method == 'POST':
 		data = JSONParser().parse(request)
 		ID = data['GroupID'] # 檢查ID是否有重複
+		# Create_or_update 
 		try:
 			house = House.objects.get(GroupID = ID)
+			serializer = HouseSerializer(house, data=data) # update
 		except House.DoesNotExist:
-			serializer = HouseSerializer(data=data)
-			if serializer.is_valid():
-				serializer.save()
-				return JSONResponse(serializer.data, status=201)
-			return JSONResponse(serializer.errors, status=400)
-		return HttpResponse(status=204)
+			serializer = HouseSerializer(data=data) # creat
+		if serializer.is_valid():
+			serializer.save()
+			return HttpResponse(status=204)
+		return JSONResponse(serializer.errors, status=400)
 
 		
 @csrf_exempt
