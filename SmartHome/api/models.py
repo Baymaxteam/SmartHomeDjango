@@ -2,6 +2,8 @@ from django.db import models
 
 from django.core.validators import MinValueValidator, MaxValueValidator
 
+import datetime
+
 # 0111 added   by Sam Kuo
 class House(models.Model):
     GroupID = models.CharField(max_length=10)
@@ -22,8 +24,8 @@ class Nodes(models.Model):
     Group = models.ForeignKey(House, related_name='nodes',
                                      on_delete=models.SET_NULL,
                                      blank=True, null=True)
-    Added = models.DateTimeField(auto_now_add=True)
-    Updated = models.DateTimeField(auto_now = True)
+    Added = models.DateTimeField(default=datetime.datetime.now)
+    Updated = models.DateTimeField(default=datetime.datetime.now)
 
     def __str__(self):
         return self.ID

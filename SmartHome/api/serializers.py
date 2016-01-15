@@ -5,6 +5,7 @@
 #from django.contrib.auth.models import User, Group
 from .models import House, Nodes, NodeState, CurrentState, IRcommend
 from rest_framework import serializers
+from django.util import timezone
 
 class HouseSerializer(serializers.ModelSerializer):
 	GroupID = serializers.CharField(max_length=10)
@@ -29,10 +30,10 @@ class NodesSerializer(serializers.ModelSerializer):
 	ID = serializers.IntegerField(min_value = 0)
 	Address = serializers.IntegerField(min_value = 0)
 	Type = serializers.CharField(max_length=3)
-	Group = serializers.CharField(allow_blank=True, allow_null=True)
-	Added = serializers.DateTimeField()
-	Updated = serializers.DateTimeField()
-### 未完成 ###
+	Group = serializers.CharField(max_length=4, allow_blank=True, allow_null=True)
+	Added = serializers.DateTimeField(required=False, read_only=True) #timezone.now()
+	Updated = serializers.DateTimeField(required=False)
+
 	class Meta:
 		model = Nodes
 		fields = ('ID', 'Address', 'Type', 'Appliances', 'Group','Added', 'Updated')
@@ -43,7 +44,9 @@ class NodesSerializer(serializers.ModelSerializer):
 			house = House.objects.get(GroupID = Group)
 		except House.DoesNotExist:
 			house = None
-
+		validated_data['Group'] = house
+		validated_data['Added'] = timezone.now()
+		validated_data['Updated'] = timezone.now()
 		return Nodes.objects.create(**validated_data)
 		
 	def update(self, instance, validated_data):
@@ -52,8 +55,7 @@ class NodesSerializer(serializers.ModelSerializer):
 		instance.Type = validated_data.get('Type', instance.Type)
 		instance.Appliances = validated_data.get('Appliances', instance.Appliances)
 		instance.Group = validated_data.get('Group', instance.Group)
-		instance.Added = validated_data.get('Added', instance.Added)
-		instance.Updated = validated_data.get('Updated', instance.Updated)
+		instance.Updated = timezone.now()
 		instance.save()
 		return instance
 
