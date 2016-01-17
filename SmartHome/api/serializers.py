@@ -5,7 +5,7 @@
 #from django.contrib.auth.models import User, Group
 from .models import House, Nodes, NodeState, CurrentState, IRcommend
 from rest_framework import serializers
-from django.util import timezone
+from django.utils import timezone
 
 class HouseSerializer(serializers.ModelSerializer):
 	GroupID = serializers.CharField(max_length=10)
@@ -13,7 +13,7 @@ class HouseSerializer(serializers.ModelSerializer):
 	
 	class Meta:
 		model = House
-		fields = ('GroupID', 'Name')
+		fields = ('GroupID', 'Name') # fields 回傳group耗電量
 
 	def create(self, validated_data):
 		return House.objects.create(**validated_data)

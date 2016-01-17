@@ -40,7 +40,7 @@ def House_list(request):
 
 		
 @csrf_exempt
-def House_detail(request, GroupID): #pk = primaryKey
+def House_detail(request, GroupID):
 	try:
 		house = House.objects.get(GroupID = GroupID)
 	except House.DoesNotExist:
@@ -60,6 +60,41 @@ def House_detail(request, GroupID): #pk = primaryKey
 
 	elif request.method == 'DELETE':
 		house.delete()
+		return HttpResponse(status=204)
+
+@csrf_exempt
+def Node_list(request):
+	if request.method == 'GET':
+		Nodelist = Node.objects.all()
+		serializer = NodesSerializer(Nodelist, many=True)
+		return JSONResponse(serializer.data)
+
+@csrf_exempt
+def Node_detail(request, NodeID): 
+	try:
+		node = Node.objects.get(NodeID = NodeID)
+	except Node.DoesNotExist:
+		return HttpResponse(status=404)
+
+	if request.method == 'GET':
+		serializer = NodesSerializer(node)
+		return JSONResponse(serializer.data)
+
+	elif request.method == 'PUT':
+		data = JSONParser().parse(request)
+		serializer = NodesSerializer(node, data=data)
+		if serializer.is_valid():
+			serializer.save()
+			return JSONResponse(serializer.data)
+		return JSONResponse(serializer.errors, status=400)
+		
+	#elif request.method == 'PACTH':
+		# 這裡要插入控制Node的Code
+
+		# 記得發送完控制訊號要寫入資料庫NodeState
+
+	elif request.method == 'DELETE':
+		node.delete()
 		return HttpResponse(status=204)
 
 

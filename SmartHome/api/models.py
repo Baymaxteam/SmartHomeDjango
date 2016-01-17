@@ -28,7 +28,7 @@ class Nodes(models.Model):
     Updated = models.DateTimeField(default=datetime.datetime.now)
 
     def __str__(self):
-        return self.ID
+        return str(self.ID)
 
 
 class NodeState(models.Model):
