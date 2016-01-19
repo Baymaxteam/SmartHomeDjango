@@ -1,0 +1,2191 @@
+--
+-- PostgreSQL database dump
+--
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SET check_function_bodies = false;
+SET client_min_messages = warning;
+
+--
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
+--
+
+CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
+
+
+--
+-- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
+
+
+SET search_path = public, pg_catalog;
+
+SET default_tablespace = '';
+
+SET default_with_oids = false;
+
+--
+-- Name: account_emailaddress; Type: TABLE; Schema: public; Owner: SamKuo; Tablespace: 
+--
+
+CREATE TABLE account_emailaddress (
+    id integer NOT NULL,
+    email character varying(254) NOT NULL,
+    verified boolean NOT NULL,
+    "primary" boolean NOT NULL,
+    user_id integer NOT NULL
+);
+
+
+ALTER TABLE account_emailaddress OWNER TO "SamKuo";
+
+--
+-- Name: account_emailaddress_id_seq; Type: SEQUENCE; Schema: public; Owner: SamKuo
+--
+
+CREATE SEQUENCE account_emailaddress_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE account_emailaddress_id_seq OWNER TO "SamKuo";
+
+--
+-- Name: account_emailaddress_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: SamKuo
+--
+
+ALTER SEQUENCE account_emailaddress_id_seq OWNED BY account_emailaddress.id;
+
+
+--
+-- Name: account_emailconfirmation; Type: TABLE; Schema: public; Owner: SamKuo; Tablespace: 
+--
+
+CREATE TABLE account_emailconfirmation (
+    id integer NOT NULL,
+    created timestamp with time zone NOT NULL,
+    sent timestamp with time zone,
+    key character varying(64) NOT NULL,
+    email_address_id integer NOT NULL
+);
+
+
+ALTER TABLE account_emailconfirmation OWNER TO "SamKuo";
+
+--
+-- Name: account_emailconfirmation_id_seq; Type: SEQUENCE; Schema: public; Owner: SamKuo
+--
+
+CREATE SEQUENCE account_emailconfirmation_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE account_emailconfirmation_id_seq OWNER TO "SamKuo";
+
+--
+-- Name: account_emailconfirmation_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: SamKuo
+--
+
+ALTER SEQUENCE account_emailconfirmation_id_seq OWNED BY account_emailconfirmation.id;
+
+
+--
+-- Name: api_currentstate; Type: TABLE; Schema: public; Owner: SamKuo; Tablespace: 
+--
+
+CREATE TABLE api_currentstate (
+    id integer NOT NULL,
+    "State" integer NOT NULL,
+    "Added" timestamp with time zone NOT NULL,
+    "NodeID_id" integer NOT NULL
+);
+
+
+ALTER TABLE api_currentstate OWNER TO "SamKuo";
+
+--
+-- Name: api_currentstate_id_seq; Type: SEQUENCE; Schema: public; Owner: SamKuo
+--
+
+CREATE SEQUENCE api_currentstate_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE api_currentstate_id_seq OWNER TO "SamKuo";
+
+--
+-- Name: api_currentstate_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: SamKuo
+--
+
+ALTER SEQUENCE api_currentstate_id_seq OWNED BY api_currentstate.id;
+
+
+--
+-- Name: api_house; Type: TABLE; Schema: public; Owner: SamKuo; Tablespace: 
+--
+
+CREATE TABLE api_house (
+    id integer NOT NULL,
+    "GroupID" character varying(10) NOT NULL,
+    "Name" character varying(10) NOT NULL
+);
+
+
+ALTER TABLE api_house OWNER TO "SamKuo";
+
+--
+-- Name: api_house_id_seq; Type: SEQUENCE; Schema: public; Owner: SamKuo
+--
+
+CREATE SEQUENCE api_house_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE api_house_id_seq OWNER TO "SamKuo";
+
+--
+-- Name: api_house_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: SamKuo
+--
+
+ALTER SEQUENCE api_house_id_seq OWNED BY api_house.id;
+
+
+--
+-- Name: api_ircommend; Type: TABLE; Schema: public; Owner: SamKuo; Tablespace: 
+--
+
+CREATE TABLE api_ircommend (
+    id integer NOT NULL,
+    "Commend" character varying(100) NOT NULL,
+    "RawCode" character varying(255) NOT NULL,
+    "NodeID_id" integer NOT NULL
+);
+
+
+ALTER TABLE api_ircommend OWNER TO "SamKuo";
+
+--
+-- Name: api_ircommend_id_seq; Type: SEQUENCE; Schema: public; Owner: SamKuo
+--
+
+CREATE SEQUENCE api_ircommend_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE api_ircommend_id_seq OWNER TO "SamKuo";
+
+--
+-- Name: api_ircommend_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: SamKuo
+--
+
+ALTER SEQUENCE api_ircommend_id_seq OWNED BY api_ircommend.id;
+
+
+--
+-- Name: api_nodes; Type: TABLE; Schema: public; Owner: SamKuo; Tablespace: 
+--
+
+CREATE TABLE api_nodes (
+    id integer NOT NULL,
+    "ID" integer,
+    "Address" integer NOT NULL,
+    "Type" character varying(2) NOT NULL,
+    "Appliances" character varying(100) NOT NULL,
+    "Added" timestamp with time zone NOT NULL,
+    "Updated" timestamp with time zone NOT NULL,
+    "Group_id" integer
+);
+
+
+ALTER TABLE api_nodes OWNER TO "SamKuo";
+
+--
+-- Name: api_nodes_id_seq; Type: SEQUENCE; Schema: public; Owner: SamKuo
+--
+
+CREATE SEQUENCE api_nodes_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE api_nodes_id_seq OWNER TO "SamKuo";
+
+--
+-- Name: api_nodes_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: SamKuo
+--
+
+ALTER SEQUENCE api_nodes_id_seq OWNED BY api_nodes.id;
+
+
+--
+-- Name: api_nodestate; Type: TABLE; Schema: public; Owner: SamKuo; Tablespace: 
+--
+
+CREATE TABLE api_nodestate (
+    id integer NOT NULL,
+    "State" character varying(100) NOT NULL,
+    "Added" timestamp with time zone NOT NULL,
+    "NodeID_id" integer NOT NULL
+);
+
+
+ALTER TABLE api_nodestate OWNER TO "SamKuo";
+
+--
+-- Name: api_nodestate_id_seq; Type: SEQUENCE; Schema: public; Owner: SamKuo
+--
+
+CREATE SEQUENCE api_nodestate_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE api_nodestate_id_seq OWNER TO "SamKuo";
+
+--
+-- Name: api_nodestate_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: SamKuo
+--
+
+ALTER SEQUENCE api_nodestate_id_seq OWNED BY api_nodestate.id;
+
+
+--
+-- Name: auth_group; Type: TABLE; Schema: public; Owner: SamKuo; Tablespace: 
+--
+
+CREATE TABLE auth_group (
+    id integer NOT NULL,
+    name character varying(80) NOT NULL
+);
+
+
+ALTER TABLE auth_group OWNER TO "SamKuo";
+
+--
+-- Name: auth_group_id_seq; Type: SEQUENCE; Schema: public; Owner: SamKuo
+--
+
+CREATE SEQUENCE auth_group_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE auth_group_id_seq OWNER TO "SamKuo";
+
+--
+-- Name: auth_group_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: SamKuo
+--
+
+ALTER SEQUENCE auth_group_id_seq OWNED BY auth_group.id;
+
+
+--
+-- Name: auth_group_permissions; Type: TABLE; Schema: public; Owner: SamKuo; Tablespace: 
+--
+
+CREATE TABLE auth_group_permissions (
+    id integer NOT NULL,
+    group_id integer NOT NULL,
+    permission_id integer NOT NULL
+);
+
+
+ALTER TABLE auth_group_permissions OWNER TO "SamKuo";
+
+--
+-- Name: auth_group_permissions_id_seq; Type: SEQUENCE; Schema: public; Owner: SamKuo
+--
+
+CREATE SEQUENCE auth_group_permissions_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE auth_group_permissions_id_seq OWNER TO "SamKuo";
+
+--
+-- Name: auth_group_permissions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: SamKuo
+--
+
+ALTER SEQUENCE auth_group_permissions_id_seq OWNED BY auth_group_permissions.id;
+
+
+--
+-- Name: auth_permission; Type: TABLE; Schema: public; Owner: SamKuo; Tablespace: 
+--
+
+CREATE TABLE auth_permission (
+    id integer NOT NULL,
+    name character varying(255) NOT NULL,
+    content_type_id integer NOT NULL,
+    codename character varying(100) NOT NULL
+);
+
+
+ALTER TABLE auth_permission OWNER TO "SamKuo";
+
+--
+-- Name: auth_permission_id_seq; Type: SEQUENCE; Schema: public; Owner: SamKuo
+--
+
+CREATE SEQUENCE auth_permission_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE auth_permission_id_seq OWNER TO "SamKuo";
+
+--
+-- Name: auth_permission_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: SamKuo
+--
+
+ALTER SEQUENCE auth_permission_id_seq OWNED BY auth_permission.id;
+
+
+--
+-- Name: django_admin_log; Type: TABLE; Schema: public; Owner: SamKuo; Tablespace: 
+--
+
+CREATE TABLE django_admin_log (
+    id integer NOT NULL,
+    action_time timestamp with time zone NOT NULL,
+    object_id text,
+    object_repr character varying(200) NOT NULL,
+    action_flag smallint NOT NULL,
+    change_message text NOT NULL,
+    content_type_id integer,
+    user_id integer NOT NULL,
+    CONSTRAINT django_admin_log_action_flag_check CHECK ((action_flag >= 0))
+);
+
+
+ALTER TABLE django_admin_log OWNER TO "SamKuo";
+
+--
+-- Name: django_admin_log_id_seq; Type: SEQUENCE; Schema: public; Owner: SamKuo
+--
+
+CREATE SEQUENCE django_admin_log_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE django_admin_log_id_seq OWNER TO "SamKuo";
+
+--
+-- Name: django_admin_log_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: SamKuo
+--
+
+ALTER SEQUENCE django_admin_log_id_seq OWNED BY django_admin_log.id;
+
+
+--
+-- Name: django_content_type; Type: TABLE; Schema: public; Owner: SamKuo; Tablespace: 
+--
+
+CREATE TABLE django_content_type (
+    id integer NOT NULL,
+    app_label character varying(100) NOT NULL,
+    model character varying(100) NOT NULL
+);
+
+
+ALTER TABLE django_content_type OWNER TO "SamKuo";
+
+--
+-- Name: django_content_type_id_seq; Type: SEQUENCE; Schema: public; Owner: SamKuo
+--
+
+CREATE SEQUENCE django_content_type_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE django_content_type_id_seq OWNER TO "SamKuo";
+
+--
+-- Name: django_content_type_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: SamKuo
+--
+
+ALTER SEQUENCE django_content_type_id_seq OWNED BY django_content_type.id;
+
+
+--
+-- Name: django_migrations; Type: TABLE; Schema: public; Owner: SamKuo; Tablespace: 
+--
+
+CREATE TABLE django_migrations (
+    id integer NOT NULL,
+    app character varying(255) NOT NULL,
+    name character varying(255) NOT NULL,
+    applied timestamp with time zone NOT NULL
+);
+
+
+ALTER TABLE django_migrations OWNER TO "SamKuo";
+
+--
+-- Name: django_migrations_id_seq; Type: SEQUENCE; Schema: public; Owner: SamKuo
+--
+
+CREATE SEQUENCE django_migrations_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE django_migrations_id_seq OWNER TO "SamKuo";
+
+--
+-- Name: django_migrations_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: SamKuo
+--
+
+ALTER SEQUENCE django_migrations_id_seq OWNED BY django_migrations.id;
+
+
+--
+-- Name: django_session; Type: TABLE; Schema: public; Owner: SamKuo; Tablespace: 
+--
+
+CREATE TABLE django_session (
+    session_key character varying(40) NOT NULL,
+    session_data text NOT NULL,
+    expire_date timestamp with time zone NOT NULL
+);
+
+
+ALTER TABLE django_session OWNER TO "SamKuo";
+
+--
+-- Name: django_site; Type: TABLE; Schema: public; Owner: SamKuo; Tablespace: 
+--
+
+CREATE TABLE django_site (
+    id integer NOT NULL,
+    domain character varying(100) NOT NULL,
+    name character varying(50) NOT NULL
+);
+
+
+ALTER TABLE django_site OWNER TO "SamKuo";
+
+--
+-- Name: django_site_id_seq; Type: SEQUENCE; Schema: public; Owner: SamKuo
+--
+
+CREATE SEQUENCE django_site_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE django_site_id_seq OWNER TO "SamKuo";
+
+--
+-- Name: django_site_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: SamKuo
+--
+
+ALTER SEQUENCE django_site_id_seq OWNED BY django_site.id;
+
+
+--
+-- Name: djkombu_message; Type: TABLE; Schema: public; Owner: SamKuo; Tablespace: 
+--
+
+CREATE TABLE djkombu_message (
+    id integer NOT NULL,
+    visible boolean NOT NULL,
+    sent_at timestamp with time zone,
+    payload text NOT NULL,
+    queue_id integer NOT NULL
+);
+
+
+ALTER TABLE djkombu_message OWNER TO "SamKuo";
+
+--
+-- Name: djkombu_message_id_seq; Type: SEQUENCE; Schema: public; Owner: SamKuo
+--
+
+CREATE SEQUENCE djkombu_message_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE djkombu_message_id_seq OWNER TO "SamKuo";
+
+--
+-- Name: djkombu_message_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: SamKuo
+--
+
+ALTER SEQUENCE djkombu_message_id_seq OWNED BY djkombu_message.id;
+
+
+--
+-- Name: djkombu_queue; Type: TABLE; Schema: public; Owner: SamKuo; Tablespace: 
+--
+
+CREATE TABLE djkombu_queue (
+    id integer NOT NULL,
+    name character varying(200) NOT NULL
+);
+
+
+ALTER TABLE djkombu_queue OWNER TO "SamKuo";
+
+--
+-- Name: djkombu_queue_id_seq; Type: SEQUENCE; Schema: public; Owner: SamKuo
+--
+
+CREATE SEQUENCE djkombu_queue_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE djkombu_queue_id_seq OWNER TO "SamKuo";
+
+--
+-- Name: djkombu_queue_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: SamKuo
+--
+
+ALTER SEQUENCE djkombu_queue_id_seq OWNED BY djkombu_queue.id;
+
+
+--
+-- Name: socialaccount_socialaccount; Type: TABLE; Schema: public; Owner: SamKuo; Tablespace: 
+--
+
+CREATE TABLE socialaccount_socialaccount (
+    id integer NOT NULL,
+    provider character varying(30) NOT NULL,
+    uid character varying(191) NOT NULL,
+    last_login timestamp with time zone NOT NULL,
+    date_joined timestamp with time zone NOT NULL,
+    extra_data text NOT NULL,
+    user_id integer NOT NULL
+);
+
+
+ALTER TABLE socialaccount_socialaccount OWNER TO "SamKuo";
+
+--
+-- Name: socialaccount_socialaccount_id_seq; Type: SEQUENCE; Schema: public; Owner: SamKuo
+--
+
+CREATE SEQUENCE socialaccount_socialaccount_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE socialaccount_socialaccount_id_seq OWNER TO "SamKuo";
+
+--
+-- Name: socialaccount_socialaccount_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: SamKuo
+--
+
+ALTER SEQUENCE socialaccount_socialaccount_id_seq OWNED BY socialaccount_socialaccount.id;
+
+
+--
+-- Name: socialaccount_socialapp; Type: TABLE; Schema: public; Owner: SamKuo; Tablespace: 
+--
+
+CREATE TABLE socialaccount_socialapp (
+    id integer NOT NULL,
+    provider character varying(30) NOT NULL,
+    name character varying(40) NOT NULL,
+    client_id character varying(191) NOT NULL,
+    secret character varying(191) NOT NULL,
+    key character varying(191) NOT NULL
+);
+
+
+ALTER TABLE socialaccount_socialapp OWNER TO "SamKuo";
+
+--
+-- Name: socialaccount_socialapp_id_seq; Type: SEQUENCE; Schema: public; Owner: SamKuo
+--
+
+CREATE SEQUENCE socialaccount_socialapp_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE socialaccount_socialapp_id_seq OWNER TO "SamKuo";
+
+--
+-- Name: socialaccount_socialapp_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: SamKuo
+--
+
+ALTER SEQUENCE socialaccount_socialapp_id_seq OWNED BY socialaccount_socialapp.id;
+
+
+--
+-- Name: socialaccount_socialapp_sites; Type: TABLE; Schema: public; Owner: SamKuo; Tablespace: 
+--
+
+CREATE TABLE socialaccount_socialapp_sites (
+    id integer NOT NULL,
+    socialapp_id integer NOT NULL,
+    site_id integer NOT NULL
+);
+
+
+ALTER TABLE socialaccount_socialapp_sites OWNER TO "SamKuo";
+
+--
+-- Name: socialaccount_socialapp_sites_id_seq; Type: SEQUENCE; Schema: public; Owner: SamKuo
+--
+
+CREATE SEQUENCE socialaccount_socialapp_sites_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE socialaccount_socialapp_sites_id_seq OWNER TO "SamKuo";
+
+--
+-- Name: socialaccount_socialapp_sites_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: SamKuo
+--
+
+ALTER SEQUENCE socialaccount_socialapp_sites_id_seq OWNED BY socialaccount_socialapp_sites.id;
+
+
+--
+-- Name: socialaccount_socialtoken; Type: TABLE; Schema: public; Owner: SamKuo; Tablespace: 
+--
+
+CREATE TABLE socialaccount_socialtoken (
+    id integer NOT NULL,
+    token text NOT NULL,
+    token_secret text NOT NULL,
+    expires_at timestamp with time zone,
+    account_id integer NOT NULL,
+    app_id integer NOT NULL
+);
+
+
+ALTER TABLE socialaccount_socialtoken OWNER TO "SamKuo";
+
+--
+-- Name: socialaccount_socialtoken_id_seq; Type: SEQUENCE; Schema: public; Owner: SamKuo
+--
+
+CREATE SEQUENCE socialaccount_socialtoken_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE socialaccount_socialtoken_id_seq OWNER TO "SamKuo";
+
+--
+-- Name: socialaccount_socialtoken_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: SamKuo
+--
+
+ALTER SEQUENCE socialaccount_socialtoken_id_seq OWNED BY socialaccount_socialtoken.id;
+
+
+--
+-- Name: users_user; Type: TABLE; Schema: public; Owner: SamKuo; Tablespace: 
+--
+
+CREATE TABLE users_user (
+    id integer NOT NULL,
+    password character varying(128) NOT NULL,
+    last_login timestamp with time zone,
+    is_superuser boolean NOT NULL,
+    username character varying(30) NOT NULL,
+    first_name character varying(30) NOT NULL,
+    last_name character varying(30) NOT NULL,
+    email character varying(254) NOT NULL,
+    is_staff boolean NOT NULL,
+    is_active boolean NOT NULL,
+    date_joined timestamp with time zone NOT NULL,
+    name character varying(255) NOT NULL
+);
+
+
+ALTER TABLE users_user OWNER TO "SamKuo";
+
+--
+-- Name: users_user_groups; Type: TABLE; Schema: public; Owner: SamKuo; Tablespace: 
+--
+
+CREATE TABLE users_user_groups (
+    id integer NOT NULL,
+    user_id integer NOT NULL,
+    group_id integer NOT NULL
+);
+
+
+ALTER TABLE users_user_groups OWNER TO "SamKuo";
+
+--
+-- Name: users_user_groups_id_seq; Type: SEQUENCE; Schema: public; Owner: SamKuo
+--
+
+CREATE SEQUENCE users_user_groups_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE users_user_groups_id_seq OWNER TO "SamKuo";
+
+--
+-- Name: users_user_groups_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: SamKuo
+--
+
+ALTER SEQUENCE users_user_groups_id_seq OWNED BY users_user_groups.id;
+
+
+--
+-- Name: users_user_id_seq; Type: SEQUENCE; Schema: public; Owner: SamKuo
+--
+
+CREATE SEQUENCE users_user_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE users_user_id_seq OWNER TO "SamKuo";
+
+--
+-- Name: users_user_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: SamKuo
+--
+
+ALTER SEQUENCE users_user_id_seq OWNED BY users_user.id;
+
+
+--
+-- Name: users_user_user_permissions; Type: TABLE; Schema: public; Owner: SamKuo; Tablespace: 
+--
+
+CREATE TABLE users_user_user_permissions (
+    id integer NOT NULL,
+    user_id integer NOT NULL,
+    permission_id integer NOT NULL
+);
+
+
+ALTER TABLE users_user_user_permissions OWNER TO "SamKuo";
+
+--
+-- Name: users_user_user_permissions_id_seq; Type: SEQUENCE; Schema: public; Owner: SamKuo
+--
+
+CREATE SEQUENCE users_user_user_permissions_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE users_user_user_permissions_id_seq OWNER TO "SamKuo";
+
+--
+-- Name: users_user_user_permissions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: SamKuo
+--
+
+ALTER SEQUENCE users_user_user_permissions_id_seq OWNED BY users_user_user_permissions.id;
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: SamKuo
+--
+
+ALTER TABLE ONLY account_emailaddress ALTER COLUMN id SET DEFAULT nextval('account_emailaddress_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: SamKuo
+--
+
+ALTER TABLE ONLY account_emailconfirmation ALTER COLUMN id SET DEFAULT nextval('account_emailconfirmation_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: SamKuo
+--
+
+ALTER TABLE ONLY api_currentstate ALTER COLUMN id SET DEFAULT nextval('api_currentstate_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: SamKuo
+--
+
+ALTER TABLE ONLY api_house ALTER COLUMN id SET DEFAULT nextval('api_house_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: SamKuo
+--
+
+ALTER TABLE ONLY api_ircommend ALTER COLUMN id SET DEFAULT nextval('api_ircommend_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: SamKuo
+--
+
+ALTER TABLE ONLY api_nodes ALTER COLUMN id SET DEFAULT nextval('api_nodes_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: SamKuo
+--
+
+ALTER TABLE ONLY api_nodestate ALTER COLUMN id SET DEFAULT nextval('api_nodestate_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: SamKuo
+--
+
+ALTER TABLE ONLY auth_group ALTER COLUMN id SET DEFAULT nextval('auth_group_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: SamKuo
+--
+
+ALTER TABLE ONLY auth_group_permissions ALTER COLUMN id SET DEFAULT nextval('auth_group_permissions_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: SamKuo
+--
+
+ALTER TABLE ONLY auth_permission ALTER COLUMN id SET DEFAULT nextval('auth_permission_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: SamKuo
+--
+
+ALTER TABLE ONLY django_admin_log ALTER COLUMN id SET DEFAULT nextval('django_admin_log_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: SamKuo
+--
+
+ALTER TABLE ONLY django_content_type ALTER COLUMN id SET DEFAULT nextval('django_content_type_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: SamKuo
+--
+
+ALTER TABLE ONLY django_migrations ALTER COLUMN id SET DEFAULT nextval('django_migrations_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: SamKuo
+--
+
+ALTER TABLE ONLY django_site ALTER COLUMN id SET DEFAULT nextval('django_site_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: SamKuo
+--
+
+ALTER TABLE ONLY djkombu_message ALTER COLUMN id SET DEFAULT nextval('djkombu_message_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: SamKuo
+--
+
+ALTER TABLE ONLY djkombu_queue ALTER COLUMN id SET DEFAULT nextval('djkombu_queue_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: SamKuo
+--
+
+ALTER TABLE ONLY socialaccount_socialaccount ALTER COLUMN id SET DEFAULT nextval('socialaccount_socialaccount_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: SamKuo
+--
+
+ALTER TABLE ONLY socialaccount_socialapp ALTER COLUMN id SET DEFAULT nextval('socialaccount_socialapp_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: SamKuo
+--
+
+ALTER TABLE ONLY socialaccount_socialapp_sites ALTER COLUMN id SET DEFAULT nextval('socialaccount_socialapp_sites_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: SamKuo
+--
+
+ALTER TABLE ONLY socialaccount_socialtoken ALTER COLUMN id SET DEFAULT nextval('socialaccount_socialtoken_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: SamKuo
+--
+
+ALTER TABLE ONLY users_user ALTER COLUMN id SET DEFAULT nextval('users_user_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: SamKuo
+--
+
+ALTER TABLE ONLY users_user_groups ALTER COLUMN id SET DEFAULT nextval('users_user_groups_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: SamKuo
+--
+
+ALTER TABLE ONLY users_user_user_permissions ALTER COLUMN id SET DEFAULT nextval('users_user_user_permissions_id_seq'::regclass);
+
+
+--
+-- Data for Name: account_emailaddress; Type: TABLE DATA; Schema: public; Owner: SamKuo
+--
+
+COPY account_emailaddress (id, email, verified, "primary", user_id) FROM stdin;
+1	kuo77122@gmail.com	t	t	1
+\.
+
+
+--
+-- Name: account_emailaddress_id_seq; Type: SEQUENCE SET; Schema: public; Owner: SamKuo
+--
+
+SELECT pg_catalog.setval('account_emailaddress_id_seq', 1, true);
+
+
+--
+-- Data for Name: account_emailconfirmation; Type: TABLE DATA; Schema: public; Owner: SamKuo
+--
+
+COPY account_emailconfirmation (id, created, sent, key, email_address_id) FROM stdin;
+1	2016-01-08 15:42:40.482144+08	2016-01-08 15:42:41.202188+08	3rg27whpudkggfeqyiwbzvuibgokiirihxofrnepws2kyxovfpz2gchdw9qexczf	1
+\.
+
+
+--
+-- Name: account_emailconfirmation_id_seq; Type: SEQUENCE SET; Schema: public; Owner: SamKuo
+--
+
+SELECT pg_catalog.setval('account_emailconfirmation_id_seq', 1, true);
+
+
+--
+-- Data for Name: api_currentstate; Type: TABLE DATA; Schema: public; Owner: SamKuo
+--
+
+COPY api_currentstate (id, "State", "Added", "NodeID_id") FROM stdin;
+1	0	2016-01-19 17:03:41.611254+08	1
+2	1000	2016-01-19 17:03:57.047105+08	2
+3	10	2016-01-19 17:04:09.030746+08	3
+4	342	2016-01-19 17:04:17.878642+08	4
+5	34	2016-01-19 17:04:26.694481+08	5
+\.
+
+
+--
+-- Name: api_currentstate_id_seq; Type: SEQUENCE SET; Schema: public; Owner: SamKuo
+--
+
+SELECT pg_catalog.setval('api_currentstate_id_seq', 5, true);
+
+
+--
+-- Data for Name: api_house; Type: TABLE DATA; Schema: public; Owner: SamKuo
+--
+
+COPY api_house (id, "GroupID", "Name") FROM stdin;
+6	RM	主臥室
+3	RM1	房間1
+4	RMB	男房間
+5	RMG	奶奶的房間
+7	RMS	姊姊的房間
+\.
+
+
+--
+-- Name: api_house_id_seq; Type: SEQUENCE SET; Schema: public; Owner: SamKuo
+--
+
+SELECT pg_catalog.setval('api_house_id_seq', 7, true);
+
+
+--
+-- Data for Name: api_ircommend; Type: TABLE DATA; Schema: public; Owner: SamKuo
+--
+
+COPY api_ircommend (id, "Commend", "RawCode", "NodeID_id") FROM stdin;
+\.
+
+
+--
+-- Name: api_ircommend_id_seq; Type: SEQUENCE SET; Schema: public; Owner: SamKuo
+--
+
+SELECT pg_catalog.setval('api_ircommend_id_seq', 1, false);
+
+
+--
+-- Data for Name: api_nodes; Type: TABLE DATA; Schema: public; Owner: SamKuo
+--
+
+COPY api_nodes (id, "ID", "Address", "Type", "Appliances", "Added", "Updated", "Group_id") FROM stdin;
+1	1	255	N	Light	2016-01-19 16:38:15.653108+08	2016-01-19 16:38:15.653133+08	6
+2	2	254	L	Fan	2016-01-19 16:38:42.236302+08	2016-01-19 16:38:42.236327+08	6
+3	3	253	N	Light	2016-01-19 16:40:14.250105+08	2016-01-19 16:40:14.25013+08	3
+4	4	252	L	Motor	2016-01-19 16:40:35.625492+08	2016-01-19 16:40:35.625517+08	3
+5	5	251	N	Compressor	2016-01-19 16:40:58.089032+08	2016-01-19 16:40:58.089056+08	3
+\.
+
+
+--
+-- Name: api_nodes_id_seq; Type: SEQUENCE SET; Schema: public; Owner: SamKuo
+--
+
+SELECT pg_catalog.setval('api_nodes_id_seq', 5, true);
+
+
+--
+-- Data for Name: api_nodestate; Type: TABLE DATA; Schema: public; Owner: SamKuo
+--
+
+COPY api_nodestate (id, "State", "Added", "NodeID_id") FROM stdin;
+4	0	2016-01-19 16:59:17.147826+08	1
+5	7	2016-01-19 17:00:24.265241+08	2
+6	1	2016-01-19 17:00:43.193841+08	3
+7	5	2016-01-19 17:00:54.929883+08	4
+8	1	2016-01-19 17:01:04.377406+08	5
+\.
+
+
+--
+-- Name: api_nodestate_id_seq; Type: SEQUENCE SET; Schema: public; Owner: SamKuo
+--
+
+SELECT pg_catalog.setval('api_nodestate_id_seq', 8, true);
+
+
+--
+-- Data for Name: auth_group; Type: TABLE DATA; Schema: public; Owner: SamKuo
+--
+
+COPY auth_group (id, name) FROM stdin;
+\.
+
+
+--
+-- Name: auth_group_id_seq; Type: SEQUENCE SET; Schema: public; Owner: SamKuo
+--
+
+SELECT pg_catalog.setval('auth_group_id_seq', 1, false);
+
+
+--
+-- Data for Name: auth_group_permissions; Type: TABLE DATA; Schema: public; Owner: SamKuo
+--
+
+COPY auth_group_permissions (id, group_id, permission_id) FROM stdin;
+\.
+
+
+--
+-- Name: auth_group_permissions_id_seq; Type: SEQUENCE SET; Schema: public; Owner: SamKuo
+--
+
+SELECT pg_catalog.setval('auth_group_permissions_id_seq', 1, false);
+
+
+--
+-- Data for Name: auth_permission; Type: TABLE DATA; Schema: public; Owner: SamKuo
+--
+
+COPY auth_permission (id, name, content_type_id, codename) FROM stdin;
+1	Can add permission	1	add_permission
+2	Can change permission	1	change_permission
+3	Can delete permission	1	delete_permission
+4	Can add group	2	add_group
+5	Can change group	2	change_group
+6	Can delete group	2	delete_group
+7	Can add content type	3	add_contenttype
+8	Can change content type	3	change_contenttype
+9	Can delete content type	3	delete_contenttype
+10	Can add session	4	add_session
+11	Can change session	4	change_session
+12	Can delete session	4	delete_session
+13	Can add site	5	add_site
+14	Can change site	5	change_site
+15	Can delete site	5	delete_site
+16	Can add log entry	6	add_logentry
+17	Can change log entry	6	change_logentry
+18	Can delete log entry	6	delete_logentry
+19	Can add email address	7	add_emailaddress
+20	Can change email address	7	change_emailaddress
+21	Can delete email address	7	delete_emailaddress
+22	Can add email confirmation	8	add_emailconfirmation
+23	Can change email confirmation	8	change_emailconfirmation
+24	Can delete email confirmation	8	delete_emailconfirmation
+25	Can add social application	9	add_socialapp
+26	Can change social application	9	change_socialapp
+27	Can delete social application	9	delete_socialapp
+28	Can add social account	10	add_socialaccount
+29	Can change social account	10	change_socialaccount
+30	Can delete social account	10	delete_socialaccount
+31	Can add social application token	11	add_socialtoken
+32	Can change social application token	11	change_socialtoken
+33	Can delete social application token	11	delete_socialtoken
+34	Can add user	12	add_user
+35	Can change user	12	change_user
+36	Can delete user	12	delete_user
+37	Can add queue	13	add_queue
+38	Can change queue	13	change_queue
+39	Can delete queue	13	delete_queue
+40	Can add message	14	add_message
+41	Can change message	14	change_message
+42	Can delete message	14	delete_message
+43	Can add house	15	add_house
+44	Can change house	15	change_house
+45	Can delete house	15	delete_house
+46	Can add nodes	16	add_nodes
+47	Can change nodes	16	change_nodes
+48	Can delete nodes	16	delete_nodes
+49	Can add node state	17	add_nodestate
+50	Can change node state	17	change_nodestate
+51	Can delete node state	17	delete_nodestate
+52	Can add current state	18	add_currentstate
+53	Can change current state	18	change_currentstate
+54	Can delete current state	18	delete_currentstate
+55	Can add i rcommend	19	add_ircommend
+56	Can change i rcommend	19	change_ircommend
+57	Can delete i rcommend	19	delete_ircommend
+\.
+
+
+--
+-- Name: auth_permission_id_seq; Type: SEQUENCE SET; Schema: public; Owner: SamKuo
+--
+
+SELECT pg_catalog.setval('auth_permission_id_seq', 57, true);
+
+
+--
+-- Data for Name: django_admin_log; Type: TABLE DATA; Schema: public; Owner: SamKuo
+--
+
+COPY django_admin_log (id, action_time, object_id, object_repr, action_flag, change_message, content_type_id, user_id) FROM stdin;
+\.
+
+
+--
+-- Name: django_admin_log_id_seq; Type: SEQUENCE SET; Schema: public; Owner: SamKuo
+--
+
+SELECT pg_catalog.setval('django_admin_log_id_seq', 1, false);
+
+
+--
+-- Data for Name: django_content_type; Type: TABLE DATA; Schema: public; Owner: SamKuo
+--
+
+COPY django_content_type (id, app_label, model) FROM stdin;
+1	auth	permission
+2	auth	group
+3	contenttypes	contenttype
+4	sessions	session
+5	sites	site
+6	admin	logentry
+7	account	emailaddress
+8	account	emailconfirmation
+9	socialaccount	socialapp
+10	socialaccount	socialaccount
+11	socialaccount	socialtoken
+12	users	user
+13	kombu_transport_django	queue
+14	kombu_transport_django	message
+15	api	house
+16	api	nodes
+17	api	nodestate
+18	api	currentstate
+19	api	ircommend
+\.
+
+
+--
+-- Name: django_content_type_id_seq; Type: SEQUENCE SET; Schema: public; Owner: SamKuo
+--
+
+SELECT pg_catalog.setval('django_content_type_id_seq', 19, true);
+
+
+--
+-- Data for Name: django_migrations; Type: TABLE DATA; Schema: public; Owner: SamKuo
+--
+
+COPY django_migrations (id, app, name, applied) FROM stdin;
+1	contenttypes	0001_initial	2016-01-07 14:04:29.270062+08
+2	contenttypes	0002_remove_content_type_name	2016-01-07 14:04:29.513962+08
+3	auth	0001_initial	2016-01-07 14:04:30.238694+08
+4	auth	0002_alter_permission_name_max_length	2016-01-07 14:04:30.297129+08
+5	auth	0003_alter_user_email_max_length	2016-01-07 14:04:30.324987+08
+6	auth	0004_alter_user_username_opts	2016-01-07 14:04:30.356542+08
+7	auth	0005_alter_user_last_login_null	2016-01-07 14:04:30.385194+08
+8	auth	0006_require_contenttypes_0002	2016-01-07 14:04:30.403772+08
+9	users	0001_initial	2016-01-07 14:04:30.899848+08
+10	account	0001_initial	2016-01-07 14:04:31.409753+08
+11	account	0002_email_max_length	2016-01-07 14:04:31.587554+08
+12	admin	0001_initial	2016-01-07 14:04:31.924545+08
+13	admin	0002_logentry_remove_auto_add	2016-01-07 14:04:31.976638+08
+14	auth	0007_alter_validators_add_error_messages	2016-01-07 14:04:32.013777+08
+15	kombu_transport_django	0001_initial	2016-01-07 14:04:32.404258+08
+16	sessions	0001_initial	2016-01-07 14:04:32.541092+08
+17	sites	0001_initial	2016-01-07 14:04:32.637885+08
+18	sites	0002_set_site_domain_and_name	2016-01-07 14:04:32.709969+08
+19	socialaccount	0001_initial	2016-01-07 14:04:33.323+08
+20	socialaccount	0002_token_max_lengths	2016-01-07 14:04:33.642575+08
+21	api	0001_initial	2016-01-11 16:04:19.502081+08
+\.
+
+
+--
+-- Name: django_migrations_id_seq; Type: SEQUENCE SET; Schema: public; Owner: SamKuo
+--
+
+SELECT pg_catalog.setval('django_migrations_id_seq', 21, true);
+
+
+--
+-- Data for Name: django_session; Type: TABLE DATA; Schema: public; Owner: SamKuo
+--
+
+COPY django_session (session_key, session_data, expire_date) FROM stdin;
+cttblnsygjf27a1ubh15h3so0nbf6omr	MTM1ZGNlNGZkMTg0NTE0NTJlZGIwZWRmN2EyZGJiOGMzOWY2ZWI5Mzp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6IjEiLCJfc2Vzc2lvbl9leHBpcnkiOjAsIl9hdXRoX3VzZXJfaGFzaCI6Ijg2MzczNzFmODMwM2NmZjRhZmVkNTA4NmU2MzAxYTkzN2U5NmFkZDUifQ==	2016-01-22 15:44:06.295355+08
+\.
+
+
+--
+-- Data for Name: django_site; Type: TABLE DATA; Schema: public; Owner: SamKuo
+--
+
+COPY django_site (id, domain, name) FROM stdin;
+1	smarthome.com	SmartHome
+\.
+
+
+--
+-- Name: django_site_id_seq; Type: SEQUENCE SET; Schema: public; Owner: SamKuo
+--
+
+SELECT pg_catalog.setval('django_site_id_seq', 1, false);
+
+
+--
+-- Data for Name: djkombu_message; Type: TABLE DATA; Schema: public; Owner: SamKuo
+--
+
+COPY djkombu_message (id, visible, sent_at, payload, queue_id) FROM stdin;
+\.
+
+
+--
+-- Name: djkombu_message_id_seq; Type: SEQUENCE SET; Schema: public; Owner: SamKuo
+--
+
+SELECT pg_catalog.setval('djkombu_message_id_seq', 1, false);
+
+
+--
+-- Data for Name: djkombu_queue; Type: TABLE DATA; Schema: public; Owner: SamKuo
+--
+
+COPY djkombu_queue (id, name) FROM stdin;
+1	celery
+2	celery@MacBook-Pro.local.celery.pidbox
+\.
+
+
+--
+-- Name: djkombu_queue_id_seq; Type: SEQUENCE SET; Schema: public; Owner: SamKuo
+--
+
+SELECT pg_catalog.setval('djkombu_queue_id_seq', 2, true);
+
+
+--
+-- Data for Name: socialaccount_socialaccount; Type: TABLE DATA; Schema: public; Owner: SamKuo
+--
+
+COPY socialaccount_socialaccount (id, provider, uid, last_login, date_joined, extra_data, user_id) FROM stdin;
+\.
+
+
+--
+-- Name: socialaccount_socialaccount_id_seq; Type: SEQUENCE SET; Schema: public; Owner: SamKuo
+--
+
+SELECT pg_catalog.setval('socialaccount_socialaccount_id_seq', 1, false);
+
+
+--
+-- Data for Name: socialaccount_socialapp; Type: TABLE DATA; Schema: public; Owner: SamKuo
+--
+
+COPY socialaccount_socialapp (id, provider, name, client_id, secret, key) FROM stdin;
+\.
+
+
+--
+-- Name: socialaccount_socialapp_id_seq; Type: SEQUENCE SET; Schema: public; Owner: SamKuo
+--
+
+SELECT pg_catalog.setval('socialaccount_socialapp_id_seq', 1, false);
+
+
+--
+-- Data for Name: socialaccount_socialapp_sites; Type: TABLE DATA; Schema: public; Owner: SamKuo
+--
+
+COPY socialaccount_socialapp_sites (id, socialapp_id, site_id) FROM stdin;
+\.
+
+
+--
+-- Name: socialaccount_socialapp_sites_id_seq; Type: SEQUENCE SET; Schema: public; Owner: SamKuo
+--
+
+SELECT pg_catalog.setval('socialaccount_socialapp_sites_id_seq', 1, false);
+
+
+--
+-- Data for Name: socialaccount_socialtoken; Type: TABLE DATA; Schema: public; Owner: SamKuo
+--
+
+COPY socialaccount_socialtoken (id, token, token_secret, expires_at, account_id, app_id) FROM stdin;
+\.
+
+
+--
+-- Name: socialaccount_socialtoken_id_seq; Type: SEQUENCE SET; Schema: public; Owner: SamKuo
+--
+
+SELECT pg_catalog.setval('socialaccount_socialtoken_id_seq', 1, false);
+
+
+--
+-- Data for Name: users_user; Type: TABLE DATA; Schema: public; Owner: SamKuo
+--
+
+COPY users_user (id, password, last_login, is_superuser, username, first_name, last_name, email, is_staff, is_active, date_joined, name) FROM stdin;
+1	pbkdf2_sha256$24000$leTO4YZoaJ8s$/tu4+KduVEsRDgfWCwa0EbjvM2ZmYJUlkbF8jZH1V3c=	2016-01-08 15:44:06.239949+08	t	Teambaymax			kuo77122@gmail.com	t	t	2016-01-07 14:31:42.208317+08	
+\.
+
+
+--
+-- Data for Name: users_user_groups; Type: TABLE DATA; Schema: public; Owner: SamKuo
+--
+
+COPY users_user_groups (id, user_id, group_id) FROM stdin;
+\.
+
+
+--
+-- Name: users_user_groups_id_seq; Type: SEQUENCE SET; Schema: public; Owner: SamKuo
+--
+
+SELECT pg_catalog.setval('users_user_groups_id_seq', 1, false);
+
+
+--
+-- Name: users_user_id_seq; Type: SEQUENCE SET; Schema: public; Owner: SamKuo
+--
+
+SELECT pg_catalog.setval('users_user_id_seq', 1, true);
+
+
+--
+-- Data for Name: users_user_user_permissions; Type: TABLE DATA; Schema: public; Owner: SamKuo
+--
+
+COPY users_user_user_permissions (id, user_id, permission_id) FROM stdin;
+\.
+
+
+--
+-- Name: users_user_user_permissions_id_seq; Type: SEQUENCE SET; Schema: public; Owner: SamKuo
+--
+
+SELECT pg_catalog.setval('users_user_user_permissions_id_seq', 1, false);
+
+
+--
+-- Name: account_emailaddress_email_key; Type: CONSTRAINT; Schema: public; Owner: SamKuo; Tablespace: 
+--
+
+ALTER TABLE ONLY account_emailaddress
+    ADD CONSTRAINT account_emailaddress_email_key UNIQUE (email);
+
+
+--
+-- Name: account_emailaddress_pkey; Type: CONSTRAINT; Schema: public; Owner: SamKuo; Tablespace: 
+--
+
+ALTER TABLE ONLY account_emailaddress
+    ADD CONSTRAINT account_emailaddress_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: account_emailconfirmation_key_key; Type: CONSTRAINT; Schema: public; Owner: SamKuo; Tablespace: 
+--
+
+ALTER TABLE ONLY account_emailconfirmation
+    ADD CONSTRAINT account_emailconfirmation_key_key UNIQUE (key);
+
+
+--
+-- Name: account_emailconfirmation_pkey; Type: CONSTRAINT; Schema: public; Owner: SamKuo; Tablespace: 
+--
+
+ALTER TABLE ONLY account_emailconfirmation
+    ADD CONSTRAINT account_emailconfirmation_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: api_currentstate_pkey; Type: CONSTRAINT; Schema: public; Owner: SamKuo; Tablespace: 
+--
+
+ALTER TABLE ONLY api_currentstate
+    ADD CONSTRAINT api_currentstate_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: api_house_pkey; Type: CONSTRAINT; Schema: public; Owner: SamKuo; Tablespace: 
+--
+
+ALTER TABLE ONLY api_house
+    ADD CONSTRAINT api_house_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: api_ircommend_pkey; Type: CONSTRAINT; Schema: public; Owner: SamKuo; Tablespace: 
+--
+
+ALTER TABLE ONLY api_ircommend
+    ADD CONSTRAINT api_ircommend_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: api_nodes_pkey; Type: CONSTRAINT; Schema: public; Owner: SamKuo; Tablespace: 
+--
+
+ALTER TABLE ONLY api_nodes
+    ADD CONSTRAINT api_nodes_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: api_nodestate_pkey; Type: CONSTRAINT; Schema: public; Owner: SamKuo; Tablespace: 
+--
+
+ALTER TABLE ONLY api_nodestate
+    ADD CONSTRAINT api_nodestate_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: auth_group_name_key; Type: CONSTRAINT; Schema: public; Owner: SamKuo; Tablespace: 
+--
+
+ALTER TABLE ONLY auth_group
+    ADD CONSTRAINT auth_group_name_key UNIQUE (name);
+
+
+--
+-- Name: auth_group_permissions_group_id_0cd325b0_uniq; Type: CONSTRAINT; Schema: public; Owner: SamKuo; Tablespace: 
+--
+
+ALTER TABLE ONLY auth_group_permissions
+    ADD CONSTRAINT auth_group_permissions_group_id_0cd325b0_uniq UNIQUE (group_id, permission_id);
+
+
+--
+-- Name: auth_group_permissions_pkey; Type: CONSTRAINT; Schema: public; Owner: SamKuo; Tablespace: 
+--
+
+ALTER TABLE ONLY auth_group_permissions
+    ADD CONSTRAINT auth_group_permissions_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: auth_group_pkey; Type: CONSTRAINT; Schema: public; Owner: SamKuo; Tablespace: 
+--
+
+ALTER TABLE ONLY auth_group
+    ADD CONSTRAINT auth_group_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: auth_permission_content_type_id_01ab375a_uniq; Type: CONSTRAINT; Schema: public; Owner: SamKuo; Tablespace: 
+--
+
+ALTER TABLE ONLY auth_permission
+    ADD CONSTRAINT auth_permission_content_type_id_01ab375a_uniq UNIQUE (content_type_id, codename);
+
+
+--
+-- Name: auth_permission_pkey; Type: CONSTRAINT; Schema: public; Owner: SamKuo; Tablespace: 
+--
+
+ALTER TABLE ONLY auth_permission
+    ADD CONSTRAINT auth_permission_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: django_admin_log_pkey; Type: CONSTRAINT; Schema: public; Owner: SamKuo; Tablespace: 
+--
+
+ALTER TABLE ONLY django_admin_log
+    ADD CONSTRAINT django_admin_log_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: django_content_type_app_label_76bd3d3b_uniq; Type: CONSTRAINT; Schema: public; Owner: SamKuo; Tablespace: 
+--
+
+ALTER TABLE ONLY django_content_type
+    ADD CONSTRAINT django_content_type_app_label_76bd3d3b_uniq UNIQUE (app_label, model);
+
+
+--
+-- Name: django_content_type_pkey; Type: CONSTRAINT; Schema: public; Owner: SamKuo; Tablespace: 
+--
+
+ALTER TABLE ONLY django_content_type
+    ADD CONSTRAINT django_content_type_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: django_migrations_pkey; Type: CONSTRAINT; Schema: public; Owner: SamKuo; Tablespace: 
+--
+
+ALTER TABLE ONLY django_migrations
+    ADD CONSTRAINT django_migrations_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: django_session_pkey; Type: CONSTRAINT; Schema: public; Owner: SamKuo; Tablespace: 
+--
+
+ALTER TABLE ONLY django_session
+    ADD CONSTRAINT django_session_pkey PRIMARY KEY (session_key);
+
+
+--
+-- Name: django_site_pkey; Type: CONSTRAINT; Schema: public; Owner: SamKuo; Tablespace: 
+--
+
+ALTER TABLE ONLY django_site
+    ADD CONSTRAINT django_site_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: djkombu_message_pkey; Type: CONSTRAINT; Schema: public; Owner: SamKuo; Tablespace: 
+--
+
+ALTER TABLE ONLY djkombu_message
+    ADD CONSTRAINT djkombu_message_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: djkombu_queue_name_key; Type: CONSTRAINT; Schema: public; Owner: SamKuo; Tablespace: 
+--
+
+ALTER TABLE ONLY djkombu_queue
+    ADD CONSTRAINT djkombu_queue_name_key UNIQUE (name);
+
+
+--
+-- Name: djkombu_queue_pkey; Type: CONSTRAINT; Schema: public; Owner: SamKuo; Tablespace: 
+--
+
+ALTER TABLE ONLY djkombu_queue
+    ADD CONSTRAINT djkombu_queue_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: socialaccount_socialaccount_pkey; Type: CONSTRAINT; Schema: public; Owner: SamKuo; Tablespace: 
+--
+
+ALTER TABLE ONLY socialaccount_socialaccount
+    ADD CONSTRAINT socialaccount_socialaccount_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: socialaccount_socialaccount_provider_fc810c6e_uniq; Type: CONSTRAINT; Schema: public; Owner: SamKuo; Tablespace: 
+--
+
+ALTER TABLE ONLY socialaccount_socialaccount
+    ADD CONSTRAINT socialaccount_socialaccount_provider_fc810c6e_uniq UNIQUE (provider, uid);
+
+
+--
+-- Name: socialaccount_socialapp_pkey; Type: CONSTRAINT; Schema: public; Owner: SamKuo; Tablespace: 
+--
+
+ALTER TABLE ONLY socialaccount_socialapp
+    ADD CONSTRAINT socialaccount_socialapp_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: socialaccount_socialapp_sites_pkey; Type: CONSTRAINT; Schema: public; Owner: SamKuo; Tablespace: 
+--
+
+ALTER TABLE ONLY socialaccount_socialapp_sites
+    ADD CONSTRAINT socialaccount_socialapp_sites_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: socialaccount_socialapp_sites_socialapp_id_71a9a768_uniq; Type: CONSTRAINT; Schema: public; Owner: SamKuo; Tablespace: 
+--
+
+ALTER TABLE ONLY socialaccount_socialapp_sites
+    ADD CONSTRAINT socialaccount_socialapp_sites_socialapp_id_71a9a768_uniq UNIQUE (socialapp_id, site_id);
+
+
+--
+-- Name: socialaccount_socialtoken_app_id_fca4e0ac_uniq; Type: CONSTRAINT; Schema: public; Owner: SamKuo; Tablespace: 
+--
+
+ALTER TABLE ONLY socialaccount_socialtoken
+    ADD CONSTRAINT socialaccount_socialtoken_app_id_fca4e0ac_uniq UNIQUE (app_id, account_id);
+
+
+--
+-- Name: socialaccount_socialtoken_pkey; Type: CONSTRAINT; Schema: public; Owner: SamKuo; Tablespace: 
+--
+
+ALTER TABLE ONLY socialaccount_socialtoken
+    ADD CONSTRAINT socialaccount_socialtoken_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: users_user_groups_pkey; Type: CONSTRAINT; Schema: public; Owner: SamKuo; Tablespace: 
+--
+
+ALTER TABLE ONLY users_user_groups
+    ADD CONSTRAINT users_user_groups_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: users_user_groups_user_id_b88eab82_uniq; Type: CONSTRAINT; Schema: public; Owner: SamKuo; Tablespace: 
+--
+
+ALTER TABLE ONLY users_user_groups
+    ADD CONSTRAINT users_user_groups_user_id_b88eab82_uniq UNIQUE (user_id, group_id);
+
+
+--
+-- Name: users_user_pkey; Type: CONSTRAINT; Schema: public; Owner: SamKuo; Tablespace: 
+--
+
+ALTER TABLE ONLY users_user
+    ADD CONSTRAINT users_user_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: users_user_user_permissions_pkey; Type: CONSTRAINT; Schema: public; Owner: SamKuo; Tablespace: 
+--
+
+ALTER TABLE ONLY users_user_user_permissions
+    ADD CONSTRAINT users_user_user_permissions_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: users_user_user_permissions_user_id_43338c45_uniq; Type: CONSTRAINT; Schema: public; Owner: SamKuo; Tablespace: 
+--
+
+ALTER TABLE ONLY users_user_user_permissions
+    ADD CONSTRAINT users_user_user_permissions_user_id_43338c45_uniq UNIQUE (user_id, permission_id);
+
+
+--
+-- Name: users_user_username_key; Type: CONSTRAINT; Schema: public; Owner: SamKuo; Tablespace: 
+--
+
+ALTER TABLE ONLY users_user
+    ADD CONSTRAINT users_user_username_key UNIQUE (username);
+
+
+--
+-- Name: account_emailaddress_e8701ad4; Type: INDEX; Schema: public; Owner: SamKuo; Tablespace: 
+--
+
+CREATE INDEX account_emailaddress_e8701ad4 ON account_emailaddress USING btree (user_id);
+
+
+--
+-- Name: account_emailaddress_email_03be32b2_like; Type: INDEX; Schema: public; Owner: SamKuo; Tablespace: 
+--
+
+CREATE INDEX account_emailaddress_email_03be32b2_like ON account_emailaddress USING btree (email varchar_pattern_ops);
+
+
+--
+-- Name: account_emailconfirmation_6f1edeac; Type: INDEX; Schema: public; Owner: SamKuo; Tablespace: 
+--
+
+CREATE INDEX account_emailconfirmation_6f1edeac ON account_emailconfirmation USING btree (email_address_id);
+
+
+--
+-- Name: account_emailconfirmation_key_f43612bd_like; Type: INDEX; Schema: public; Owner: SamKuo; Tablespace: 
+--
+
+CREATE INDEX account_emailconfirmation_key_f43612bd_like ON account_emailconfirmation USING btree (key varchar_pattern_ops);
+
+
+--
+-- Name: api_currentstate_d8dbccc2; Type: INDEX; Schema: public; Owner: SamKuo; Tablespace: 
+--
+
+CREATE INDEX api_currentstate_d8dbccc2 ON api_currentstate USING btree ("NodeID_id");
+
+
+--
+-- Name: api_ircommend_d8dbccc2; Type: INDEX; Schema: public; Owner: SamKuo; Tablespace: 
+--
+
+CREATE INDEX api_ircommend_d8dbccc2 ON api_ircommend USING btree ("NodeID_id");
+
+
+--
+-- Name: api_nodes_fcce8521; Type: INDEX; Schema: public; Owner: SamKuo; Tablespace: 
+--
+
+CREATE INDEX api_nodes_fcce8521 ON api_nodes USING btree ("Group_id");
+
+
+--
+-- Name: api_nodestate_d8dbccc2; Type: INDEX; Schema: public; Owner: SamKuo; Tablespace: 
+--
+
+CREATE INDEX api_nodestate_d8dbccc2 ON api_nodestate USING btree ("NodeID_id");
+
+
+--
+-- Name: auth_group_name_a6ea08ec_like; Type: INDEX; Schema: public; Owner: SamKuo; Tablespace: 
+--
+
+CREATE INDEX auth_group_name_a6ea08ec_like ON auth_group USING btree (name varchar_pattern_ops);
+
+
+--
+-- Name: auth_group_permissions_0e939a4f; Type: INDEX; Schema: public; Owner: SamKuo; Tablespace: 
+--
+
+CREATE INDEX auth_group_permissions_0e939a4f ON auth_group_permissions USING btree (group_id);
+
+
+--
+-- Name: auth_group_permissions_8373b171; Type: INDEX; Schema: public; Owner: SamKuo; Tablespace: 
+--
+
+CREATE INDEX auth_group_permissions_8373b171 ON auth_group_permissions USING btree (permission_id);
+
+
+--
+-- Name: auth_permission_417f1b1c; Type: INDEX; Schema: public; Owner: SamKuo; Tablespace: 
+--
+
+CREATE INDEX auth_permission_417f1b1c ON auth_permission USING btree (content_type_id);
+
+
+--
+-- Name: django_admin_log_417f1b1c; Type: INDEX; Schema: public; Owner: SamKuo; Tablespace: 
+--
+
+CREATE INDEX django_admin_log_417f1b1c ON django_admin_log USING btree (content_type_id);
+
+
+--
+-- Name: django_admin_log_e8701ad4; Type: INDEX; Schema: public; Owner: SamKuo; Tablespace: 
+--
+
+CREATE INDEX django_admin_log_e8701ad4 ON django_admin_log USING btree (user_id);
+
+
+--
+-- Name: django_session_de54fa62; Type: INDEX; Schema: public; Owner: SamKuo; Tablespace: 
+--
+
+CREATE INDEX django_session_de54fa62 ON django_session USING btree (expire_date);
+
+
+--
+-- Name: django_session_session_key_c0390e0f_like; Type: INDEX; Schema: public; Owner: SamKuo; Tablespace: 
+--
+
+CREATE INDEX django_session_session_key_c0390e0f_like ON django_session USING btree (session_key varchar_pattern_ops);
+
+
+--
+-- Name: djkombu_message_46cf0e59; Type: INDEX; Schema: public; Owner: SamKuo; Tablespace: 
+--
+
+CREATE INDEX djkombu_message_46cf0e59 ON djkombu_message USING btree (visible);
+
+
+--
+-- Name: djkombu_message_75249aa1; Type: INDEX; Schema: public; Owner: SamKuo; Tablespace: 
+--
+
+CREATE INDEX djkombu_message_75249aa1 ON djkombu_message USING btree (queue_id);
+
+
+--
+-- Name: djkombu_message_df2f2974; Type: INDEX; Schema: public; Owner: SamKuo; Tablespace: 
+--
+
+CREATE INDEX djkombu_message_df2f2974 ON djkombu_message USING btree (sent_at);
+
+
+--
+-- Name: djkombu_queue_name_8b43c728_like; Type: INDEX; Schema: public; Owner: SamKuo; Tablespace: 
+--
+
+CREATE INDEX djkombu_queue_name_8b43c728_like ON djkombu_queue USING btree (name varchar_pattern_ops);
+
+
+--
+-- Name: socialaccount_socialaccount_e8701ad4; Type: INDEX; Schema: public; Owner: SamKuo; Tablespace: 
+--
+
+CREATE INDEX socialaccount_socialaccount_e8701ad4 ON socialaccount_socialaccount USING btree (user_id);
+
+
+--
+-- Name: socialaccount_socialapp_sites_9365d6e7; Type: INDEX; Schema: public; Owner: SamKuo; Tablespace: 
+--
+
+CREATE INDEX socialaccount_socialapp_sites_9365d6e7 ON socialaccount_socialapp_sites USING btree (site_id);
+
+
+--
+-- Name: socialaccount_socialapp_sites_fe95b0a0; Type: INDEX; Schema: public; Owner: SamKuo; Tablespace: 
+--
+
+CREATE INDEX socialaccount_socialapp_sites_fe95b0a0 ON socialaccount_socialapp_sites USING btree (socialapp_id);
+
+
+--
+-- Name: socialaccount_socialtoken_8a089c2a; Type: INDEX; Schema: public; Owner: SamKuo; Tablespace: 
+--
+
+CREATE INDEX socialaccount_socialtoken_8a089c2a ON socialaccount_socialtoken USING btree (account_id);
+
+
+--
+-- Name: socialaccount_socialtoken_f382adfe; Type: INDEX; Schema: public; Owner: SamKuo; Tablespace: 
+--
+
+CREATE INDEX socialaccount_socialtoken_f382adfe ON socialaccount_socialtoken USING btree (app_id);
+
+
+--
+-- Name: users_user_groups_0e939a4f; Type: INDEX; Schema: public; Owner: SamKuo; Tablespace: 
+--
+
+CREATE INDEX users_user_groups_0e939a4f ON users_user_groups USING btree (group_id);
+
+
+--
+-- Name: users_user_groups_e8701ad4; Type: INDEX; Schema: public; Owner: SamKuo; Tablespace: 
+--
+
+CREATE INDEX users_user_groups_e8701ad4 ON users_user_groups USING btree (user_id);
+
+
+--
+-- Name: users_user_user_permissions_8373b171; Type: INDEX; Schema: public; Owner: SamKuo; Tablespace: 
+--
+
+CREATE INDEX users_user_user_permissions_8373b171 ON users_user_user_permissions USING btree (permission_id);
+
+
+--
+-- Name: users_user_user_permissions_e8701ad4; Type: INDEX; Schema: public; Owner: SamKuo; Tablespace: 
+--
+
+CREATE INDEX users_user_user_permissions_e8701ad4 ON users_user_user_permissions USING btree (user_id);
+
+
+--
+-- Name: users_user_username_06e46fe6_like; Type: INDEX; Schema: public; Owner: SamKuo; Tablespace: 
+--
+
+CREATE INDEX users_user_username_06e46fe6_like ON users_user USING btree (username varchar_pattern_ops);
+
+
+--
+-- Name: account_em_email_address_id_5b7f8c58_fk_account_emailaddress_id; Type: FK CONSTRAINT; Schema: public; Owner: SamKuo
+--
+
+ALTER TABLE ONLY account_emailconfirmation
+    ADD CONSTRAINT account_em_email_address_id_5b7f8c58_fk_account_emailaddress_id FOREIGN KEY (email_address_id) REFERENCES account_emailaddress(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: account_emailaddress_user_id_2c513194_fk_users_user_id; Type: FK CONSTRAINT; Schema: public; Owner: SamKuo
+--
+
+ALTER TABLE ONLY account_emailaddress
+    ADD CONSTRAINT account_emailaddress_user_id_2c513194_fk_users_user_id FOREIGN KEY (user_id) REFERENCES users_user(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: api_currentstate_NodeID_id_33593d77_fk_api_nodes_id; Type: FK CONSTRAINT; Schema: public; Owner: SamKuo
+--
+
+ALTER TABLE ONLY api_currentstate
+    ADD CONSTRAINT "api_currentstate_NodeID_id_33593d77_fk_api_nodes_id" FOREIGN KEY ("NodeID_id") REFERENCES api_nodes(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: api_ircommend_NodeID_id_dfa2c9fc_fk_api_nodes_id; Type: FK CONSTRAINT; Schema: public; Owner: SamKuo
+--
+
+ALTER TABLE ONLY api_ircommend
+    ADD CONSTRAINT "api_ircommend_NodeID_id_dfa2c9fc_fk_api_nodes_id" FOREIGN KEY ("NodeID_id") REFERENCES api_nodes(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: api_nodes_Group_id_bf8502e0_fk_api_house_id; Type: FK CONSTRAINT; Schema: public; Owner: SamKuo
+--
+
+ALTER TABLE ONLY api_nodes
+    ADD CONSTRAINT "api_nodes_Group_id_bf8502e0_fk_api_house_id" FOREIGN KEY ("Group_id") REFERENCES api_house(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: api_nodestate_NodeID_id_e99dde0a_fk_api_nodes_id; Type: FK CONSTRAINT; Schema: public; Owner: SamKuo
+--
+
+ALTER TABLE ONLY api_nodestate
+    ADD CONSTRAINT "api_nodestate_NodeID_id_e99dde0a_fk_api_nodes_id" FOREIGN KEY ("NodeID_id") REFERENCES api_nodes(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: auth_group_permiss_permission_id_84c5c92e_fk_auth_permission_id; Type: FK CONSTRAINT; Schema: public; Owner: SamKuo
+--
+
+ALTER TABLE ONLY auth_group_permissions
+    ADD CONSTRAINT auth_group_permiss_permission_id_84c5c92e_fk_auth_permission_id FOREIGN KEY (permission_id) REFERENCES auth_permission(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: auth_group_permissions_group_id_b120cbf9_fk_auth_group_id; Type: FK CONSTRAINT; Schema: public; Owner: SamKuo
+--
+
+ALTER TABLE ONLY auth_group_permissions
+    ADD CONSTRAINT auth_group_permissions_group_id_b120cbf9_fk_auth_group_id FOREIGN KEY (group_id) REFERENCES auth_group(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: auth_permiss_content_type_id_2f476e4b_fk_django_content_type_id; Type: FK CONSTRAINT; Schema: public; Owner: SamKuo
+--
+
+ALTER TABLE ONLY auth_permission
+    ADD CONSTRAINT auth_permiss_content_type_id_2f476e4b_fk_django_content_type_id FOREIGN KEY (content_type_id) REFERENCES django_content_type(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: django_admin_content_type_id_c4bce8eb_fk_django_content_type_id; Type: FK CONSTRAINT; Schema: public; Owner: SamKuo
+--
+
+ALTER TABLE ONLY django_admin_log
+    ADD CONSTRAINT django_admin_content_type_id_c4bce8eb_fk_django_content_type_id FOREIGN KEY (content_type_id) REFERENCES django_content_type(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: django_admin_log_user_id_c564eba6_fk_users_user_id; Type: FK CONSTRAINT; Schema: public; Owner: SamKuo
+--
+
+ALTER TABLE ONLY django_admin_log
+    ADD CONSTRAINT django_admin_log_user_id_c564eba6_fk_users_user_id FOREIGN KEY (user_id) REFERENCES users_user(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: djkombu_message_queue_id_38d205a7_fk_djkombu_queue_id; Type: FK CONSTRAINT; Schema: public; Owner: SamKuo
+--
+
+ALTER TABLE ONLY djkombu_message
+    ADD CONSTRAINT djkombu_message_queue_id_38d205a7_fk_djkombu_queue_id FOREIGN KEY (queue_id) REFERENCES djkombu_queue(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: socialacc_account_id_951f210e_fk_socialaccount_socialaccount_id; Type: FK CONSTRAINT; Schema: public; Owner: SamKuo
+--
+
+ALTER TABLE ONLY socialaccount_socialtoken
+    ADD CONSTRAINT socialacc_account_id_951f210e_fk_socialaccount_socialaccount_id FOREIGN KEY (account_id) REFERENCES socialaccount_socialaccount(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: socialaccou_socialapp_id_97fb6e7d_fk_socialaccount_socialapp_id; Type: FK CONSTRAINT; Schema: public; Owner: SamKuo
+--
+
+ALTER TABLE ONLY socialaccount_socialapp_sites
+    ADD CONSTRAINT socialaccou_socialapp_id_97fb6e7d_fk_socialaccount_socialapp_id FOREIGN KEY (socialapp_id) REFERENCES socialaccount_socialapp(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: socialaccount_soc_app_id_636a42d7_fk_socialaccount_socialapp_id; Type: FK CONSTRAINT; Schema: public; Owner: SamKuo
+--
+
+ALTER TABLE ONLY socialaccount_socialtoken
+    ADD CONSTRAINT socialaccount_soc_app_id_636a42d7_fk_socialaccount_socialapp_id FOREIGN KEY (app_id) REFERENCES socialaccount_socialapp(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: socialaccount_socialaccount_user_id_8146e70c_fk_users_user_id; Type: FK CONSTRAINT; Schema: public; Owner: SamKuo
+--
+
+ALTER TABLE ONLY socialaccount_socialaccount
+    ADD CONSTRAINT socialaccount_socialaccount_user_id_8146e70c_fk_users_user_id FOREIGN KEY (user_id) REFERENCES users_user(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: socialaccount_socialapp_site_site_id_2579dee5_fk_django_site_id; Type: FK CONSTRAINT; Schema: public; Owner: SamKuo
+--
+
+ALTER TABLE ONLY socialaccount_socialapp_sites
+    ADD CONSTRAINT socialaccount_socialapp_site_site_id_2579dee5_fk_django_site_id FOREIGN KEY (site_id) REFERENCES django_site(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: users_user_groups_group_id_9afc8d0e_fk_auth_group_id; Type: FK CONSTRAINT; Schema: public; Owner: SamKuo
+--
+
+ALTER TABLE ONLY users_user_groups
+    ADD CONSTRAINT users_user_groups_group_id_9afc8d0e_fk_auth_group_id FOREIGN KEY (group_id) REFERENCES auth_group(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: users_user_groups_user_id_5f6f5a90_fk_users_user_id; Type: FK CONSTRAINT; Schema: public; Owner: SamKuo
+--
+
+ALTER TABLE ONLY users_user_groups
+    ADD CONSTRAINT users_user_groups_user_id_5f6f5a90_fk_users_user_id FOREIGN KEY (user_id) REFERENCES users_user(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: users_user_user_pe_permission_id_0b93982e_fk_auth_permission_id; Type: FK CONSTRAINT; Schema: public; Owner: SamKuo
+--
+
+ALTER TABLE ONLY users_user_user_permissions
+    ADD CONSTRAINT users_user_user_pe_permission_id_0b93982e_fk_auth_permission_id FOREIGN KEY (permission_id) REFERENCES auth_permission(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: users_user_user_permissions_user_id_20aca447_fk_users_user_id; Type: FK CONSTRAINT; Schema: public; Owner: SamKuo
+--
+
+ALTER TABLE ONLY users_user_user_permissions
+    ADD CONSTRAINT users_user_user_permissions_user_id_20aca447_fk_users_user_id FOREIGN KEY (user_id) REFERENCES users_user(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: public; Type: ACL; Schema: -; Owner: SamKuo
+--
+
+REVOKE ALL ON SCHEMA public FROM PUBLIC;
+REVOKE ALL ON SCHEMA public FROM "SamKuo";
+GRANT ALL ON SCHEMA public TO "SamKuo";
+GRANT ALL ON SCHEMA public TO PUBLIC;
+
+
+--
+-- PostgreSQL database dump complete
+--
+

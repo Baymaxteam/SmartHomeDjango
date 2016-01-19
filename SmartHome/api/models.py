@@ -38,7 +38,7 @@ class NodeState(models.Model):
     Added = models.DateTimeField(auto_now_add=True)
     
     def __str__(self):
-        return self.NodeID
+        return str(self.NodeID)+'-'+str(self.State)
 
 
 class CurrentState(models.Model):
@@ -49,7 +49,7 @@ class CurrentState(models.Model):
     Added = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return self.NodeID
+        return str(self.NodeID)+'-'+str(self.State)
 
 
 class IRcommend(models.Model):
@@ -59,6 +59,6 @@ class IRcommend(models.Model):
     RawCode = models.CharField(max_length = 255)
 
     def __str__(self):
-        return self.NodeID
+        return str(self.NodeID)+'-'+str(self.Commend)
 
     

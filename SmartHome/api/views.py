@@ -65,14 +65,14 @@ def House_detail(request, GroupID):
 @csrf_exempt
 def Node_list(request):
 	if request.method == 'GET':
-		Nodelist = Node.objects.all()
+		Nodelist = Nodes.objects.all()
 		serializer = NodesSerializer(Nodelist, many=True)
 		return JSONResponse(serializer.data)
 
 @csrf_exempt
 def Node_detail(request, NodeID): 
 	try:
-		node = Node.objects.get(NodeID = NodeID)
+		node = Nodes.objects.get(NodeID = NodeID)
 	except Node.DoesNotExist:
 		return HttpResponse(status=404)
 
