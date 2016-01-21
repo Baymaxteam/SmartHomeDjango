@@ -15,8 +15,6 @@ class JSONResponse(HttpResponse):
 		kwargs['content_type'] = 'application/json'
 		super(JSONResponse, self).__init__(content, **kwargs)
 
-
-
 @csrf_exempt
 def House_list(request):
 	if request.method == 'GET':
