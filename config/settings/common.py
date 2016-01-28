@@ -104,7 +104,7 @@ MANAGERS = ADMINS
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#databases
 DATABASES = {
     # Raises ImproperlyConfigured exception if DATABASE_URL not in os.environ
-    'default': env.db("DATABASE_URL", default="postgres://django:1234567890@127.0.0.1:5431/smarthome"),
+    'default': env.db("DATABASE_URL", default="postgres://django:1234567890@127.0.0.1:5432/smarthome"),
 }
 DATABASES['default']['ATOMIC_REQUESTS'] = True
 
