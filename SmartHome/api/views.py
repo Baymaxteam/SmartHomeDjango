@@ -76,19 +76,19 @@ def Node_list(request):
 @csrf_exempt
 def Node_detail(request, NodeID): 
 	try:
-		node = Nodes.objects.get(NodeID = NodeID)
-	except Node.DoesNotExist:
+		node_obj = Nodes.objects.get(ID = NodeID)
+	except Nodes.DoesNotExist:
 		return HttpResponse(status=404)
 
 	if request.method == 'GET':
-		serializer = NodesSerializer(node)
+		serializer = NodesSerializer(node_obj)
 		return JSONResponse(serializer.data)
 
 	elif request.method == 'PUT':
 		# 這裡要插入控制Node的Code
 		# 記得發送完控制訊號要寫入資料庫NodeState
 		data = JSONParser().parse(request)
-		serializer = NodesCommendSerializer(node, data=data)
+		serializer = NodesCommendSerializer(node_obj, data=data)
 		if serializer.is_valid():
 			serializer.save()
 			return JSONResponse(serializer.data)

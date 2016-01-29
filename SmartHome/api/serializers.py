@@ -24,6 +24,23 @@ class HouseSerializer(serializers.ModelSerializer):
 		instance.save()
 		return instance
 
+class NodesStateSerializer(serializers.ModelSerializer):
+	def to_representation(self, value):
+		return 'Test Node State'
+	# State = serializers.CharField(max_length=100)
+	# Added = serializers.DateTimeField(read_only=True)
+	# class Meta:
+	# 	model = NodeState
+	# 	fields = ('State', 'Added')
+
+
+class CurrentStateSerializer(serializers.ModelSerializer):
+	State = serializers.IntegerField(min_value=0)
+	Added = serializers.DateTimeField(read_only=True)
+	class Meta:
+		model = CurrentState
+		fields = ('State', 'Added')
+
 
 class NodesSerializer(serializers.ModelSerializer):
 	# CharField(max_length=None, min_length=None, allow_blank=False, allow_null=True, trim_whitespace=True)
@@ -33,31 +50,35 @@ class NodesSerializer(serializers.ModelSerializer):
 	Group = serializers.CharField(max_length=4, allow_blank=True, allow_null=True)
 	Added = serializers.DateTimeField(required=False, read_only=True) #timezone.now()
 	Updated = serializers.DateTimeField(required=False)
+	State = NodesStateSerializer(many=True, read_only=True)
+	CurrentState = CurrentStateSerializer(many=True, read_only=True)
 
 	class Meta:
 		model = Nodes
-		fields = ('ID', 'Address', 'Type', 'Appliances', 'Group','Added', 'Updated')
+		fields = ('ID', 'Address', 'Type', 'Appliances', 'Group','Added', 'Updated', 'State', 'CurrentState')
 
-	def create(self, validated_data):
-		Group = validated_data.get['Group']
-		try:
-			house = House.objects.get(GroupID = Group)
-		except House.DoesNotExist:
-			house = None
-		validated_data['Group'] = house
-		validated_data['Added'] = timezone.now()
-		validated_data['Updated'] = timezone.now()
-		return Nodes.objects.create(**validated_data)
+
+
+	# def create(self, validated_data):
+	# 	Group = validated_data.get['Group']
+	# 	try:
+	# 		house = House.objects.get(GroupID = Group)
+	# 	except House.DoesNotExist:
+	# 		house = None
+	# 	validated_data['Group'] = house
+	# 	validated_data['Added'] = timezone.now()
+	# 	validated_data['Updated'] = timezone.now()
+	# 	return Nodes.objects.create(**validated_data)
 		
-	def update(self, instance, validated_data):
-		instance.ID = validated_data.get('ID', instance.ID)
-		instance.Address = validated_data.get('Address', instance.Address)
-		instance.Type = validated_data.get('Type', instance.Type)
-		instance.Appliances = validated_data.get('Appliances', instance.Appliances)
-		instance.Group = validated_data.get('Group', instance.Group)
-		instance.Updated = timezone.now()
-		instance.save()
-		return instance
+	# def update(self, instance, validated_data):
+	# 	instance.ID = validated_data.get('ID', instance.ID)
+	# 	instance.Address = validated_data.get('Address', instance.Address)
+	# 	instance.Type = validated_data.get('Type', instance.Type)
+	# 	instance.Appliances = validated_data.get('Appliances', instance.Appliances)
+	# 	instance.Group = validated_data.get('Group', instance.Group)
+	# 	instance.Updated = timezone.now()
+	# 	instance.save()
+	# 	return instance
 
 
 class NodeslistSerializer(serializers.ModelSerializer):
@@ -82,15 +103,13 @@ class NodeslistSerializer(serializers.ModelSerializer):
 
 
 class NodesCommendSerializer(serializers.ModelSerializer):
+	State = serializers.CharField(max_length=100)
+	Added = serializers.DateTimeField(read_only=True)
 	class Meta:
 		model = NodeState
-		fields = ('NodeID', 'State', 'Added')
+		fields = ('State', 'Added')
 
 
-class CurrentStateSerializer(serializers.ModelSerializer):
-	class Meta:
-		model = CurrentState
-		fields = ('NodeID', 'State', 'Added')
 
 
 class IRcommendSerializer(serializers.ModelSerializer):
