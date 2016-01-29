@@ -60,7 +60,28 @@ class NodesSerializer(serializers.ModelSerializer):
 		return instance
 
 
-class NodeStateSerializer(serializers.ModelSerializer):
+class NodeslistSerializer(serializers.ModelSerializer):
+	ID = serializers.IntegerField(min_value = 0)
+	Type = serializers.CharField(max_length=3)
+	Appliances = serializers.CharField(max_length=100)
+	Group = serializers.CharField(max_length=4, allow_blank=True, allow_null=True)
+	State = serializers.SerializerMethodField('node_state')
+	CurrentState = serializers.SerializerMethodField('node_Amp')
+
+	class Meta:
+		model = Nodes
+		fields = ('ID', 'Type', 'Appliances', 'Group','Added', 'State', 'CurrentState')
+
+	def node_state(self, obj):
+		return obj.states.last().State # 要回傳字串
+
+	def node_Amp(self, obj):
+		return obj.current_states.last().State
+
+
+
+
+class NodesCommendSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = NodeState
 		fields = ('NodeID', 'State', 'Added')
