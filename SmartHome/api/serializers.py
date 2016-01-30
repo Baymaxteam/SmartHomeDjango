@@ -5,7 +5,8 @@
 #from django.contrib.auth.models import User, Group
 from .models import House, Nodes, NodeState, CurrentState, IRcommend
 from rest_framework import serializers
-from django.utils import timezone
+# 
+# import datetime
 
 class HouseSerializer(serializers.ModelSerializer):
 	GroupID = serializers.CharField(max_length=10)
@@ -37,6 +38,7 @@ class NodesStateSerializer(serializers.ModelSerializer):
 class CurrentStateSerializer(serializers.ModelSerializer):
 	State = serializers.IntegerField(min_value=0)
 	Added = serializers.DateTimeField(read_only=True)
+
 	class Meta:
 		model = CurrentState
 		fields = ('State', 'Added')
@@ -50,12 +52,21 @@ class NodesSerializer(serializers.ModelSerializer):
 	Group = serializers.CharField(max_length=4, allow_blank=True, allow_null=True)
 	Added = serializers.DateTimeField(required=False, read_only=True) #timezone.now()
 	Updated = serializers.DateTimeField(required=False)
-	State = NodesStateSerializer(many=True, read_only=True)
-	CurrentState = CurrentStateSerializer(many=True, read_only=True)
+	# State = serializers.SerializerMethodField('node_state')
+	# CurrentState = serializers.SerializerMethodField('node_Amp')
 
 	class Meta:
 		model = Nodes
-		fields = ('ID', 'Address', 'Type', 'Appliances', 'Group','Added', 'Updated', 'State', 'CurrentState')
+		fields = ('ID', 'Address', 'Type', 'Appliances', 'Group','Added', 'Updated') #, 'State', 'CurrentState')
+
+	# def node_state(self, obj):
+	# 	end_date = datetime.datetime.now()
+	# 	start_date = end_date - datetime.timedelta(days=1)
+	# 	NodeState.objects.filter(Added__range=(start_date, end_date))
+	# 	return obj.states.State # 要回傳字串
+
+	# def node_Amp(self, obj):
+	# 	return obj.current_states.last().State
 
 
 
@@ -103,12 +114,16 @@ class NodeslistSerializer(serializers.ModelSerializer):
 
 
 class NodesCommendSerializer(serializers.ModelSerializer):
+	ID = serializers.IntegerField(min_value = 0)
 	State = serializers.CharField(max_length=100)
-	Added = serializers.DateTimeField(read_only=True)
+	Added = serializers.DateTimeField()
+
 	class Meta:
 		model = NodeState
-		fields = ('State', 'Added')
+		fields = ('ID', 'State', 'Added')
 
+	def create(self, validated_data):
+		return NodeState.objects.create(**validated_data)
 
 
 
