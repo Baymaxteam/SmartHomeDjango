@@ -113,18 +113,17 @@ class NodeslistSerializer(serializers.ModelSerializer):
 
 
 
-class NodesCommendSerializer(serializers.ModelSerializer):
-	ID = serializers.IntegerField(min_value = 0)
-	State = serializers.CharField(max_length=100)
-	Added = serializers.DateTimeField()
+# class NodesCommendSerializer(serializers.ModelSerializer):
+# 	NodeID = serializers.IntegerField(min_value = 0)
+# 	State = serializers.CharField(max_length=100)
+# 	Added = serializers.DateTimeField()
 
-	class Meta:
-		model = NodeState
-		fields = ('ID', 'State', 'Added')
+# 	class Meta:
+# 		model = NodeState
+# 		fields = ('NodeID', 'State', 'Added')
 
-	def create(self, validated_data):
-		return NodeState.objects.create(**validated_data)
-
+# 	def create(self,validated_data):
+# 		return NodeState.objects.create(**validated_data)
 
 
 class IRcommendSerializer(serializers.ModelSerializer):

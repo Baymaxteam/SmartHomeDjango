@@ -1,10 +1,12 @@
+import datetime
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.renderers import JSONRenderer
 from rest_framework.parsers import JSONParser
 
 from .models import House, Nodes, NodeState, CurrentState, IRcommend
-from .serializers import HouseSerializer, NodesSerializer, NodeslistSerializer, NodesCommendSerializer
+from .serializers import HouseSerializer, NodesSerializer, NodeslistSerializer
+
 
 class JSONResponse(HttpResponse):
 	# """
@@ -35,6 +37,7 @@ def House_list(request):
 			serializer.save()
 			return HttpResponse(status=204)
 		return JSONResponse(serializer.errors, status=400)
+	return HttpResponse(status=404)
 
 		
 @csrf_exempt
@@ -59,6 +62,8 @@ def House_detail(request, GroupID):
 	elif request.method == 'DELETE':
 		house.delete()
 		return HttpResponse(status=204)
+	return HttpResponse(status=404)
+
 
 
 # Node_list
@@ -69,6 +74,7 @@ def Node_list(request):
 		Nodelist = Nodes.objects.all()
 		serializer = NodeslistSerializer(Nodelist, many=True)
 		return JSONResponse(serializer.data)
+	return HttpResponse(status=404)
 
 # Node_detail
 # Get:表列特定Node的詳細資料(Address, ID, ...) 歷史耗電量(1Week), 歷史State(1week) 
@@ -84,15 +90,36 @@ def Node_detail(request, NodeID):
 		serializer = NodesSerializer(node_obj)
 		return JSONResponse(serializer.data)
 
-	elif request.method == 'PUT':
+	elif request.method == 'POST':
 		# 這裡要插入控制Node的Code
 		# 記得發送完控制訊號要寫入資料庫NodeState
 		data = JSONParser().parse(request)
-		serializer = NodesCommendSerializer(node_obj, data=data)
-		if serializer.is_valid():
-			serializer.save()
-			return JSONResponse(serializer.data)
-		return JSONResponse(serializer.errors, status=400)
+		data['NodeID'] = NodeID
+		commd = data['State']
+		# 檢查commd是node可接受命令
+		vailded = False
+		nodeType = node_obj.Type
+		if nodeType == 'N': 
+			if commd in [0, 1]:
+				vailded = True
+		elif nodeType == 'L':
+			if commd in range(8):
+				vailded = True
+		elif nodeType == 'IR':
+			vailded = True
+		else:
+			return HttpResponse(status=500)
+		#-----------------------------#		
+		## 檢查通過則下命令給node!!!
+		#-----------------------------#
+		if vailded: 
+			NodeState.objects.create(NodeID = node_obj, State = commd, Added = datetime.datetime.now())
+			msg = 'Node '+str(NodeID)+' state seting to '+ str(data['State'])
+			print(msg)
+			return JSONResponse(data)
+		return JSONResponse(data, status=400)
+
+	return HttpResponse(status=404)
 		
 
 
