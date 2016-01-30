@@ -90,7 +90,7 @@ def Node_detail(request, NodeID):
 		serializer = NodesSerializer(node_obj)
 		return JSONResponse(serializer.data)
 
-	elif request.method == 'POST':
+	elif request.method == 'PUT':
 		# 這裡要插入控制Node的Code
 		# 記得發送完控制訊號要寫入資料庫NodeState
 		data = JSONParser().parse(request)
