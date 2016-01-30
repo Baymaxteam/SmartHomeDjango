@@ -231,6 +231,9 @@ INSTALLED_APPS += ('SmartHome.taskapp.celery.CeleryConfig',)
 # if you are not using the django database broker (e.g. rabbitmq, redis, memcached), you can remove the next line.
 INSTALLED_APPS += ('kombu.transport.django',)
 BROKER_URL = env("CELERY_BROKER_URL", default='django://')
+# BROKER_URL = env("CELERY_BROKER_URL", default='redis://localhost:6379/0')
+#RESULT_BACKEND = env("CELERY_RESULT_BACKEND", default = 'redis://localhost:6379/0')
+
 ########## END CELERY
 
 

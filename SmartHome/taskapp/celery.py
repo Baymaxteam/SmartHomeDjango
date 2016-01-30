@@ -1,10 +1,12 @@
 
 from __future__ import absolute_import
+
 import os
 from celery import Celery
 from django.apps import AppConfig
 from django.conf import settings
 
+import time
 
 if not settings.configured:
     # set the default Django settings module for the 'celery' program.
@@ -24,31 +26,37 @@ class CeleryConfig(AppConfig):
         app.config_from_object('django.conf:settings')
         app.autodiscover_tasks(lambda: settings.INSTALLED_APPS, force=True)
 
-        if hasattr(settings, 'RAVEN_CONFIG'):
-            # Celery signal registration
-            from raven import Client as RavenClient
-            from raven.contrib.celery import register_signal as raven_register_signal
-            from raven.contrib.celery import register_logger_signal as raven_register_logger_signal
+        # if hasattr(settings, 'RAVEN_CONFIG'):
+        #     # Celery signal registration
+        #     from raven import Client as RavenClient
+        #     from raven.contrib.celery import register_signal as raven_register_signal
+        #     from raven.contrib.celery import register_logger_signal as raven_register_logger_signal
 
-            raven_client = RavenClient(dsn=settings.RAVEN_CONFIG['DSN'])
-            raven_register_logger_signal(raven_client)
-            raven_register_signal(raven_client)
+        #     raven_client = RavenClient(dsn=settings.RAVEN_CONFIG['DSN'])
+        #     raven_register_logger_signal(raven_client)
+        #     raven_register_signal(raven_client)
 
-        if hasattr(settings, 'OPBEAT'):
-            from opbeat.contrib.django.models import client as opbeat_client
-            from opbeat.contrib.django.models import logger as opbeat_logger
-            from opbeat.contrib.django.models import register_handlers as opbeat_register_handlers
-            from opbeat.contrib.celery import register_signal as opbeat_register_signal
+        # if hasattr(settings, 'OPBEAT'):
+        #     from opbeat.contrib.django.models import client as opbeat_client
+        #     from opbeat.contrib.django.models import logger as opbeat_logger
+        #     from opbeat.contrib.django.models import register_handlers as opbeat_register_handlers
+        #     from opbeat.contrib.celery import register_signal as opbeat_register_signal
 
-            try:
-                opbeat_register_signal(opbeat_client)
-            except Exception as e:
-                opbeat_logger.exception('Failed installing celery hook: %s' % e)
+        #     try:
+        #         opbeat_register_signal(opbeat_client)
+        #     except Exception as e:
+        #         opbeat_logger.exception('Failed installing celery hook: %s' % e)
 
-            if 'opbeat.contrib.django' in settings.INSTALLED_APPS:
-                opbeat_register_handlers()
+        #     if 'opbeat.contrib.django' in settings.INSTALLED_APPS:
+        #         opbeat_register_handlers()
 
 
 @app.task(bind=True)
 def debug_task(self):
     print('Request: {0!r}'.format(self.request))  # pragma: no cover
+
+@app.task()
+def add(x, y):
+    time.sleep(100)
+    return x + y
+
