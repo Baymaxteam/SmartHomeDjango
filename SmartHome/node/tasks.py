@@ -3,7 +3,7 @@ from __future__ import absolute_import
 from celery import shared_task
 from .XBee import XBee
 
-# xbee = XBee("COM7")
+# xbee = XBee("/dev/cu.usbserial-FTYVE8XDA")
 
 @shared_task
 def test(param):

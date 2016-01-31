@@ -48,3 +48,6 @@ djangorestframework==3.3.2
 
 # pySerial
 pyserial == 3.0.1
+
+# Cors
+django-cors-headers == 1.1.0

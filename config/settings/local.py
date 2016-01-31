@@ -65,3 +65,6 @@ TEST_RUNNER = 'django.test.runner.DiscoverRunner'
 ########## END CELERY
 
 # Your local stuff: Below this line define 3rd party library settings
+
+
+CORS_ORIGIN_ALLOW_ALL = True

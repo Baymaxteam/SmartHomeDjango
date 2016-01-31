@@ -52,13 +52,18 @@ class NodesSerializer(serializers.ModelSerializer):
 	Group = serializers.CharField(max_length=4, allow_blank=True, allow_null=True)
 	Added = serializers.DateTimeField(required=False, read_only=True) #timezone.now()
 	Updated = serializers.DateTimeField(required=False)
-	# State = serializers.SerializerMethodField('node_state')
-	# CurrentState = serializers.SerializerMethodField('node_Amp')
+	State = serializers.SerializerMethodField('node_state')
+	CurrentState = serializers.SerializerMethodField('node_Amp')
 
 	class Meta:
 		model = Nodes
-		fields = ('ID', 'Address', 'Type', 'Appliances', 'Group','Added', 'Updated') #, 'State', 'CurrentState')
+		fields = ('ID', 'Address', 'Type', 'Appliances', 'Group','Added', 'Updated', 'State', 'CurrentState')
+	
+	def node_state(self, obj):
+		return obj.states.last().State # 要回傳字串
 
+	def node_Amp(self, obj):
+		return obj.current_states.last().State
 	# def node_state(self, obj):
 	# 	end_date = datetime.datetime.now()
 	# 	start_date = end_date - datetime.timedelta(days=1)
