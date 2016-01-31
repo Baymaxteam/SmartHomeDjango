@@ -7,6 +7,8 @@ from django.apps import AppConfig
 from django.conf import settings
 
 import time
+from celery.schedules import crontab
+from datetime import timedelta
 
 if not settings.configured:
     # set the default Django settings module for the 'celery' program.
@@ -15,7 +17,14 @@ if not settings.configured:
 
 
 app = Celery('SmartHome')
-
+# app.conf.update(
+#     ELERYBEAT_SCHEDULE = {'add-every—5-seconds': {
+#         'task': 'add',
+#         'schedule': timedelta(seconds=5),
+#         'args': (16, 16)
+#     },
+#     }
+# )
 
 class CeleryConfig(AppConfig):
     name = 'SmartHome.taskapp'
@@ -51,13 +60,25 @@ class CeleryConfig(AppConfig):
         #     if 'opbeat.contrib.django' in settings.INSTALLED_APPS:
         #         opbeat_register_handlers()
 
+# @app.on_after_configure.connect
+# def setup_periodic_tasks(sender, **kwargs):
+#     # Calls test('hello') every 10 seconds.
+#     sender.add_periodic_task(10.0, test.s('hello'), name='add every 10')
+
+#     # Calls test('world') every 30 seconds
+#     sender.add_periodic_task(30.0, test.s('world'), expires=10)
+
+ 
 
 @app.task(bind=True)
 def debug_task(self):
     print('Request: {0!r}'.format(self.request))  # pragma: no cover
 
-@app.task()
-def add(x, y):
-    time.sleep(100)
-    return x + y
+# @app.task()
+# def add(x, y):
+#     return x + y
+
+# @app.task
+# def test(arg):
+#     print(arg)
 

@@ -45,3 +45,6 @@ celery==3.1.19
 
 # REST
 djangorestframework==3.3.2
+
+# pySerial
+pyserial == 3.0.1
