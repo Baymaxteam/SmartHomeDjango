@@ -97,11 +97,6 @@ def Node_detail(request, NodeID):
 		# 這裡要插入控制Node的Code
 		# 記得發送完控制訊號要寫入資料庫NodeState
 		
-		node_N_all_open.apply_async()
-		time.sleep(5)
-
-		node_N_all_close.apply_async()
-
 		data = JSONParser().parse(request)
 
 		data['NodeID'] = NodeID
@@ -125,7 +120,13 @@ def Node_detail(request, NodeID):
 		if vailded: 
 			NodeState.objects.create(NodeID = node_obj, State = commd, Added = datetime.datetime.now())
 			msg = 'Node '+str(NodeID)+' state seting to '+ str(data['State'])
+			if data['State'] ==1 :
+				node_N_all_open.apply_async()
+			elif data['State'] ==0:
+				node_N_all_close.apply_async()
+			
 			print(msg)
+
 			return JSONResponse(data)
 		return JSONResponse(data, status=400)
 
