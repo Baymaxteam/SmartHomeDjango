@@ -333,42 +333,49 @@ class XBee():
         j=0
     def node_N_all_open(self):
         self.Send(bytearray.fromhex("6E 01"))
-        sleep(1)
+        sleep(2)
         Msg = self.Receive()
         if Msg:
             print("Node N All Open")
 
     def node_N_all_close(self):
         self.Send(bytearray.fromhex("6E 00"))
-        sleep(1)
+        sleep(2)
         Msg = self.Receive()
         if Msg:
             print("Node N All Close")
 
     def node_All_open(self):
         self.Send(bytearray.fromhex("61 01"))
-        sleep(1)
+        sleep(2)
         Msg = self.Receive()
         if Msg:
             print("Node ALL Open")
 
     def node_All_close(self):
         self.Send(bytearray.fromhex("61 00"))
-        sleep(1)
+        sleep(2)
         Msg = self.Receive()
         if Msg:
             print("Node ALL Close")
 
     def node_N_one_open(self, node_address):
         self.Node_One_Send(bytearray.fromhex("6E 01"), node_address)
-        sleep(1)
+        sleep(2)
         Msg = self.Receive()
         if Msg:
             print("Node_N_one_open")
 
     def node_N_one_close(self, node_address):
         self.Node_One_Send(bytearray.fromhex("6E 00"), node_address)
-        sleep(1)
+        sleep(2)
         Msg = self.Receive()
         if Msg:
             print("Node_N_one_close")
+
+    def node_L_one_turn(self, LMR, node_address):
+        self.Node_One_Send(bytearray.fromhex(LMR), node_address)
+        sleep(2)
+        Msg = self.Receive()
+        if Msg:
+            print("Node_L_one_turn")

@@ -6,7 +6,7 @@ from rest_framework.parsers import JSONParser
 
 from .models import House, Nodes, NodeState, CurrentState, IRcommend
 from .serializers import HouseSerializer, NodesSerializer, NodeslistSerializer
-# from SmartHome.node.tasks import node_N_all_open, node_N_all_close
+from SmartHome.node.tasks import node_N_all_open, node_N_all_close
 
 import time
 
@@ -96,11 +96,11 @@ def Node_detail(request, NodeID):
 	elif request.method == 'PUT':
 		# 這裡要插入控制Node的Code
 		# 記得發送完控制訊號要寫入資料庫NodeState
-		#print(request.data)
-		# node_N_all_open.apply_async()
-		# time.sleep(5)
+		
+		node_N_all_open.apply_async()
+		time.sleep(5)
 
-		# node_N_all_close.apply_async()
+		node_N_all_close.apply_async()
 
 		data = JSONParser().parse(request)
 
