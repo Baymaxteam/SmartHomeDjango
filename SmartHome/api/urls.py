@@ -13,5 +13,7 @@ urlpatterns = [
    	# PUT:改變NodeState，命令開關或是轉台調溫度
     url(r'V1/node/(?P<NodeID>[0-9]+)/$', views.Node_detail),
     # schedule_list
-    # url(r'^/V1/schedule/$', views.schedule_list),
+    url(r'V1/schedule/$', views.schedule_list),
+    url(r'V1/schedule/(?P<NodeID>[0-9]+)/$', views.schedule_detail),
+
 ]

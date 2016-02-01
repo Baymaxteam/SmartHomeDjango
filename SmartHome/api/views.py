@@ -1,14 +1,14 @@
 import datetime
+import pytz
+from django.utils.dateparse import parse_datetime
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.renderers import JSONRenderer
 from rest_framework.parsers import JSONParser
 
-from .models import House, Nodes, NodeState, CurrentState, IRcommend
-from .serializers import HouseSerializer, NodesSerializer, NodeslistSerializer
-from SmartHome.node.tasks import node_N_all_open, node_N_all_close
-
-import time
+from .models import House, Nodes, NodeState, CurrentState, IRcommend, TaskSchedule
+from .serializers import HouseSerializer, NodesSerializer, NodeslistSerializer, TaskslistSerializer
+from SmartHome.node.tasks import node_N_all_open, node_N_all_close, PeriodicTest
 
 
 class JSONResponse(HttpResponse):
@@ -121,6 +121,7 @@ def Node_detail(request, NodeID):
 			NodeState.objects.create(NodeID = node_obj, State = commd, Added = datetime.datetime.now())
 			msg = 'Node '+str(NodeID)+' state seting to '+ str(data['State'])
 			if data['State'] ==1 :
+				#PeriodicTest.apply_async((15,), countdown=15)
 				node_N_all_open.apply_async()
 			elif data['State'] ==0:
 				node_N_all_close.apply_async()
@@ -132,6 +133,40 @@ def Node_detail(request, NodeID):
 
 	return HttpResponse(status=404)
 		
+@csrf_exempt
+def schedule_list(request):
+	if request.method == 'GET':
+		Tasks = TaskSchedule.objects.all()
+		serializer = TaskslistSerializer(Tasks, many=True)
+		data  = serializer.data
+		#data['NodeID'] = data['NodeID']['ID']
+		print(data)
+		return JSONResponse(data)
+	return HttpResponse(status=404)
 
+@csrf_exempt
+def schedule_detail(request, NodeID):
+	try:
+		node_obj = Nodes.objects.get(ID = NodeID)
+	except Nodes.DoesNotExist:
+		return HttpResponse(status=404)
+	if request.method == 'PUT':
+		data = JSONParser().parse(request)
+		# Example : {"triggerTime": "2016-01-19T08:38:15.653108Z" , "State":0}
+		triggerTime = parse_datetime(data['triggerTime'])
+		triggerTime = pytz.timezone("Asia/Taipei").localize(triggerTime, is_dst=None)
+		commd = data['State']
+		completed = False
+		gueued = True
+		TaskSchedule.objects.create(NodeID = node_obj, triggerTime = triggerTime, Commend= commd, completed=completed, gueued = gueued)
+
+		return JSONResponse(data)
+
+
+
+	# elif request.method == 'DELETE':
+	# 	house.delete()
+	# 	return HttpResponse(status=204)
+	# return HttpResponse(status=404)
 
 
