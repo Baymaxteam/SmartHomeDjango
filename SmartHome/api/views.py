@@ -157,7 +157,7 @@ def schedule_detail(request, NodeID):
 		commd = data['State']
 		completed = False
 		queued = True
-		TaskSchedule.objects.create(NodeID = node_obj, triggerTime = triggerTime, Commend= commd, completed=completed, gueued = gueued)
+		TaskSchedule.objects.create(NodeID = node_obj, triggerTime = triggerTime, Commend= commd, completed=completed, queued = queued)
 
 		return JSONResponse(data)
 
