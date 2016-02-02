@@ -57,7 +57,7 @@ $(document).ready(function() {
     // 按下按鍵，REST GET要資料，檢查開關狀態
     // N type
     $('#btnCurtain1').click(function() {
-        var nodeUrl = "http://192.168.31.168:8000/api/V1/node/2/"
+        var nodeUrl = "http://192.168.31.168:8000/api/V1/node/7/"
         $.ajax({
             url: nodeUrl,
             dataType: "json",
@@ -73,7 +73,7 @@ $(document).ready(function() {
     });
 
     $('#btnCurtain2').click(function() {
-        var nodeUrl = "http://192.168.31.168:8000/api/V1/node/2/"
+        var nodeUrl = "http://192.168.31.168:8000/api/V1/node/7/"
         $.ajax({
             url: nodeUrl,
             dataType: "json",
@@ -89,7 +89,7 @@ $(document).ready(function() {
     });
 
     $('#btnCurtain3').click(function() {
-        var nodeUrl = "http://192.168.31.168:8000/api/V1/node/2/"
+        var nodeUrl = "http://192.168.31.168:8000/api/V1/node/7/"
         $.ajax({
             url: nodeUrl,
             dataType: "json",
@@ -104,33 +104,17 @@ $(document).ready(function() {
         });
     });
 
-    $('#btnMainLight').click(function() {
-        var nodeUrl = "http://192.168.31.168:8000/api/V1/node/1/"
-        $.ajax({
-            url: nodeUrl,
-            dataType: "json",
-            success: function(response) {
-                responseJson = response;
-                console.log(responseJson);
-                checkNodeNState(responseJson.State, nodeUrl);
-            },
-            error: function(response) {
-                console.log("error");
-            }
-        });
-    });
-
     // IR
     $('#btnTVON').click(function() {
-        var nodeUrl = "http://192.168.31.168:8000/api/V1/node/3/"
+        var nodeUrl = "http://192.168.31.168:8000/api/V1/node/9/"
         checkNodeIRState("ON", nodeUrl)
     });
     $('#btnTVMute').click(function() {
-        var nodeUrl = "http://192.168.31.168:8000/api/V1/node/3/"
+        var nodeUrl = "http://192.168.31.168:8000/api/V1/node/9/"
         checkNodeIRState("Mute", nodeUrl)
     });
     $('#btnTVUP').click(function() {
-        var nodeUrl = "http://192.168.31.168:8000/api/V1/node/3/"
+        var nodeUrl = "http://192.168.31.168:8000/api/V1/node/9/"
         checkNodeIRState("UP", nodeUrl)
     });
 

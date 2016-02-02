@@ -76,6 +76,9 @@ $(document).ready(function() {
             console.log("error");
         }
     });
+
+
+
     // 日期顯示繁中
     $("#datepicker").datepicker($.datepicker.regional["zh-TW"]);
     $('#timepicker').timepicker({
@@ -117,9 +120,18 @@ $(document).ready(function() {
             ];
             submitScheduleNode[0].push($('#SelectNodeName').val().toString());
             submitScheduleNode[0].push($('#selectDateTime').val().toString());
-            submitScheduleNode[0].push("1").toString();
+            if ($("#NodeN1Switch").val() == "on") {
+                submitScheduleNode[0].push("1");
+            } else {
+                submitScheduleNode[0].push("0");
+            }
+            submitScheduleNode[0].push($("#NodeN1Switch").val());
             console.log(submitScheduleNode);
+
             showSelectScheduleTable(submitScheduleNode);
+
+
+
         }
     });
     // 確認是否填完排程資料
@@ -128,12 +140,44 @@ $(document).ready(function() {
         //nodeSubmitScheduleUrl = "http://192.168.31.168:8000/api/V1/schedule/1/"
         console.log(nodeSubmitScheduleUrl);
         var test = '{"triggerTime": "2016-01-19 08:38:15" , "State": 1 }'
-        var sendcommend = '{"triggerTime": "' + submitScheduleNode[0][1] + ':00" , "State": ' +  submitScheduleNode[0][2] +' }';
+        var sendcommend = '{"triggerTime": "' + submitScheduleNode[0][1] + ':00" , "State": ' + submitScheduleNode[0][2] + ' }';
+        sendcommend = sendcommend.replace('/', '-');
+        sendcommend = sendcommend.replace('/', '-');
         console.log(test);
         console.log(sendcommend);
         nodeSubmitSchedule(sendcommend, nodeSubmitScheduleUrl);
-        
 
+        // reload
+        $.ajax({
+            url: scheduleUrl,
+            dataType: "json",
+            success: function(response) {
+                responseJson = response;
+                console.log(responseJson);
+                // UTC time to local time.
+
+                for (var index = 0; index < responseJson.length; index++) {
+                    var jsonToDateString = responseJson[index].triggerTime.toString();
+                    var date = new Date(jsonToDateString)
+
+                    var tmp = [responseJson[index].NodeID.toString(), date.toLocaleString(),
+                        responseJson[index].Commend, responseJson[index].completed.toString()
+                    ];
+                    console.log(tmp);
+                    praseJsonScheduleData.push(tmp)
+
+                    // console.log("test:");
+                    // console.log(date);
+                    // console.log(date.toLocaleString());
+                    // console.log(date.toISOString());
+                }
+                // display data
+                showScheduleTable();
+            },
+            error: function(response) {
+                console.log("error");
+            }
+        });
     });
 
 });
@@ -194,8 +238,16 @@ function showNodeTable() {
 }
 
 function showScheduleTable() {
+    // if ($.fn.DataTable.fnIsDataTable('#tableScheduleView table')) {
+    //     a = $('#tableScheduleView table').dataTable();
+    //     a.fnClearTable();
+    //     a.fnDestroy();
+    //     $('#tableScheduleView table thead').empty()
+    // };
+
     $('#tableScheduleView').DataTable({
         responsive: true,
+        destroy: true,
         data: praseJsonScheduleData,
         columns: [{
             title: "ID"
@@ -210,8 +262,17 @@ function showScheduleTable() {
 }
 
 function showSelectScheduleTable(checkNodeScheduleData) {
+    // if ($.fn.DataTable.fnIsDataTable('#tableScheduleSetting table')) {
+    //     a = $('#tableScheduleSetting table').dataTable();
+    //     a.fnClearTable();
+    //     a.fnDestroy();
+    //     $('#tableScheduleSetting table thead').empty()
+    // };
+
+
     tableSelectSchedule = $('#tableScheduleSetting').DataTable({
         responsive: true,
+        destroy: true,
         data: checkNodeScheduleData,
         columns: [{
             title: "ID"
