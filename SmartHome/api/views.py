@@ -156,7 +156,7 @@ def schedule_detail(request, NodeID):
 		triggerTime = pytz.timezone("Asia/Taipei").localize(triggerTime, is_dst=None)
 		commd = data['State']
 		completed = False
-		gueued = True
+		queued = True
 		TaskSchedule.objects.create(NodeID = node_obj, triggerTime = triggerTime, Commend= commd, completed=completed, gueued = gueued)
 
 		return JSONResponse(data)
