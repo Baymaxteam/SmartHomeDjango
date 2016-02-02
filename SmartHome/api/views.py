@@ -7,7 +7,7 @@ from rest_framework.renderers import JSONRenderer
 from rest_framework.parsers import JSONParser
 
 from .models import House, Nodes, NodeState, CurrentState, IRcommend, TaskSchedule
-from .serializers import HouseSerializer, NodesSerializer, NodeslistSerializer, TaskslistSerializer
+from .serializers import HouseSerializer, NodesSerializer, NodeslistSerializer, TaskslistSerializer, CurrentStateSerializer
 from SmartHome.node.tasks import node_N_all_open, node_N_all_close, PeriodicTest
 
 
@@ -133,6 +133,20 @@ def Node_detail(request, NodeID):
 
 	return HttpResponse(status=404)
 		
+
+@csrf_exempt
+def Node_cs_detail(request, NodeID): 
+	try:
+		node_obj = Nodes.objects.get(ID = NodeID)
+	except Nodes.DoesNotExist:
+		return HttpResponse(status=404)
+	end = datetime.datetime.now()
+	start = end - datetime.timedelta(days=1)
+	node_cs = node_obj.current_states.filter(Added=[start, end])
+	serializer = CurrentStateSerializer(instance=node_cs, many=True)
+	return JSONResponse(serializer.data)
+
+
 @csrf_exempt
 def schedule_list(request):
 	if request.method == 'GET':

@@ -118,6 +118,7 @@ class NodeslistSerializer(serializers.ModelSerializer):
 
 
 
+
 # class NodesCommendSerializer(serializers.ModelSerializer):
 # 	NodeID = serializers.IntegerField(min_value = 0)
 # 	State = serializers.CharField(max_length=100)

@@ -12,8 +12,11 @@ urlpatterns = [
    	# Get:表列特定Node的詳細資料(Address, ID, ...) 歷史耗電量(1Week), 歷史State(1week) 
    	# PUT:改變NodeState，命令開關或是轉台調溫度
     url(r'V1/node/(?P<NodeID>[0-9]+)/$', views.Node_detail),
+    url(r'V1/node/(?P<NodeID>[0-9]+)/cs/$', views.Node_cs_detail),# 1day
     # schedule_list
     url(r'V1/schedule/$', views.schedule_list),
     url(r'V1/schedule/(?P<NodeID>[0-9]+)/$', views.schedule_detail),
+
+
 
 ]

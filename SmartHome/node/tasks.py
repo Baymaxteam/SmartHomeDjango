@@ -7,14 +7,14 @@ from celery.decorators import periodic_task
 from SmartHome.api.models import Nodes
 from .XBee import XBee
 
-# import platform
+import platform
 
-# if platform.system() == 'Linux':
-# 	xbee = XBee("/dev/ttyUSB0")
-# elif platform.system() == 'Darwin':
-# 	xbee = XBee("/dev/cu.usbserial-FTYVE8XDA")
-# else:
-# 	xbee = XBee("COM7")
+if platform.system() == 'Linux':
+	xbee = XBee("/dev/ttyUSB0")
+elif platform.system() == 'Darwin':
+	xbee = XBee("/dev/cu.usbserial-FTYVE8XDA")
+else:
+	xbee = XBee("COM7")
 
 
 # Windows: xbee = XBee("COM7")
@@ -27,22 +27,22 @@ def test(param):
 
 @shared_task
 def node_N_all_open():
-	# xbee.node_N_all_open()
+	xbee.node_N_all_open()
 	print('node_N_all_open')
 
 @shared_task
 def node_N_all_close():
-	# xbee.node_N_all_close()
+	xbee.node_N_all_close()
 	print('node_N_all_close')
 
 @shared_task
 def node_N_one_open(address):
-	# xbee.node_N_one_open(address)
+	xbee.node_N_one_open(address)
 	print('node_N_one_open')
 
 @shared_task
 def node_N_one_close(address):
-	# xbee.node_N_one_open(address)
+	xbee.node_N_one_open(address)
 	print('node_N_one_close')
 
 @shared_task
