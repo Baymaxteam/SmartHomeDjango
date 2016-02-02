@@ -36,7 +36,7 @@ class NodeState(models.Model):
     NodeID = models.ForeignKey(Nodes, related_name='states',
                                       on_delete=models.CASCADE)
     State = models.CharField(max_length = 100)
-    Added = models.DateTimeField(auto_now_add=True)
+    Added = models.DateTimeField(default=datetime.datetime.now)
     
     def __str__(self):
         return str(self.NodeID)+'-'+str(self.State)
@@ -47,7 +47,7 @@ class CurrentState(models.Model):
                                       on_delete=models.CASCADE)
     State = models.IntegerField(validators=[MinValueValidator(0),
                                             MaxValueValidator(2000)])
-    Added = models.DateTimeField(auto_now_add=True)
+    Added = models.DateTimeField(default=datetime.datetime.now)
 
     def __str__(self):
         return str(self.NodeID)+'-'+str(self.State)

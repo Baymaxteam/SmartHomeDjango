@@ -8,7 +8,7 @@ from rest_framework.parsers import JSONParser
 
 from .models import House, Nodes, NodeState, CurrentState, IRcommend, TaskSchedule
 from .serializers import HouseSerializer, NodesSerializer, NodeslistSerializer, TaskslistSerializer, CurrentStateSerializer
-from SmartHome.node.tasks import node_N_all_open, node_N_all_close, PeriodicTest
+from SmartHome.node.tasks import *
 
 
 class JSONResponse(HttpResponse):
@@ -104,30 +104,29 @@ def Node_detail(request, NodeID):
 		# 檢查commd是node可接受命令
 		vailded = False
 		nodeType = node_obj.Type
-		if nodeType == 'N': 
-			if commd in [0, 1]:
-				vailded = True
-		elif nodeType == 'L':
-			if commd in range(8):
-				vailded = True
-		elif nodeType == 'IR':
-			vailded = True
-		else:
-			return HttpResponse(status=500)
 		#-----------------------------#		
 		## 檢查通過則下命令給node!!!
 		#-----------------------------#
+		if nodeType == 'N': 
+			if commd in [0, 1]:
+				vailded = True
+				node_N_one_turn.apply_async((commd, node_obj.Address,))
+		elif nodeType == 'L':
+			if commd in range(8):
+				vailded = True
+				node_L_one_turn.apply_async((commd, node_obj.Address))
+		elif nodeType == 'IR':
+			vailded = True
+			IR_node_send.apply_async((commd, ))
+		else:
+			return HttpResponse(status=500)
+		#-----------------------------#		
+		## 檢查通過則寫入資料庫
+		#-----------------------------#
 		if vailded: 
-			NodeState.objects.create(NodeID = node_obj, State = commd, Added = datetime.datetime.now())
+			addedtime = pytz.timezone("Asia/Taipei").localize(datetime.datetime.now(), is_dst=None)
+			NodeState.objects.create(NodeID = node_obj, State = commd, Added = addedtime)
 			msg = 'Node '+str(NodeID)+' state seting to '+ str(data['State'])
-			if data['State'] ==1 :
-				#PeriodicTest.apply_async((15,), countdown=15)
-				node_N_all_open.apply_async()
-			elif data['State'] ==0:
-				node_N_all_close.apply_async()
-			
-			print(msg)
-
 			return JSONResponse(data)
 		return JSONResponse(data, status=400)
 
@@ -142,7 +141,7 @@ def Node_cs_detail(request, NodeID):
 		return HttpResponse(status=404)
 	end = datetime.datetime.now()
 	start = end - datetime.timedelta(days=1)
-	node_cs = node_obj.current_states.filter(Added=[start, end])
+	node_cs = node_obj.current_states.filter(Added__range=[start, end])
 	serializer = CurrentStateSerializer(instance=node_cs, many=True)
 	return JSONResponse(serializer.data)
 
@@ -156,6 +155,7 @@ def schedule_list(request):
 		#data['NodeID'] = data['NodeID']['ID']
 		return JSONResponse(data)
 	return HttpResponse(status=404)
+
 
 @csrf_exempt
 def schedule_detail(request, NodeID):
@@ -172,7 +172,8 @@ def schedule_detail(request, NodeID):
 		completed = False
 		queued = True
 		TaskSchedule.objects.create(NodeID = node_obj, triggerTime = triggerTime, Commend= commd, completed=completed, queued = queued)
-
+		# schedulesTask(commd, Type, address):
+		schedulesTask.apply_async((commd, node_obj.Type, node_obj.Address))
 		return JSONResponse(data)
 
 

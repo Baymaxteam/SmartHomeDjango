@@ -47,7 +47,7 @@ class CurrentStateSerializer(serializers.ModelSerializer):
 class NodesSerializer(serializers.ModelSerializer):
 	# CharField(max_length=None, min_length=None, allow_blank=False, allow_null=True, trim_whitespace=True)
 	ID = serializers.IntegerField(min_value = 0)
-	Address = serializers.IntegerField(min_value = 0)
+	Address = serializers.CharField(max_length = 100)
 	Type = serializers.CharField(max_length=3)
 	Group = serializers.CharField(max_length=4, allow_blank=True, allow_null=True)
 	Added = serializers.DateTimeField(required=False, read_only=True) #timezone.now()
@@ -64,6 +64,7 @@ class NodesSerializer(serializers.ModelSerializer):
 
 	def node_Amp(self, obj):
 		return obj.current_states.last().State
+		
 	# def node_state(self, obj):
 	# 	end_date = datetime.datetime.now()
 	# 	start_date = end_date - datetime.timedelta(days=1)
