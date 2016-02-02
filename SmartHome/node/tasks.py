@@ -11,12 +11,12 @@ import platform
 
 import pytz, datetime
 
-if platform.system() == 'Linux':
-	xbee = XBee("/dev/ttyUSB0")
-elif platform.system() == 'Darwin':
-	xbee = XBee("/dev/cu.usbserial-FTYVE8XDA")
-else:
-	xbee = XBee("COM7")
+# if platform.system() == 'Linux':
+# 	xbee = XBee("/dev/ttyUSB0")
+# elif platform.system() == 'Darwin':
+# 	xbee = XBee("/dev/cu.usbserial-FTYVE8XDA")
+# else:
+# 	xbee = XBee("COM7")
 
 
 # Windows: xbee = XBee("COM7")
@@ -61,20 +61,20 @@ def schedulesTask(commd, Type, address):
 	print('schedulesTask')
 	
 	
-@periodic_task(run_every=(crontab(minute='*/1')), name="PcomdRouting", ignore_result=True)
-def PcomdRouting():
-	rep = xbee.Currentreport()
-	if type(rep) is list:
-		print(str(len(rep))+' nodes are online...')
-		for data in rep:
-			try:
-				node_obj = Nodes.objects.get(Address = data['nodeAddress'])
-			except:
-				print('Error! undefined address...')
-				return
-			addedtime = pytz.timezone("Asia/Taipei").localize(datetime.datetime.now(), is_dst=None)
-			CurrentState.objects.create(NodeID = node_obj, State = data['Contect'], Added = addedtime)
-	print('PcomdRouting...')
+# @periodic_task(run_every=(crontab(minute='*/1')), name="PcomdRouting", ignore_result=True)
+# def PcomdRouting():
+# 	rep = xbee.Currentreport()
+# 	if type(rep) is list:
+# 		print(str(len(rep))+' nodes are online...')
+# 		for data in rep:
+# 			try:
+# 				node_obj = Nodes.objects.get(Address = data['nodeAddress'])
+# 			except:
+# 				print('Error! undefined address...')
+# 				return
+# 			addedtime = pytz.timezone("Asia/Taipei").localize(datetime.datetime.now(), is_dst=None)
+# 			CurrentState.objects.create(NodeID = node_obj, State = data['Contect'], Added = addedtime)
+# 	print('PcomdRouting...')
 
 
 
