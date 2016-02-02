@@ -393,6 +393,7 @@ class XBee():
     #         print("Node_N_one_close")
 
     def node_L_one_turn(self, state, node_address):
+        node_address = '7E 00 10 10 01 '+ node_address + ' FF FE 00 00' 
         if state in range(10):
            turn = "6C 0"+ str(state)
         elif state == 10:
@@ -450,6 +451,27 @@ class XBee():
                 print("Node IR Switch")
         except:
             print('Nothing return')
+
+            
+    def node_all_reset(self):
+        node_address = '7E 00 10 17 01 00 00 00 00 00 00 FF FF FF FE' 
+        self.Node_One_Send(bytearray.fromhex("02 44 31 04"), node_address)
+        sleep(1)
+        self.Node_One_Send(bytearray.fromhex("02 44 31 05"), node_address)
+        sleep(1)
+        Msg = self.Receive()
+        if Msg:
+            print("Node_reset_all")
+
+    def node_one_reset(self,node_address):
+        node_address = '7E 00 10 17 01'+node_address+'FF FE' 
+        self.Node_One_Send(bytearray.fromhex("02 44 31 04"), node_address)
+        sleep(1)
+        self.Node_One_Send(bytearray.fromhex("02 44 31 05"), node_address)
+        sleep(1)
+        Msg = self.Receive()
+        if Msg:
+            print("Node_reset_one")
 
 
 

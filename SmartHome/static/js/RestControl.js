@@ -185,8 +185,8 @@ function checkNodeLState(State, nodeUrl, nodeOrder) {
 }
 
 function checkNodeIRState(State, nodeUrl) {
-    var sendStatus = '{"State": ';
-    sendStatus = sendStatus + State + '}';
+    var sendStatus = '{"State": "';
+    sendStatus = sendStatus + State.toString() + '"}';
 
     console.log(sendStatus);
     // ON status --> close

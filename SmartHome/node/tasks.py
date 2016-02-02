@@ -8,7 +8,7 @@ from SmartHome.api.models import *
 from .XBee import XBee
 
 import platform
-
+import time 
 import pytz, datetime
 
 if platform.system() == 'Linux':
@@ -61,22 +61,46 @@ def schedulesTask(commd, Type, address):
 	print('schedulesTask')
 	
 	
+@shared_task
+def node_all_reset():
+	xbee.node_all_reset()
+	print('ALL reset')
+
+@shared_task
+def node_one_reset(address):
+	xbee.node_one_reset(address)
+	print(address+' reset!')
+
+
 @periodic_task(run_every=(crontab(minute='*/1')), name="PcomdRouting", ignore_result=True)
 def PcomdRouting():
+	address =['00 13 A2 00 40 EC 3A A4', '00 13 A2 00 40 EC 3A B7', '00 13 A2 00 40 EC 3A 97',
+    		  '00 13 A2 00 40 B3 2D 41', '00 13 A2 00 40 EC 3A 98', '00 13 A2 00 40 B3 31 65',
+			  '00 13 A2 00 40 B3 2D 4F', '00 13 A2 00 40 B3 2D 5B', '00 13 A2 00 40 C2 8B B7']
 	rep = xbee.Currentreport()
 	if type(rep) is list:
 		print(str(len(rep))+' nodes are online...')
 		for data in rep:
 			try:
+				rec_address = data['nodeAddress']
+				try:
+					address.remove(rec_address)
+				except:
+					print('repeat address')
 				node_obj = Nodes.objects.get(Address = data['nodeAddress'])
 			except:
 				print('Error! undefined address...')
 				return
 			addedtime = pytz.timezone("Asia/Taipei").localize(datetime.datetime.now(), is_dst=None)
 			CurrentState.objects.create(NodeID = node_obj, State = data['Contect'], Added = addedtime)
+		if len(address) >0 :
+			for deadnode in address:
+				print('DeadNode: '+ deadnode)
+				node_one_reset.apply_async((deadnode,))
+				time.sleep(1)
 	print('PcomdRouting...')
 
 
-
+# node_all_reset.apply_async()
 
 
