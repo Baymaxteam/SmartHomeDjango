@@ -140,7 +140,6 @@ def schedule_list(request):
 		serializer = TaskslistSerializer(Tasks, many=True)
 		data  = serializer.data
 		#data['NodeID'] = data['NodeID']['ID']
-		print(data)
 		return JSONResponse(data)
 	return HttpResponse(status=404)
 

@@ -142,11 +142,11 @@ class TaskslistSerializer(serializers.ModelSerializer):
 	triggerTime = serializers.DateTimeField()
 	Commend = serializers.CharField(max_length=100)
 	completed = serializers.BooleanField()
-	gueued = serializers.BooleanField()
+	queued = serializers.BooleanField()
 	
 	class Meta:
 		model = TaskSchedule
-		fields = ('NodeID', 'triggerTime', 'Commend', 'completed','gueued')
+		fields = ('NodeID', 'triggerTime', 'Commend', 'completed','queued')
 
 
 # class TasksSerializer(serializers.ModelSerializer):

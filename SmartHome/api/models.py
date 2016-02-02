@@ -67,7 +67,7 @@ class TaskSchedule(models.Model):
     triggerTime = models.DateTimeField()
     Commend = models.CharField(max_length = 100)
     completed = models.BooleanField()
-    gueued = models.BooleanField()
+    queued = models.BooleanField()
 
     def __str__(self):
         return str(self.NodeID)
