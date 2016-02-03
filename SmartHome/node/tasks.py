@@ -102,13 +102,19 @@ def node_one_reset(address):
 @periodic_task(run_every=(crontab(minute='*/1')), name="PcomdRouting", ignore_result=True)
 def PcomdRouting():
 	if noSerialPortMode == False:
-		address = xbee.node_address
+		address = {'00 13 A2 00 40 EC 3A A4':'Nnode1', '00 13 A2 00 40 EC 3A B7':'Nnode2', 
+                   '00 13 A2 00 40 EC 3A 97':'Nnode3', '00 13 A2 00 40 B3 2D 41':'Nnode4',
+                   '00 13 A2 00 40 EC 3A 98':'Nnode5', '00 13 A2 00 40 B3 31 65':'Nnode6',
+                   '00 13 A2 00 40 B3 2D 4F':'Lnode1', '00 13 A2 00 40 B3 2D 5B':'Lnode2',
+                   '00 13 A2 00 40 C2 8B B7':'IRnode'}
 		rep = xbee.Currentreport()
 		if type(rep) is list:
 			print(str(len(rep))+' nodes are online...')
 			for data in rep:
 				try:
 					rec_address = data['nodeAddress']
+					# print(rec_address)
+					# print(address)
 					try:
 						address.pop(rec_address)
 					except:
@@ -116,7 +122,8 @@ def PcomdRouting():
 					node_obj = Nodes.objects.get(Address = data['nodeAddress'])
 				except:
 					print('Error! undefined address: {0}'.format(rec_address))
-					return
+					# return
+					raise
 				addedtime = pytz.timezone("Asia/Taipei").localize(datetime.datetime.now(), is_dst=None)
 				CurrentState.objects.create(NodeID = node_obj, State = data['Contect'], Added = addedtime)
 			if len(address) >0 :

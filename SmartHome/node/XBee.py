@@ -431,6 +431,7 @@ class XBee():
         mu3 = '7E 00 1A 10 01 00 13 A2 00 40 C2 8B B7 FF FE 00 00 72 00 02 00 43 00 C2 01 08 07 90 01'
         
         if commd == 'ON':
+            print("IRcommd: ON")
             self.IRSend(on1)
             sleep(0.1)
             self.IRSend(on2)
@@ -438,7 +439,9 @@ class XBee():
             self.IRSend(on3)
             sleep(0.1)
 
+
         elif commd == 'UP':
+            print("IRcommd: UP")
             self.IRSend(up1)
             sleep(0.1)
             self.IRSend(up2)
@@ -447,6 +450,7 @@ class XBee():
             sleep(0.1)
 
         elif commd == 'MUTE':
+            print("IRcommd: MUTE")
             self.IRSend(mu1)
             sleep(0.1)
             self.IRSend(mu2)
