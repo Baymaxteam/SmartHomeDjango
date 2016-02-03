@@ -2,13 +2,17 @@
 from __future__ import absolute_import
 
 import os
-from celery import Celery
+from celery import Celery, platforms
+
 from django.apps import AppConfig
 from django.conf import settings
 
 import time
 from celery.schedules import crontab
 from datetime import timedelta
+
+
+platforms.C_FORCE_ROOT = True
 
 if not settings.configured:
     # set the default Django settings module for the 'celery' program.
