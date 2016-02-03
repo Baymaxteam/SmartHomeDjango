@@ -63,6 +63,8 @@ def IR_node_send(commd):
 	if noSerialPortMode == False:
 		xbee.IR_node_send(commd)
 		print('IR: '+ commd)
+		time.sleep(1)
+		node_one_reset.apply_async(('00 13 A2 00 40 C2 8B B7',))
 	else:
 		print('<In noSerialPortMode> IR_node_send({0})'.format(commd))
 
