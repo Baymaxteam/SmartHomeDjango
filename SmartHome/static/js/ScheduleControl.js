@@ -150,21 +150,19 @@ $(document).ready(function() {
 
         }
     });
-    // 確認是否填完排程資料
+    // submit 排程資料
     $("#btnSubmitSchedule").click(function(event) {
         var nodeSubmitScheduleUrl = "http://192.168.31.168:8000/api/V1/schedule/" + submitScheduleNode[0][0] + "/";
         //nodeSubmitScheduleUrl = "http://192.168.31.168:8000/api/V1/schedule/1/"
         console.log(nodeSubmitScheduleUrl);
-        var test = '{"triggerTime": "2016-01-19 08:38:15" , "State": 1 }'
+        //var test = '{"triggerTime": "2016-01-19 08:38:15" , "State": 1 }'
         var sendcommend = '{"triggerTime": "' + submitScheduleNode[0][1] + ':00" , "State": ' + submitScheduleNode[0][2] + ' }';
         sendcommend = sendcommend.replace('/', '-');
         sendcommend = sendcommend.replace('/', '-');
         console.log(sendcommend);
         nodeSubmitSchedule(sendcommend, nodeSubmitScheduleUrl);
 
-        $('html, body').animate({
-            scrollTop: 0
-        }, 'slow');
+
 
     });
 
@@ -286,6 +284,11 @@ function nodeSubmitSchedule(inputSchedule, nodeurl) {
         data: inputSchedule,
         success: function(response) {
             console.log(response);
+            $('html, body').animate({
+                scrollTop: 0
+            }, 'slow');
+            location.reload();
+
         },
         error: function(response) {
             console.log("error");
