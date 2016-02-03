@@ -59,7 +59,7 @@ $(document).ready(function() {
                 var jsonToDateString = responseJson[index].triggerTime.toString();
                 var date = new Date(jsonToDateString)
 
-                var tmp = [responseJson[index].NodeID.toString(), date.toLocaleString().toString(),
+                var tmp = [responseJson[index].ID.toString(), date.toLocaleString().toString(),
                     responseJson[index].Commend, responseJson[index].completed.toString()
                 ];
                 console.log(tmp);
