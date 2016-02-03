@@ -130,13 +130,13 @@ $(document).ready(function() {
                 }
             } else if (SelectNodeData[1] == "L") {
                 var value = 0;
-                if ($("#NodeN1Switch").prop('checked') == true) {
+                if ($("#NodeL1Switch").prop('checked') == true) {
                     value = value + 1;
                 }
-                if ($("#NodeN2Switch").prop('checked') == true) {
+                if ($("#NodeL2Switch").prop('checked') == true) {
                     value = value + 2;
                 }
-                if ($("#NodeN3Switch").prop('checked') == true) {
+                if ($("#NodeL3Switch").prop('checked') == true) {
                     value = value + 4;
                 }
                 submitScheduleNode[0].push(value.toString());
