@@ -160,6 +160,7 @@ def schedule_list(request):
 @csrf_exempt
 def schedule_detail(request, NodeID):
 	try:
+		print('NodeID: {0}'.format(NodeID))
 		node_obj = Nodes.objects.get(ID = NodeID)
 	except Nodes.DoesNotExist:
 		return HttpResponse(status=404)
@@ -174,6 +175,7 @@ def schedule_detail(request, NodeID):
 		TaskSchedule.objects.create(NodeID = node_obj, triggerTime = triggerTime, Commend= commd, completed=completed, queued = queued)
 		# schedulesTask(commd, Type, address):
 		schedulesTask.apply_async((commd, node_obj.Type, node_obj.Address))
+		data['NodeID'] = NodeID
 		return JSONResponse(data)
 
 

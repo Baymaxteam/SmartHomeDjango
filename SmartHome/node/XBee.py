@@ -57,9 +57,12 @@ class XBee():
         if (len(msg) - msg.count(bytes(b'0x7D'))) < 9:
             return False
 
+        # print('msg:{0}'.format(msg))
         # All bytes in message must be unescaped before validating content
         frame = self.Unescape(msg)
-
+        # print('frame:{0}'.format(frame))
+        if(frame == None):
+            return False
         LSB = frame[1]
         # Frame (minus checksum) must contain at least length equal to LSB
         if LSB > (len(frame[2:]) - 1):
