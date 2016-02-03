@@ -162,6 +162,8 @@ def schedule_detail(request, NodeID):
 	try:
 		print('NodeID: {0}'.format(NodeID))
 		node_obj = Nodes.objects.get(ID = NodeID)
+		print(node_obj.ID)
+		print(node_obj.Address)
 	except Nodes.DoesNotExist:
 		return HttpResponse(status=404)
 	if request.method == 'PUT':
@@ -172,10 +174,12 @@ def schedule_detail(request, NodeID):
 		commd = data['State']
 		completed = False
 		queued = True
+		print(node_obj.ID)
 		TaskSchedule.objects.create(NodeID = node_obj, triggerTime = triggerTime, Commend= commd, completed=completed, queued = queued)
 		# schedulesTask(commd, Type, address):
 		schedulesTask.apply_async((commd, node_obj.Type, node_obj.Address))
-		data['NodeID'] = NodeID
+		data['NodeID'] = node_obj.ID
+		
 		return JSONResponse(data)
 
 
