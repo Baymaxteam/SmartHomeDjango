@@ -57,7 +57,7 @@ class XBee():
         if (len(msg) - msg.count(bytes(b'0x7D'))) < 9:
             return False
 
-        # print('msg:{0}'.format(msg))
+       # print('msg:{0}'.format(msg))
         # All bytes in message must be unescaped before validating content
         frame = self.Unescape(msg)
         # print('frame:{0}'.format(frame))
@@ -433,21 +433,21 @@ class XBee():
         if commd == 'ON':
             print("IRcommd: ON")
             self.IRSend(on1)
-            sleep(0.1)
+            sleep(0.5)
             self.IRSend(on2)
-            sleep(0.1)
+            sleep(0.5)
             self.IRSend(on3)
-            sleep(0.1)
+            sleep(0.5)
 
 
         elif commd == 'UP':
             print("IRcommd: UP")
             self.IRSend(up1)
-            sleep(0.1)
+            sleep(0.5)
             self.IRSend(up2)
-            sleep(0.1)
+            sleep(0.5)
             self.IRSend(up3)
-            sleep(0.1)
+            sleep(0.5)
 
         elif commd == 'MUTE':
             print("IRcommd: MUTE")

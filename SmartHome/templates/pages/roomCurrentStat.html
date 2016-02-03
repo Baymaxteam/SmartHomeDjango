@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 {% load staticfiles %}
-
 <html lang="en">
 
 <head>
@@ -63,11 +62,11 @@
                         <li>
                             <a href="#"><i class="fa fa-refresh fa-fw"></i> 手動控制<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
-                                <li>
+                                 <li>
                                     <a href="{% url 'roomLiving' %}">客廳</a>
                                 </li>
                                 <li>
-                                    <a href="{% url 'roomLiving' %}">主臥房</a>
+                                    <a href="{% url 'roomMainRoom' %}">主臥房</a>
                                 </li>
                                 <li>
                                     <a href="{% url 'roomLiving' %}">客房</a>
@@ -75,15 +74,16 @@
                                 <li>
                                     <a href="{% url 'roomLiving' %}">新增</a>
                                 </li>
+
                             </ul>
                             <!-- /.nav-second-level -->
                         </li>
                         <li>
                             <a href="{% url 'roomSchedule' %}"><i class="fa fa-tasks fa-fw"></i> 智慧控制</a>
                         </li>
-                        <li>
-                            <a href="{% url 'roomSchedule' %}"><i class="fa fa-university fa-fw"></i> 情境模式</a>
-                        </li>
+            <!--             <li>
+                            <a href="roomSchedule.html"><i class="fa fa-university fa-fw"></i> 情境模式</a>
+                        </li> -->
                         <li>
                             <a href="{% url 'roomCurrentStat' %}"><i class="fa fa-bar-chart-o fa-fw"></i> 耗能統計</a>
                         </li>

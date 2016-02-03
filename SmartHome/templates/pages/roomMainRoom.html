@@ -60,7 +60,7 @@
                             <!-- /input-group -->
                         </li>
                         <li>
-                            <a href="{% url 'index' %}"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
+                            <a href={% url 'index' %}><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
                         </li>
                         <li>
                             <a href="#"><i class="fa fa-refresh fa-fw"></i> 手動控制<span class="fa arrow"></span></a>
@@ -105,12 +105,12 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="page-header">
-                            <h1>客廳! <small>玩轉家電</small></h1>
+                            <h1>主臥房! <small>玩轉家電</small></h1>
                             <picture>
-                                <source srcset="{% static "images/smallLivingRoom.jpg" %}" media="(max-width: 40em) and (orientation: landscape)">
-                                <source srcset="{% static "images/smallLivingRoom.jpg" %}" media="(max-width: 40em) and (orientation: portrait)">
-                                <source srcset="{% static "images/LivingRoom.jpg" %}" media="(min-width: 40em) and (orientation: landscape)">
-                                <source srcset="{% static "images/LivingRoom.jpg" %}" media="(min-width: 40em) and (orientation: portrait)">
+                                <source srcset="{% static "images/smallRoom1.jpg" %}" media="(max-width: 40em) and (orientation: landscape)">
+                                <source srcset="{% static "images/smallRoom1.jpg" %}" media="(max-width: 40em) and (orientation: portrait)">
+                                <source srcset="{% static "images/Room1.jpg" %}" media="(min-width: 40em) and (orientation: landscape)">
+                                <source srcset="{% static "images/Room1.jpg" %}" media="(min-width: 40em) and (orientation: portrait)">
                                 <img srcset="picture/LivingRoom.jpg" alt="My default image">
                             </picture>
                         </div>
@@ -292,7 +292,7 @@
     <!-- Custom Theme JavaScript -->
     <script src="{% static "dist/js/sb-admin-2.js" %}"></script>
     <script src="{% static "dist/js/JqueryREST.min.js" %}"></script>
-    <script src="{% static "js/RestControl.js" %}"></script>
+    <script src="{% static "js/RestControlMainRoom.js" %}"></script>
     <script src="{% static "dist/js/jquery.rest.js" %}"></script>
 </body>
 

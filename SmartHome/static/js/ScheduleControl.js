@@ -17,10 +17,11 @@ var submitScheduleNode = [
 
 $(document).ready(function() {
 
-    var nodeUrl = "http://192.168.31.168:8000/api/V1/node/"
-    var scheduleUrl = "http://192.168.31.168:8000/api/V1/schedule/"
+    var nodeUrl = "http://192.168.31.168:8000/api/V1/node/";
+    var scheduleUrl = "http://192.168.31.168:8000/api/V1/schedule/";
+    var SelectNodeData = [];
 
-    //InitInputItem();
+    InitInputItem();
     // get the nodeUrl data by RESTful
     $.ajax({
         url: nodeUrl,
@@ -94,7 +95,8 @@ $(document).ready(function() {
 
     //點選節點表單，選則對應節點功能
     $('#tableNodeSelect tbody').on('click', 'tr', function() {
-        var SelectNodeData = tableSelectNode.row(this).data();
+        // SelectNodeData = {}
+        SelectNodeData = tableSelectNode.row(this).data();
         //console.log(SelectNodeData);
 
         $('#SelectNodeName').val(SelectNodeData[0]);
@@ -120,17 +122,31 @@ $(document).ready(function() {
             ];
             submitScheduleNode[0].push($('#SelectNodeName').val().toString());
             submitScheduleNode[0].push($('#selectDateTime').val().toString());
-            if ($("#NodeN1Switch").val() == "on") {
-                submitScheduleNode[0].push("1");
+            if (SelectNodeData[1] == "N") {
+                if ($("#NodeN1Switch").prop('checked') == true) {
+                    submitScheduleNode[0].push("1");
+                } else {
+                    submitScheduleNode[0].push("0");
+                }
+            } else if (SelectNodeData[1] == "L") {
+                var value = 0;
+                if ($("#NodeN1Switch").prop('checked') == true) {
+                    value = value + 1;
+                }
+                if ($("#NodeN2Switch").prop('checked') == true) {
+                    value = value + 2;
+                }
+                if ($("#NodeN3Switch").prop('checked') == true) {
+                    value = value + 4;
+                }
+                submitScheduleNode[0].push(value.toString());
+
             } else {
-                submitScheduleNode[0].push("0");
+
             }
-            submitScheduleNode[0].push($("#NodeN1Switch").val());
+
             console.log(submitScheduleNode);
-
             showSelectScheduleTable(submitScheduleNode);
-
-
 
         }
     });
@@ -143,41 +159,13 @@ $(document).ready(function() {
         var sendcommend = '{"triggerTime": "' + submitScheduleNode[0][1] + ':00" , "State": ' + submitScheduleNode[0][2] + ' }';
         sendcommend = sendcommend.replace('/', '-');
         sendcommend = sendcommend.replace('/', '-');
-        console.log(test);
         console.log(sendcommend);
         nodeSubmitSchedule(sendcommend, nodeSubmitScheduleUrl);
 
-        // reload
-        $.ajax({
-            url: scheduleUrl,
-            dataType: "json",
-            success: function(response) {
-                responseJson = response;
-                console.log(responseJson);
-                // UTC time to local time.
+        $('html, body').animate({
+            scrollTop: 0
+        }, 'slow');
 
-                for (var index = 0; index < responseJson.length; index++) {
-                    var jsonToDateString = responseJson[index].triggerTime.toString();
-                    var date = new Date(jsonToDateString)
-
-                    var tmp = [responseJson[index].NodeID.toString(), date.toLocaleString(),
-                        responseJson[index].Commend, responseJson[index].completed.toString()
-                    ];
-                    console.log(tmp);
-                    praseJsonScheduleData.push(tmp)
-
-                    // console.log("test:");
-                    // console.log(date);
-                    // console.log(date.toLocaleString());
-                    // console.log(date.toISOString());
-                }
-                // display data
-                showScheduleTable();
-            },
-            error: function(response) {
-                console.log("error");
-            }
-        });
     });
 
 });
@@ -203,6 +191,7 @@ function showNodeTable() {
     tableSelectNode = $('#tableNodeSelect').DataTable({
         responsive: true,
         data: praseJsonNodeData,
+        pageLength: 5,
         columns: [{
             title: "ID"
         }, {
@@ -249,6 +238,7 @@ function showScheduleTable() {
         responsive: true,
         destroy: true,
         data: praseJsonScheduleData,
+        pageLength: 5,
         columns: [{
             title: "ID"
         }, {
@@ -274,6 +264,7 @@ function showSelectScheduleTable(checkNodeScheduleData) {
         responsive: true,
         destroy: true,
         data: checkNodeScheduleData,
+
         columns: [{
             title: "ID"
         }, {
