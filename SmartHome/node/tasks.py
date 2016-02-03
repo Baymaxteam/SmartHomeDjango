@@ -99,7 +99,7 @@ def node_one_reset(address):
 		print('<In noSerialPortMode> node_one_reset({0})'.format(address))
 
 
-@periodic_task(run_every=(crontab(minute='*/1')), name="PcomdRouting", ignore_result=True)
+@periodic_task(run_every=(crontab(minute='*/5')), name="PcomdRouting", ignore_result=True)
 def PcomdRouting():
 	if noSerialPortMode == False:
 		address = {'00 13 A2 00 40 EC 3A A4':'Nnode1', '00 13 A2 00 40 EC 3A B7':'Nnode2', 
