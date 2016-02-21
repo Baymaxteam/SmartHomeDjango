@@ -11,10 +11,11 @@ from rest_framework import serializers
 class HouseSerializer(serializers.ModelSerializer):
 	GroupID = serializers.CharField(max_length=10)
 	Name = serializers.CharField(max_length=10)
+	nodes = serializers.SerializerMethodField('node_list')
 	
 	class Meta:
 		model = House
-		fields = ('GroupID', 'Name') # fields 回傳group耗電量
+		fields = ('GroupID', 'Name', 'nodes') # fields 回傳group耗電量
 
 	def create(self, validated_data):
 		return House.objects.create(**validated_data)
@@ -24,6 +25,11 @@ class HouseSerializer(serializers.ModelSerializer):
 		instance.Name = validated_data.get('Name', instance.Name)
 		instance.save()
 		return instance
+
+	def node_list(self, obj):
+		node_list = obj.nodes.all() 
+		return [str(x.ID) for x in node_list]
+
 
 class NodesStateSerializer(serializers.ModelSerializer):
 	def to_representation(self, value):
