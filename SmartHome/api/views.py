@@ -154,7 +154,21 @@ def schedule_list(request):
 		data  = serializer.data
 		#data['NodeID'] = data['NodeID']['ID']
 		return JSONResponse(data)
+	
+	elif request.method == 'DELETE':
+		data = JSONParser().parse(request)
+		TaskID = data['TaskID']
+		try:
+			Task = TaskSchedule.objects.get(id = TaskID)
+		except TaskSchedule.DoesNotExist:
+			data['Msg'] = "Cant Find TaskID"
+			return JSONResponse(data)
+		Task.delete()
+		data['Msg'] = "Task deleted!"
+		return JSONResponse(data)
+
 	return HttpResponse(status=404)
+
 
 
 @csrf_exempt
@@ -166,6 +180,7 @@ def schedule_detail(request, NodeID):
 		print(node_obj.Address)
 	except Nodes.DoesNotExist:
 		return HttpResponse(status=404)
+
 	if request.method == 'PUT':
 		data = JSONParser().parse(request)
 		# Example : {"triggerTime": "2016-01-19T08:38:15.653108Z" , "State":0}
@@ -182,9 +197,7 @@ def schedule_detail(request, NodeID):
 		
 		return JSONResponse(data)
 
-
-
-	# elif request.method == 'DELETE':
+ 	# elif request.method == 'DELETE':
 	# 	house.delete()
 	# 	return HttpResponse(status=204)
 	# return HttpResponse(status=404)

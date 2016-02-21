@@ -140,9 +140,11 @@ class IRcommendSerializer(serializers.ModelSerializer):
 
 
 class TaskslistSerializer(serializers.ModelSerializer):
-	# NodeID 不能直接用他自動的會有問蹄
+
+	# NodeID 不能直接用他自動的會有問題
 	# NodeID = serializers.IntegerField(min_value = 0)
-	ID = serializers.SerializerMethodField('callID')
+	TaskID = serializers.SerializerMethodField('callTaskIid')
+	NodeID = serializers.SerializerMethodField('callID')
 	triggerTime = serializers.DateTimeField()
 	Commend = serializers.CharField(max_length=100)
 	completed = serializers.BooleanField()
@@ -150,10 +152,13 @@ class TaskslistSerializer(serializers.ModelSerializer):
 	
 	class Meta:
 		model = TaskSchedule
-		fields = ('ID', 'triggerTime', 'Commend', 'completed','queued')
+		fields = ('TaskID','NodeID', 'triggerTime', 'Commend', 'completed','queued')
 
 	def callID(self, obj):
-		return obj.NodeID.ID # 要回傳字串	
+		return str(obj.NodeID.ID) # 要回傳字串	
+
+	def callTaskIid(self, obj):
+		return str(obj.id)
 
 # class TasksSerializer(serializers.ModelSerializer):
 	# NodeID = serializers.IntegerField(min_value = 0)
