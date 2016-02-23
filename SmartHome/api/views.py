@@ -131,19 +131,6 @@ def Node_detail(request, NodeID):
 		return JSONResponse(data, status=400)
 
 	return HttpResponse(status=404)
-		
-
-@csrf_exempt
-def Node_cs_detail(request, NodeID): 
-	try:
-		node_obj = Nodes.objects.get(ID = NodeID)
-	except Nodes.DoesNotExist:
-		return HttpResponse(status=404)
-	end = datetime.datetime.now()
-	start = end - datetime.timedelta(days=1)
-	node_cs = node_obj.current_states.filter(Added__range=[start, end])
-	serializer = CurrentStateSerializer(instance=node_cs, many=True)
-	return JSONResponse(serializer.data)
 
 
 @csrf_exempt
@@ -197,9 +184,162 @@ def schedule_detail(request, NodeID):
 		
 		return JSONResponse(data)
 
- 	# elif request.method == 'DELETE':
-	# 	house.delete()
-	# 	return HttpResponse(status=204)
-	# return HttpResponse(status=404)
+@csrf_exempt
+def nodes_bill(request, Interval):
+	if request.method == 'GET':
+		HouseSetting = House.objects.all()
+		serializer = HouseSerializer(HouseSetting, many=True)
+		return JSONResponse(serializer.data)
+
+@csrf_exempt
+def house_bill(request, Interval):
+	if request.method == 'GET':
+		print("Bill GET request")
+		print("0."+ str(datetime.datetime.now()))		
+		year = pytz.timezone("Asia/Taipei").localize(datetime.datetime.now(), is_dst=None).year
+		month = pytz.timezone("Asia/Taipei").localize(datetime.datetime.now(), is_dst=None).month
+		day = pytz.timezone("Asia/Taipei").localize(datetime.datetime.now(), is_dst=None).day
+		hour = pytz.timezone("Asia/Taipei").localize(datetime.datetime.now(), is_dst=None).hour
+		if Interval == 'year': #今年
+			cs_year = CurrentState.objects.all().filter(Added__year=year)
+			Echarge = []
+			for month in range(1,13): # 12個月
+				dayrange = (datetime.datetime(year, month%12+1, 1) - datetime.timedelta(days = 1)).day  # 算一個月的天數
+				Timetag1 = datetime.datetime.now()
+				print("1."+ str(Timetag1))
+				try:
+					cs_set = cs_year.filter(Added__month=month)
+					Timetag2 = datetime.datetime.now()
+					print("2."+ str(Timetag2))
+					print("  delta:"+ str(Timetag2-Timetag1))
+					#  累加取平均 算電費 回傳array
+					##############
+					state = cs_set.values_list('State', flat=True)
+					Echarge.append(sum(state)/len(state)*110/1000/1000*24*dayrange*3)
+					Timetag3 = datetime.datetime.now()
+					print("3."+ str(Timetag3))
+					print("  delta:"+ str(Timetag3-Timetag2))
+				except: #沒有表示當年沒後續月份資料 直接補零（比較快）
+					Echarge+=[0]*(12-month+1)
+					break
+			print("3."+ str(datetime.datetime.now()))
+			retern_data = {'Interval': Interval, 'data': Echarge}
+
+		elif Interval == 'month': #這個月
+			print('month'+str(month))
+			cs_month = CurrentState.objects.all().filter(Added__year=year).filter(Added__month=month)
+			print(cs_month)
+			dayrange = (datetime.datetime(year, month%12+1, 1) - datetime.timedelta(days = 1)).day  # 算一個月的天數
+			temp = []
+			for i in range(dayrange):
+				temp.append([0,0])
+			State_list = cs_month.values_list('Added', 'State')
+			## Debug 
+			Timetag1 = datetime.datetime.now()
+			print("1."+ str(Timetag1))
+			## 
+
+			# ## 這裡很慢啊...約10秒
+			for x in State_list:
+				day = x[0].astimezone(pytz.timezone("Asia/Taipei")).day
+				temp[day-1][0]+=x[1] #第一個存值
+				temp[day-1][1]+=1 #第二個存數量
+			# ##
+			Timetag2 = datetime.datetime.now()
+			print("2."+ str(Timetag2))
+			print("  delta:"+ str(Timetag2-Timetag1))
+			##
+			Echarge = []
+			for y in temp:
+				if y[1] != 0:
+					Echarge.append(y[0]/y[1]*110/1000/1000*24*3)
+				else:
+					Echarge.append(0)
+			# Echarge = []
+			# dayrange = (datetime.datetime(year, month%12+1, 1) - datetime.timedelta(days = 1)).day  # 算一個月的天數
+			# for day in range(1,dayrange+1): # 一個月的日數
+			# 	Timetag1 = datetime.datetime.now()
+			# 	print("1."+ str(Timetag1))
+			# 	try:
+			# 		cs_set = cs_month.filter(Added__day=day)
+			# 		Timetag2 = datetime.datetime.now()
+			# 		print("2."+ str(Timetag2))
+			# 		print("  delta:"+ str(Timetag2-Timetag1))
+			# 		state = cs_set.values_list('State', flat=True)
+			# 		Timetag3 = datetime.datetime.now()
+			# 		print("3."+ str(Timetag3))
+			# 		print("  delta:"+ str(Timetag3-Timetag2))
+			# 		Echarge.append(sum(state)/len(state)*110/1000/1000*24*3)
+
+			# 	except:
+			# 		Echarge+=[0]*(dayrange-day+1)
+			# 		break
+			retern_data = {'Interval': Interval, 'data': Echarge}
+
+		elif Interval == 'day': #今天
+			cs_day = CurrentState.objects.all().filter(Added__year=year).filter(Added__month=month).filter(Added__day=day)
+			temp = []
+			for i in range(24):
+				temp.append([0,0])
+			State_list = cs_day.values_list('Added', 'State')
+			## Debug 
+			Timetag1 = datetime.datetime.now()
+			print("1."+ str(Timetag1))
+			##
+			# ## 這裡很慢啊...約10秒
+			for x in State_list:
+				hour = x[0].astimezone(pytz.timezone("Asia/Taipei")).hour
+				temp[hour-1][0]+=x[1] #第一個存值
+				temp[hour-1][1]+=1 #第二個存數量
+			# ##
+			Timetag2 = datetime.datetime.now()
+			print("2."+ str(Timetag2))
+			print("  delta:"+ str(Timetag2-Timetag1))
+			##
+			Echarge = []
+			for y in temp:
+				if y[1] != 0:
+					Echarge.append(y[0]/y[1]*110/1000/1000*3)
+				else:
+					Echarge.append(0)
+			retern_data = {'Interval': Interval, 'data': Echarge}
+
+		elif Interval == 'hour':  #這個小時
+			cs_hour = CurrentState.objects.all().filter(Added__year=year).filter(Added__month=month).filter(Added__day=day).filter(Added__hour=hour)
+			temp = []
+			for i in range(60):
+				temp.append([0,0])
+			State_list = cs_hour.values_list('Added', 'State')
+			for x in State_list:
+				minute = x[0].astimezone(pytz.timezone("Asia/Taipei")).minute
+				temp[minute][0]+=x[1] #第一個存值
+				temp[minute][1]+=1 #第二個存數量
+			Echarge = []
+			for y in temp:
+				if y[1] != 0:
+					Echarge.append(y[0]/y[1]*110/1000/1000*3)
+				else:
+					Echarge.append(0)
+			retern_data = {'Interval': Interval, 'data': Echarge}
+		return JSONResponse(retern_data)
+
+# def  Cal_bill_day(temp, x):
+# 	day = x[0].astimezone(pytz.timezone("Asia/Taipei")).day
+# 	temp[day-1][0]+=x[1] #第一個存值
+# 	temp[day-1][1]+=1 #第二個存數量
+# 	return temp
+
+@csrf_exempt
+def Node_cs_detail(request, NodeID): 
+	try:
+		node_obj = Nodes.objects.get(ID = NodeID)
+	except Nodes.DoesNotExist:
+		return HttpResponse(status=404)
+	end = datetime.datetime.now()
+	start = end - datetime.timedelta(days=1)
+	node_cs = node_obj.current_states.filter(Added__range=[start, end])
+	serializer = CurrentStateSerializer(instance=node_cs, many=True)
+	return JSONResponse(serializer.data)
+
 
 

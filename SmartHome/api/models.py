@@ -57,7 +57,7 @@ class IRcommend(models.Model):
     NodeID = models.ForeignKey(Nodes, related_name='IRcom',
                                       on_delete=models.CASCADE)
     Commend = models.CharField(max_length = 100)
-    RawCode = models.CharField(max_length = 255)
+    RawCode = models.CharField(max_length = 1000)
 
     def __str__(self):
         return str(self.NodeID)+'-'+str(self.Commend)
