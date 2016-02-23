@@ -215,7 +215,7 @@ def house_bill(request, Interval):
 					#  累加取平均 算電費 回傳array
 					##############
 					state = cs_set.values_list('State', flat=True)
-					Echarge.append(sum(state)/len(state)*110/1000/1000*24*dayrange*3)
+					Echarge.append(sum(state)/len(state)*110/1000/1000*24*dayrange*3*3)
 					Timetag3 = datetime.datetime.now()
 					print("3."+ str(Timetag3))
 					print("  delta:"+ str(Timetag3-Timetag2))
@@ -223,6 +223,9 @@ def house_bill(request, Interval):
 					Echarge+=[0]*(12-month+1)
 					break
 			print("3."+ str(datetime.datetime.now()))
+			for idx in range(12):
+				timestamp = (datetime.datetime(year, idx+1, 1, 0, 0)+ datetime.timedelta(hours=8)).timestamp()
+				Echarge[idx] = [timestamp , Echarge[idx]]
 			retern_data = {'Interval': Interval, 'data': Echarge}
 
 		elif Interval == 'month': #這個月
@@ -250,11 +253,12 @@ def house_bill(request, Interval):
 			print("  delta:"+ str(Timetag2-Timetag1))
 			##
 			Echarge = []
-			for y in temp:
+			for idx, y in enumerate(temp):
+				timestamp = (datetime.datetime(year, month, idx+1, 0, 0)+ datetime.timedelta(hours=8)).timestamp()
 				if y[1] != 0:
-					Echarge.append(y[0]/y[1]*110/1000/1000*24*3)
+					Echarge.append([timestamp, y[0]/y[1]*110/1000/1000*3*3])
 				else:
-					Echarge.append(0)
+					Echarge.append([timestamp, 0])
 			# Echarge = []
 			# dayrange = (datetime.datetime(year, month%12+1, 1) - datetime.timedelta(days = 1)).day  # 算一個月的天數
 			# for day in range(1,dayrange+1): # 一個月的日數
@@ -297,11 +301,12 @@ def house_bill(request, Interval):
 			print("  delta:"+ str(Timetag2-Timetag1))
 			##
 			Echarge = []
-			for y in temp:
+			for idx, y in enumerate(temp):
+				timestamp = (datetime.datetime(year, month, day, idx, 0)+ datetime.timedelta(hours=8)).timestamp()
 				if y[1] != 0:
-					Echarge.append(y[0]/y[1]*110/1000/1000*3)
+					Echarge.append([timestamp, y[0]/y[1]*110/1000/1000*3*3])
 				else:
-					Echarge.append(0)
+					Echarge.append([timestamp, 0])
 			retern_data = {'Interval': Interval, 'data': Echarge}
 
 		elif Interval == 'hour':  #這個小時
@@ -315,22 +320,18 @@ def house_bill(request, Interval):
 				temp[minute][0]+=x[1] #第一個存值
 				temp[minute][1]+=1 #第二個存數量
 			Echarge = []
-			for y in temp:
+			for idx, y in enumerate(temp):
+				timestamp = (datetime.datetime(year, month, day, hour, idx)+ datetime.timedelta(hours=8)).timestamp()
 				if y[1] != 0:
-					Echarge.append(y[0]/y[1]*110/1000/1000*3)
+					Echarge.append([timestamp, y[0]/y[1]*110/1000/1000*3*3])
 				else:
-					Echarge.append(0)
+					Echarge.append([timestamp, 0])
 			retern_data = {'Interval': Interval, 'data': Echarge}
 		return JSONResponse(retern_data)
 
-# def  Cal_bill_day(temp, x):
-# 	day = x[0].astimezone(pytz.timezone("Asia/Taipei")).day
-# 	temp[day-1][0]+=x[1] #第一個存值
-# 	temp[day-1][1]+=1 #第二個存數量
-# 	return temp
 
 @csrf_exempt
-def Node_cs_detail(request, NodeID): 
+def Node_cs_detail(request, Interval): 
 	try:
 		node_obj = Nodes.objects.get(ID = NodeID)
 	except Nodes.DoesNotExist:
