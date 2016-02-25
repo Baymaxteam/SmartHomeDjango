@@ -88,13 +88,15 @@ def IR_node_send(commd):
 def schedulesTask(triggerTime, commd, Type, address):
 	# tomorrow = datetime.utcnow() + timedelta(days=1)
 	# .apply_async((val1, val2), eta=tomorrow)
+	
+	if(Type == 'IR'):
+		IR_node_send.apply_async((commd, ), eta = triggerTime)
+	elif Type =='N':
+		node_N_one_turn.apply_async((commd, address), eta = triggerTime)
+	elif Type =='L':
+		node_L_one_turn.apply_async((commd, address), eta = triggerTime)
+
 	if noSerialPortMode == False:
-		if(Type == 'IR'):
-			IR_node_send.apply_async((commd, ), eta = triggerTime)
-		elif Type =='N':
-			node_N_one_turn.apply_async((commd, address), eta = triggerTime)
-		elif Type =='L':
-			node_L_one_turn.apply_async((commd, address), eta = triggerTime)	
 		print('schedulesTask({0}, {1}, {2}, {3})'.format(triggerTime, commd, Type, address))
 	else:
 		print('<In noSerialPortMode> schedulesTask({0}, {1} ,{2} , {3})'.format(triggerTime, commd, Type, address))
@@ -165,7 +167,7 @@ def nodeCurrentRepo():
                    '00 13 A2 00 40 EC 3A 97':'Nnode3', '00 13 A2 00 40 B3 2D 41':'Nnode4',
                    '00 13 A2 00 40 EC 3A 98':'Nnode5', 
                    '00 13 A2 00 40 B3 2D 4F':'Lnode1', '00 13 A2 00 40 B3 2D 5B':'Lnode2',
-                   '00 13 A2 00 40 C2 8B B7':'IRnode'}  # '00 13 A2 00 40 EC 3A B7':'Nnode2', '00 13 A2 00 40 B3 31 65':'Nnode6',
+                   '00 13 A2 00 40 EC 3A BE':'IRnode'}  # '00 13 A2 00 40 EC 3A B7':'Nnode2', '00 13 A2 00 40 B3 31 65':'Nnode6',
 		rep = xbeeListen.Receive()
 		# rep = xbee.Currentreport()
 		if type(rep) is list:

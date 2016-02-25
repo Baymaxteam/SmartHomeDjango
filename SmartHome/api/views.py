@@ -170,8 +170,9 @@ def schedule_detail(request, NodeID):
 
 	if request.method == 'PUT':
 		data = JSONParser().parse(request)
-		# Example : {"triggerTime": "2016-01-19T08:38:15.653108Z" , "State":0}
+		# Example : {"triggerTime": "2016-01-19T08:38:15.653108" , "State":0}
 		triggerTime = parse_datetime(data['triggerTime'])
+		print(triggerTime)
 		triggerTime = pytz.timezone("Asia/Taipei").localize(triggerTime, is_dst=None)
 		commd = data['State']
 		completed = False
@@ -404,13 +405,16 @@ def IRset(request, commend):
 		return HttpResponse(status=404)
 	else:
 		print('IR Receive: {0}'.format(IRpack))
-		rawcode = ','.join(IRpack)
-		addedtime = pytz.timezone("Asia/Taipei").localize(datetime.datetime.now(), is_dst=None)
-		node_obj = Nodes.objects.get(ID = 9)
-		IRcommend.objects.create(NodeID = node_obj, Commend = commend, RawCode = rawcode)
+		try:
+			obj = IRcommend.objects.get(Commend = commend)
+			rawcode = obj.RawCode 
+		except: # 如果找不到，則新增
+			rawcode = ', '.join(IRpack)
+			node_obj = Nodes.objects.get(ID = 9)
+			IRcommend.objects.create(NodeID = node_obj, Commend = commend, RawCode = rawcode)
+		# 找到就回傳
 		data = {'commend': commend, 'RawCode': rawcode}
 		return JSONResponse(data)
-	
 
 
 
