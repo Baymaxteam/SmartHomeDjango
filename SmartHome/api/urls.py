@@ -16,9 +16,12 @@ urlpatterns = [
     # schedule_list
     url(r'V1/schedule/$', views.schedule_list),
     url(r'V1/schedule/(?P<NodeID>[0-9]+)/$', views.schedule_detail),
-
     # 耗電量 
-    
     url(r'V1/bill/nodes/(?P<Interval>\w+)/$', views.nodes_bill),
     url(r'V1/bill/house/(?P<Interval>\w+)/$', views.house_bill),
+    # 智慧控制
+    url(r'V1/env/(?P<env_case>\w+)/$', views.env_control),
+    # IR對碼
+    url(r'V1/IRset/(?P<commend>\w+)/$', views.IRset)
+
 ]

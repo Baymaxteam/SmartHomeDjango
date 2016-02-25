@@ -62,6 +62,7 @@ class IRcommend(models.Model):
     def __str__(self):
         return str(self.NodeID)+'-'+str(self.Commend)
 
+
 class TaskSchedule(models.Model):
     NodeID = models.ForeignKey(Nodes, related_name='Tasks',
                                       on_delete=models.CASCADE)

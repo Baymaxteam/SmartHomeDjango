@@ -181,8 +181,8 @@ def schedule_detail(request, NodeID):
 		# schedulesTask(triggerTime ,commd, Type, address):
 		schedulesTask.apply_async((triggerTime, commd, node_obj.Type, node_obj.Address))
 		data['NodeID'] = node_obj.ID
-		
 		return JSONResponse(data)
+
 
 @csrf_exempt
 def nodes_bill(request, Interval):
@@ -190,6 +190,7 @@ def nodes_bill(request, Interval):
 		HouseSetting = House.objects.all()
 		serializer = HouseSerializer(HouseSetting, many=True)
 		return JSONResponse(serializer.data)
+
 
 @csrf_exempt
 def house_bill(request, Interval):
@@ -365,6 +366,52 @@ def Node_cs_detail(request, Interval):
 	node_cs = node_obj.current_states.filter(Added__range=[start, end])
 	serializer = CurrentStateSerializer(instance=node_cs, many=True)
 	return JSONResponse(serializer.data)
+
+
+@csrf_exempt
+def env_control(request, env_case): 
+	if env_case == 'goOUT': # 全關
+		node_All_turn.apply_async((0, ))
+		print('<env_control> goOUT: node all close')
+
+	elif env_case == 'protect' : # 唯獨1號node打開
+		node_obj = Nodes.objects.get(ID = 1) 
+		node_All_turn.apply_async((0, ))
+		node_N_one_turn.apply_async((1, node_obj.Address, ))
+		print('<env_control> protect: only one node turn on')
+
+	elif env_case == 'sleep' : # 只開L node的中間按鈕
+		node_obj1 = Nodes.objects.get(ID = 7) 
+		node_obj2 = Nodes.objects.get(ID = 8) 
+		node_All_turn.apply_async((0, ))
+		node_L_one_turn.apply_async((5, node_obj1.Address, ))
+		node_L_one_turn.apply_async((5, node_obj2.Address, ))
+		print('<env_control> sleep: only two L node turn on')
+
+	elif env_case == 'comeHome':
+		node_All_turn.apply_async((1, ))
+		print('<env_control> comeHome: node all turn on')
+
+	return HttpResponse(status=204)
+
+
+@csrf_exempt
+def IRset(request, commend): 
+	# ['12 ...', '4A 51  ...', '...']
+	IRpack = xbeeIRreceive.IRReceive()
+	if IRpack == None:
+		print('IRset return nothing!')
+		return HttpResponse(status=404)
+	else:
+		print('IR Receive: {0}'.format(IRpack))
+		rawcode = ','.join(IRpack)
+		addedtime = pytz.timezone("Asia/Taipei").localize(datetime.datetime.now(), is_dst=None)
+		node_obj = Nodes.objects.get(ID = 9)
+		IRcommend.objects.create(NodeID = node_obj, Commend = commend, RawCode = rawcode)
+		data = {'commend': commend, 'RawCode': rawcode}
+		return JSONResponse(data)
+	
+
 
 
 

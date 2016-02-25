@@ -69,20 +69,25 @@ def node_L_one_turn(state, address):
 
 @shared_task
 def IR_node_send(commd):
+	try:
+		rawcode = IRcommend.objects.get(Commend = commd).RawCode
+		[pack1, pack2, pack3] = rawcode.split(",") 
+	except:
+		print("Can't find commd: {0}".format(commd))
+
 	if noSerialPortMode == False:
-		xbee.IR_node_send(commd)
-		print('IR: '+ commd)
+		xbee.IR_node_send(pack1, pack2, pack3)
+		print('IR_node_send: {0}'.format(rawcode))
 		# time.sleep(1)
 		# node_one_reset.apply_async(('00 13 A2 00 40 C2 8B B7',))
 	else:
-		print('<In noSerialPortMode> IR_node_send({0})'.format(commd))
+		print('<In noSerialPortMode> IR_node_send({0}) RawCode: {1}'.format(commd, rawcode))
 
 
 @shared_task
 def schedulesTask(triggerTime, commd, Type, address):
 	# tomorrow = datetime.utcnow() + timedelta(days=1)
 	# .apply_async((val1, val2), eta=tomorrow)
-
 	if noSerialPortMode == False:
 		if(Type == 'IR'):
 			IR_node_send.apply_async((commd, ), eta = triggerTime)
