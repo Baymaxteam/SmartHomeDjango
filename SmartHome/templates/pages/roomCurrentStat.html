@@ -30,7 +30,7 @@
 <body>
     <div id="wrapper">
         <!-- Navigation -->
-        <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+      <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                     <span class="sr-only">Toggle navigation</span>
@@ -62,7 +62,7 @@
                         <li>
                             <a href="#"><i class="fa fa-refresh fa-fw"></i> 手動控制<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
-                                 <li>
+                                <li>
                                     <a href="{% url 'roomLiving' %}">客廳</a>
                                 </li>
                                 <li>
@@ -74,84 +74,133 @@
                                 <li>
                                     <a href="{% url 'roomLiving' %}">新增</a>
                                 </li>
-
                             </ul>
                             <!-- /.nav-second-level -->
                         </li>
                         <li>
                             <a href="{% url 'roomSchedule' %}"><i class="fa fa-tasks fa-fw"></i> 智慧控制</a>
                         </li>
-            <!--             <li>
-                            <a href="roomSchedule.html"><i class="fa fa-university fa-fw"></i> 情境模式</a>
-                        </li> -->
+                        <li>
+                            <a href="{% url 'roomEnvironment' %}"><i class="fa fa-university fa-fw"></i> 情境模式</a>
+                        </li>
                         <li>
                             <a href="{% url 'roomCurrentStat' %}"><i class="fa fa-bar-chart-o fa-fw"></i> 耗能統計</a>
                         </li>
                         <li>
                         </li>
-                        <li>
+                       <!--  <li>
                             <a href="{% url 'roomSchedule' %}"><i class="fa fa-cog fa-fw"></i> 系統設定</a>
-                        </li>
+                        </li> -->
                     </ul>
                 </div>
                 <!-- /.sidebar-collapse -->
             </div>
             <!-- /.navbar-static-side -->
         </nav>
-        <div id="page-wrapper">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="page-header">
-                        <h1> 智能統計! <small>耗電統計</small> </h1>
-                        <h1></h1>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="panel panel-green">
-                                <div class="panel-heading">
-                                    節點耗電統計
-                                </div>
-                                <!-- /.panel-heading -->
-                                <div class="panel-body">
-                                    <div class="dataTable_wrapper">
-                                        <table class="table table-striped table-bordered table-hover" id="tableCurrentStatus">
-                                            <thead>
-                                                <tr>
-                                                    <th>ID</th>
-                                                    <th>類型</th>
-                                                    <th>應用</th>
-                                                    <th>位置</th>
-                                                    <th>狀態</th>
-                                                    <th>電流</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr class="odd gradeX">
-                                                    <td>1</td>
-                                                    <td>N</td>
-                                                    <td>Light</td>
-                                                    <td>主臥室</td>
-                                                    <td class="center">0</td>
-                                                    <td class="center">0</td>
-                                                </tr>
-                                                <tr class="even gradeC">
-                                                    <td>1</td>
-                                                    <td>N</td>
-                                                    <td>Fan</td>
-                                                    <td>主臥室</td>
-                                                    <td class="center">0</td>
-                                                    <td class="center">0</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                    <!-- /.table-responsive -->
-                                </div>
-                                <!-- /.panel-body -->
+         <div id="page-wrapper">
+            <div class="page-header">
+                <h1> 智能統計! <small>耗電統計</small> </h1>
+                <h1></h1>
+            </div>
+            <!-- Nav tabs -->
+            <ul class="nav nav-pills">
+                <li class="active"><a href="#nodeStat-pills" data-toggle="tab">節點耗能統計</a>
+                </li>
+                <li><a href="#dateStat-pills" data-toggle="tab">耗能圖表資料</a>
+                </li>
+            </ul>
+            <!-- Tab panes -->
+            <div class="tab-content">
+                <div class="tab-pane fade in active" id="nodeStat-pills">
+                    <p></p>
+                    <div class="panel panel-green">
+                        <div class="panel-heading">
+                            節點耗電統計
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                            <div class="dataTable_wrapper">
+                                <table class="table table-striped table-bordered table-hover" id="tableNodeStatus">
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>應用</th>
+                                            <th>位置</th>
+                                            <th>狀態</th>
+                                            <th>預估電費NTD(本日)</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr class="odd gradeX">
+                                            <td>1</td>
+                                            <td>主燈</td>
+                                            <td>客廳</td>
+                                            <td>0</td>
+                                            <td>10</td>
+                                        </tr>
+                                        <tr class="even gradeC">
+                                            <td>1</td>
+                                            <td>電風扇</td>
+                                            <td>主臥室</td>
+                                            <td>0</td>
+                                            <td>22</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
                             </div>
+                            <!-- /.table-responsive -->
                         </div>
                     </div>
                 </div>
+                <div class="tab-pane fade" id="dateStat-pills">
+                    <p></p>
+                    <div class="col-lg-6 col-ms-12">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                耗電量年資料
+                            </div>
+                            <!-- /.panel-heading -->
+                            <div class="panel-body">
+                                <div class="flot-chart">
+                                    <div class="flot-chart-content" id="Year-bar-chart"></div>
+                                </div>
+                            </div>
+                            <!-- /.panel-body -->
+                        </div>
+                        <!-- /.panel -->
+                    </div>
+                    <div class="col-lg-6 col-ms-12">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                耗電量月資料
+                            </div>
+                            <!-- /.panel-heading -->
+                            <div class="panel-body">
+                                <div class="flot-chart">
+                                    <div class="flot-chart-content" id="Month-bar-chart"></div>
+                                </div>
+                            </div>
+                            <!-- /.panel-body -->
+                        </div>
+                        <!-- /.panel -->
+                    </div>
+                    <div class="col-lg-6 col-ms-12">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                耗電量日資料
+                            </div>
+                            <!-- /.panel-heading -->
+                            <div class="panel-body">
+                                <div class="flot-chart">
+                                    <div class="flot-chart-content" id="Day-bar-chart"></div>
+                                </div>
+                            </div>
+                            <!-- /.panel-body -->
+                        </div>
+                        <!-- /.panel -->
+                    </div>
+                </div>
+                <!-- /#page-wrapper -->
             </div>
             <!-- /#page-wrapper -->
         </div>
@@ -178,6 +227,14 @@
     <script src="{% static "bower_components/jquery-ui/jquery-ui.min.js" %}"></script>
     <script src="{% static "bower_components/jquery-ui/ui/i18n/datepicker-zh-TW.js" %}"></script>
     <script src="{% static "bower_components/jquery-timepicker/jquery.ui.timepicker.js" %}"></script>
+    <script src="{% static "bower_components/flot/jquery.flot.js" %}"></script>
+    <script src="{% static "bower_components/flot/jquery.flot.pie.js" %}"></script>
+    <script src="{% static "bower_components/flot/jquery.flot.resize.js" %}"></script>
+    <script src="{% static "bower_components/flot/jquery.flot.time.js" %}"></script>
+    <script src="{% static "bower_components/flot.tooltip/js/jquery.flot.tooltip.min.js" %}"></script>
+    <script src="{% static "bower_components/flot/jquery.flot.resize.js" %}"></script>
+    <script src="{% static "js/CurrentStatusRead.js" %}"></script>
+
 </body>
 
 </html>

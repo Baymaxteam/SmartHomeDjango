@@ -3,11 +3,11 @@ var responseJson = [];
 // 解析後放入datatable
 var praseJsonNodeData = [];
 var praseJsonScheduleData = [];
-var dataSet = [
-    ["Tiger Nixon", "System Architect", "Edinburgh", "5421", "2011/04/25", "$320,800"],
-    ["Garrett Winters", "Accountant", "Tokyo", "8422", "2011/07/25", "$170,750"],
-    ["Ashton Cox", "Junior Technical Author", "San Francisco", "1562", "2009/01/12", "$86,000"],
-];
+// var dataSet = [
+//     ["Tiger Nixon", "System Architect", "Edinburgh", "5421", "2011/04/25", "$320,800"],
+//     ["Garrett Winters", "Accountant", "Tokyo", "8422", "2011/07/25", "$170,750"],
+//     ["Ashton Cox", "Junior Technical Author", "San Francisco", "1562", "2009/01/12", "$86,000"],
+// ];
 var tableSelectNode = [];
 var tableSelectSchedule = [];
 
@@ -15,14 +15,140 @@ var submitScheduleNode = [
     []
 ];
 
+
+var nodeUrl = "http://192.168.31.245:8000/api/V1/node/";
+var scheduleUrl = "http://192.168.31.245:8000/api/V1/schedule/";
+
 $(document).ready(function() {
+    // InitInputItem
+    initInputItem();
+    // get the scheduleUrl data by RESTful and show data in NodeSchedule
+    praseJsonScheduleData = get_NodeSchedule(scheduleUrl);
+    // get the nodeUrl data by RESTful and show data in NodeList
+    praseJsonNodeData = get_AllNodeList(nodeUrl);
 
-    var nodeUrl = "http://192.168.31.168:8000/api/V1/node/";
-    var scheduleUrl = "http://192.168.31.168:8000/api/V1/schedule/";
-    var SelectNodeData = [];
+    // delete schedule
+    delete_NodeSchedule(scheduleUrl);
 
-    InitInputItem();
-    // get the nodeUrl data by RESTful
+    // select node for schedule
+    action_SelectNode();
+    // select time and date.
+    action_DateTime();
+    // 確認是否填完排程資料
+    check_submitNodeData();
+    // 上傳排程資料
+    post_submitNodeData(scheduleUrl);
+    //delete_NodeSchedule(nodeUrl);
+
+});
+
+
+function initInputItem() {
+    $('#SelectNodeName').val("");
+    $('#SelectNodeApp').val("");
+    $("#selectDateTime").val("");
+    $("#datepicker").val("");
+    $("#timepicker").val("");
+}
+
+function get_NodeSchedule(scheduleUrl) {
+    var NodeSchedule = [];
+    $.ajax({
+         url: scheduleUrl,
+        // test 
+        // url: "schedule.json",
+        dataType: "json",
+        success: function(response) {
+            responseJson = response;
+            console.log(responseJson);
+            // UTC time to local time.
+
+            for (var index = 0; index < responseJson.length; index++) {
+                var jsonToDateString = responseJson[index].triggerTime.toString();
+                var date = new Date(jsonToDateString)
+
+                var tmp = [responseJson[index].TaskID.toString(), responseJson[index].NodeID.toString(), date.toLocaleString(),
+                    responseJson[index].Commend.toString(), responseJson[index].completed.toString()
+                ];
+                console.log(tmp);
+                NodeSchedule.push(tmp)
+
+
+            }
+            // display data
+            showScheduleTable(NodeSchedule)
+        },
+        error: function(response) {
+            console.log("error");
+        }
+    });
+
+    function showScheduleTable(data) {
+
+        tableSelectSchedule = $('#tableScheduleView').DataTable({
+            responsive: true,
+            destroy: true,
+            data: data,
+            pageLength: 5,
+            paging: false,
+            columns: [{
+                title: "任務#"
+            }, {
+                title: "ID"
+            }, {
+                title: "時間"
+            }, {
+                title: "命令"
+            }, {
+                title: "是否完成"
+            }]
+        });
+    }
+}
+
+
+function delete_NodeSchedule(scheduleUrl) {
+
+    var SelectScheduleData = [];
+    //點選節點表單，選則對應節點功能
+    $('#tableScheduleView tbody').on('click', 'tr', function() {
+        // SelectNodeData = {}
+        SelectScheduleData = tableSelectSchedule.row(this).data();
+        console.log(SelectScheduleData);
+
+        $('#SelectSchedule').text("刪除任務: " + SelectScheduleData[0]);
+
+    });
+
+    $('#btnDeleteSchedule').click(function(event) {
+        var PostData = '{ "TaskID" : ' + SelectScheduleData[0] + '}';
+        console.log(PostData);
+        $.ajax({
+            url: scheduleUrl,
+            headers: {
+                "Content-Type": "application/json"
+            },
+            type: "DELETE",
+            data: PostData,
+            success: function(response) {
+                console.log(response);
+                 $('html, body').animate({
+                    scrollTop: 0
+                }, 'slow');
+                window.location.reload();
+
+            },
+            error: function(response) {
+                console.log("error");
+            }
+        });
+    });
+
+}
+
+
+function get_AllNodeList(nodeUrl) {
+    var NodeTable = [];
     $.ajax({
         url: nodeUrl,
         dataType: "json",
@@ -36,63 +162,39 @@ $(document).ready(function() {
                     responseJson[index].State, responseJson[index].CurrentState.toString()
                 ];
                 console.log(tmp);
-                praseJsonNodeData.push(tmp)
+                NodeTable.push(tmp)
             }
             // display data
-            showNodeTable();
+            showNodeTable(NodeTable)
         },
         error: function(response) {
             console.log("error");
         }
     });
 
-    // get the scheduleUrl data by RESTful
-    $.ajax({
-        url: scheduleUrl,
-        dataType: "json",
-        success: function(response) {
-            responseJson = response;
-            console.log(responseJson);
-            // UTC time to local time.
+    function showNodeTable(data) {
+        tableSelectNode = $('#tableNodeSelect').DataTable({
+            responsive: true,
+            data: data,
+            pageLength: 5,
+            columns: [{
+                title: "ID"
+            }, {
+                title: "類型"
+            }, {
+                title: "應用"
+            }, {
+                title: "位置"
+            }, {
+                title: "狀態"
+            }, {
+                title: "電流"
+            }]
+        });
+    }
+}
 
-            for (var index = 0; index < responseJson.length; index++) {
-                var jsonToDateString = responseJson[index].triggerTime.toString();
-                var date = new Date(jsonToDateString)
-
-                var tmp = [responseJson[index].ID.toString(), date.toLocaleString().toString(),
-                    responseJson[index].Commend, responseJson[index].completed.toString()
-                ];
-                console.log(tmp);
-                praseJsonScheduleData.push(tmp)
-
-                // console.log("test:");
-                // console.log(date);
-                // console.log(date.toLocaleString());
-                // console.log(date.toISOString());
-            }
-            // display data
-            showScheduleTable();
-        },
-        error: function(response) {
-            console.log("error");
-        }
-    });
-
-
-
-    // 日期顯示繁中
-    $("#datepicker").datepicker($.datepicker.regional["zh-TW"]);
-    $('#timepicker').timepicker({
-        'scrollDefault': 'now'
-    });
-
-    $("#datepicker").change(function(event) {
-        checkScheduleTimeDate();
-    });
-    $("#timepicker").change(function(event) {
-        checkScheduleTimeDate();
-    });
-
+function action_SelectNode() {
     //點選節點表單，選則對應節點功能
     $('#tableNodeSelect tbody').on('click', 'tr', function() {
         // SelectNodeData = {}
@@ -103,7 +205,7 @@ $(document).ready(function() {
         $('#SelectNodeApp').val(SelectNodeData[2]);
 
         // 確認節點類型後，展示對應開關介面
-        if (SelectNodeData[1] == "N") {
+        if (SelectNodeData[1] == "N" || SelectNodeData[1] == "IR") {
             $('#NodeNSwitch').show();
             $('#NodeLSwitch').hide();
         } else if (SelectNodeData[1] == "L") {
@@ -111,10 +213,36 @@ $(document).ready(function() {
             $('#NodeLSwitch').show();
         } else {}
     });
+}
 
-    // 確認是否填完排程資料
+function action_DateTime() {
+    // 日期顯示繁中
+    $("#datepicker").datepicker($.datepicker.regional["zh-TW"]);
+    $('#timepicker').timepicker({
+        'scrollDefault': 'now'
+    });
+
+    // 觸發事件
+    $("#datepicker").change(function(event) {
+        checkScheduleTimeDate();
+    });
+    $("#timepicker").change(function(event) {
+        checkScheduleTimeDate();
+    });
+
+    function checkScheduleTimeDate() {
+        if ($("#datepicker").val() != "" && $("#timepicker").val() != "") {
+            var tmp;
+            tmp = $("#datepicker").val() + " " + $("#timepicker").val();
+            $("#selectDateTime").val(tmp);
+        }
+    }
+}
+
+
+function check_submitNodeData() {
     $("#btnCheckSchedule").click(function(event) {
-
+        // 如果都填完，開啟表單
         if ($("#SelectNodeName").val() != "" && $("#selectDateTime").val() != "") {
             // object array
             submitScheduleNode = [
@@ -122,7 +250,7 @@ $(document).ready(function() {
             ];
             submitScheduleNode[0].push($('#SelectNodeName').val().toString());
             submitScheduleNode[0].push($('#selectDateTime').val().toString());
-            if (SelectNodeData[1] == "N") {
+            if (SelectNodeData[1] == "N" || SelectNodeData[1] == "IR") {
                 if ($("#NodeN1Switch").prop('checked') == true) {
                     submitScheduleNode[0].push("1");
                 } else {
@@ -150,149 +278,61 @@ $(document).ready(function() {
 
         }
     });
-    // submit 排程資料
+
+    function showSelectScheduleTable(checkNodeScheduleData) {
+        tableSelectSchedule = $('#tableScheduleSetting').DataTable({
+            responsive: true,
+            destroy: true,
+            bFilter: false,
+            bInfo: false,
+            paging: false,
+            data: checkNodeScheduleData,
+            columns: [{
+                title: "ID"
+            }, {
+                title: "時間"
+            }, {
+                title: "命令"
+            }]
+        });
+    }
+}
+
+
+function post_submitNodeData(scheduleUrl) {
     $("#btnSubmitSchedule").click(function(event) {
-        var nodeSubmitScheduleUrl = "http://192.168.31.168:8000/api/V1/schedule/" + submitScheduleNode[0][0] + "/";
-        //nodeSubmitScheduleUrl = "http://192.168.31.168:8000/api/V1/schedule/1/"
+        var nodeSubmitScheduleUrl = scheduleUrl + submitScheduleNode[0][0] + "/";
+        // nodeSubmitScheduleUrl = "http://192.168.31.168:8000/api/V1/schedule/1/"
         console.log(nodeSubmitScheduleUrl);
-        //var test = '{"triggerTime": "2016-01-19 08:38:15" , "State": 1 }'
         var sendcommend = '{"triggerTime": "' + submitScheduleNode[0][1] + ':00" , "State": ' + submitScheduleNode[0][2] + ' }';
+        // example '{"triggerTime": "2016-01-19 08:38:15" , "State": 1 }'
+
         sendcommend = sendcommend.replace('/', '-');
         sendcommend = sendcommend.replace('/', '-');
         console.log(sendcommend);
         nodeSubmitSchedule(sendcommend, nodeSubmitScheduleUrl);
 
-
-
     });
 
-});
+    function nodeSubmitSchedule(inputSchedule, nodeurl) {
+        $.ajax({
+            url: nodeurl,
+            headers: {
+                "Content-Type": "application/json"
+            },
+            type: "PUT",
+            data: inputSchedule,
+            success: function(response) {
+                console.log(response);
+                $('html, body').animate({
+                    scrollTop: 0
+                }, 'slow');
+                window.location.reload();
+            },
+            error: function(response) {
+                console.log("error");
+            }
+        });
 
-
-function InitInputItem() {
-    $('#SelectNodeName').val("");
-    $('#SelectNodeApp').val("");
-    $("#selectDateTime").val("");
-    $("#datepicker").val("");
-    $("#timepicker").val("");
-}
-
-function checkScheduleTimeDate() {
-    if ($("#datepicker").val() != "" && $("#timepicker").val() != "") {
-        var tmp;
-        tmp = $("#datepicker").val() + " " + $("#timepicker").val();
-        $("#selectDateTime").val(tmp);
     }
-}
-
-function showNodeTable() {
-    tableSelectNode = $('#tableNodeSelect').DataTable({
-        responsive: true,
-        data: praseJsonNodeData,
-        pageLength: 5,
-        columns: [{
-            title: "ID"
-        }, {
-            title: "類型"
-        }, {
-            title: "應用"
-        }, {
-            title: "位置"
-        }, {
-            title: "狀態"
-        }, {
-            title: "電流"
-        }]
-    });
-
-    $('#tableCurrentStatus').DataTable({
-        responsive: true,
-        data: praseJsonNodeData,
-        columns: [{
-            title: "ID"
-        }, {
-            title: "類型"
-        }, {
-            title: "應用"
-        }, {
-            title: "位置"
-        }, {
-            title: "狀態"
-        }, {
-            title: "耗電量(Whr)"
-        }]
-    });
-}
-
-function showScheduleTable() {
-    // if ($.fn.DataTable.fnIsDataTable('#tableScheduleView table')) {
-    //     a = $('#tableScheduleView table').dataTable();
-    //     a.fnClearTable();
-    //     a.fnDestroy();
-    //     $('#tableScheduleView table thead').empty()
-    // };
-
-    $('#tableScheduleView').DataTable({
-        responsive: true,
-        destroy: true,
-        data: praseJsonScheduleData,
-        pageLength: 5,
-        columns: [{
-            title: "ID"
-        }, {
-            title: "時間"
-        }, {
-            title: "命令"
-        }, {
-            title: "是否完成"
-        }]
-    });
-}
-
-function showSelectScheduleTable(checkNodeScheduleData) {
-    // if ($.fn.DataTable.fnIsDataTable('#tableScheduleSetting table')) {
-    //     a = $('#tableScheduleSetting table').dataTable();
-    //     a.fnClearTable();
-    //     a.fnDestroy();
-    //     $('#tableScheduleSetting table thead').empty()
-    // };
-
-
-    tableSelectSchedule = $('#tableScheduleSetting').DataTable({
-        responsive: true,
-        destroy: true,
-        data: checkNodeScheduleData,
-
-        columns: [{
-            title: "ID"
-        }, {
-            title: "時間"
-        }, {
-            title: "命令"
-        }]
-    });
-}
-
-
-function nodeSubmitSchedule(inputSchedule, nodeurl) {
-    $.ajax({
-        url: nodeurl,
-        headers: {
-            "Content-Type": "application/json"
-        },
-        type: "PUT",
-        data: inputSchedule,
-        success: function(response) {
-            console.log(response);
-            $('html, body').animate({
-                scrollTop: 0
-            }, 'slow');
-            location.reload();
-
-        },
-        error: function(response) {
-            console.log("error");
-        }
-    });
-
 }

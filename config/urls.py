@@ -13,6 +13,7 @@ urlpatterns = [
     # url(r'^$', TemplateView.as_view(template_name='pages/home.html'), name="home"),
     url(r'^$', TemplateView.as_view(template_name='pages/index.html'), name="index"),
     url(r'roomLiving.html', TemplateView.as_view(template_name='pages/roomLiving.html'), name="roomLiving"),
+    url(r'roomEnvironment.html', TemplateView.as_view(template_name='pages/roomEnvironment.html'), name="roomEnvironment"),
     url(r'roomSchedule.html', TemplateView.as_view(template_name='pages/roomSchedule.html'), name="roomSchedule"),
     url(r'roomCurrentStat.html', TemplateView.as_view(template_name='pages/roomCurrentStat.html'), name="roomCurrentStat"),
     url(r'roomMainRoom.html', TemplateView.as_view(template_name='pages/roomMainRoom.html'), name="roomMainRoom"),
