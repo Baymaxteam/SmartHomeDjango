@@ -10,6 +10,7 @@ from .models import House, Nodes, NodeState, CurrentState, IRcommend, TaskSchedu
 from .serializers import HouseSerializer, NodesSerializer, NodeslistSerializer, TaskslistSerializer, CurrentStateSerializer
 from SmartHome.node.tasks import *
 
+node_all_reset();
 
 class JSONResponse(HttpResponse):
 	# """
