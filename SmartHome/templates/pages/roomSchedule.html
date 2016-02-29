@@ -109,200 +109,190 @@
             </div>
             <!-- /.navbar-static-side -->
         </nav>
-            <div id="page-wrapper">
+        <div id="page-wrapper">
             <div class="row">
                 <div class="col-md-12">
                     <div class="page-header">
                         <h1>智慧控制! <small>點亮生活的智慧</small></h1>
-                        <h1></h1>
                     </div>
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-12">
-                    <div class="panel panel-info ">
-                        <div class="panel-heading">
-                            排程預覽
-                        </div>
-                        <!-- /.panel-heading -->
-                        <div class="panel-body">
-                            <div class="dataTable_wrapper">
-                                <h5 style="color:blue;">表單內選擇刪除之排程</h5>
-                                <table class="table table-striped table-bordered table-hover" id="tableScheduleView">
-                                    <thead>
-                                        <tr>
-                                            <th>任務#</th>
-                                            <th>ID</th>
-                                            <th>時間</th>
-                                            <th>命令</th>
-                                            <th>是否完成</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr class="odd gradeX">
-                                            <td>1</td>
-                                            <td>1</td>
-                                            <td>2016/1/19 上午8:38:15</td>
-                                            <td>0</td>
-                                            <td>完成</td>
-                                        </tr>
-                                        <tr class="even gradeC">
-                                            <td>1</td>
-                                            <td>2</td>
-                                            <td>2016/1/19 上午9:38:15</td>
-                                            <td>0</td>
-                                            <td>未完成</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                                <p></p>
-                                <button type="button" class="btn btn-danger" id="btnDeleteSchedule">
-                                    刪除排程
-                                </button>
-                                <h4 id="SelectSchedule"></h4>
-                            </div>
-                            <!-- /.table-responsive -->
-                        </div>
-                        <!-- /.panel-body -->
+                <div class="panel panel-info">
+                    <div class="panel-heading">
+                        排程設定
                     </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="panel panel-green">
-                        <div class="panel-heading">
-                            節點選單與動作
-                        </div>
-                        <!-- /.panel-heading -->
-                        <div class="panel-body">
-                            <div class="dataTable_wrapper">
-                                <h5 style="color:blue;">表單內選擇對應節點</h5>
-                                <table class="table table-striped table-bordered table-hover" id="tableNodeSelect">
-                                    <thead>
-                                        <tr>
-                                            <th>ID</th>
-                                            <th>類型</th>
-                                            <th>應用</th>
-                                            <th>位置</th>
-                                            <th>狀態</th>
-                                            <th>電流</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr class="odd gradeX">
-                                            <td>1</td>
-                                            <td>N</td>
-                                            <td>Light</td>
-                                            <td>主臥室</td>
-                                            <td class="center">0</td>
-                                            <td class="center">0</td>
-                                        </tr>
-                                        <tr class="even gradeC">
-                                            <td>1</td>
-                                            <td>N</td>
-                                            <td>Fan</td>
-                                            <td>主臥室</td>
-                                            <td class="center">0</td>
-                                            <td class="center">0</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                    <div class="panel-body">
+                        <ul class="nav nav-pills">
+                            <li class="active"><a href="#scheduleView-pills" data-toggle="tab">排程預覽</a>
+                            </li>
+                            <li><a href="#scheduleAdd-pills" data-toggle="tab">設定排程</a>
+                            </li>
+                        </ul>
+                        <!-- Tab panes -->
+                        <div class="tab-content">
+                            <div class="tab-pane fade in active" id="scheduleView-pills">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="dataTable_wrapper">
+                                            <h5 style="color:blue;">表單內選擇刪除之排程</h5>
+                                            <table class="table table-striped table-bordered table-hover" id="tableScheduleView">
+                                                <thead>
+                                                    <tr>
+                                                        <th>任務#</th>
+                                                        <th>ID</th>
+                                                        <th>時間</th>
+                                                        <th>命令</th>
+                                                        <th>是否完成</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr class="odd gradeX">
+                                                        <td>1</td>
+                                                        <td>1</td>
+                                                        <td>2016/1/19 上午8:38:15</td>
+                                                        <td>0</td>
+                                                        <td>完成</td>
+                                                    </tr>
+                                                    <tr class="even gradeC">
+                                                        <td>1</td>
+                                                        <td>2</td>
+                                                        <td>2016/1/19 上午9:38:15</td>
+                                                        <td>0</td>
+                                                        <td>未完成</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            <p></p>
+                                            <button type="button" class="btn btn-danger" id="btnDeleteSchedule">
+                                                刪除排程
+                                            </button>
+                                            <h4 id="SelectSchedule"></h4>
+                                            <p></p>
+                                        </div>
+                                        <!-- /.table-responsive -->
+                                    </div>
+                                    <!-- /.panel-body -->
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="scheduleAdd-pills">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="panel panel-green">
+                                            <div class="panel-heading">
+                                                節點選單與動作
+                                            </div>
+                                            <!-- /.panel-heading -->
+                                            <div class="panel-body">
+                                                <div class="dataTable_wrapper">
+                                                    <h5 style="color:blue;">表單內選擇對應節點</h5>
+                                                    <table class="table table-striped table-bordered table-hover" id="tableNodeSelect">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>ID</th>
+                                                                <th>類型</th>
+                                                                <th>應用</th>
+                                                                <th>位置</th>
+                                                                <th>狀態</th>
+                                                                <th>電流</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr class="odd gradeX">
+                                                                <td>1</td>
+                                                                <td>N</td>
+                                                                <td>Light</td>
+                                                                <td>主臥室</td>
+                                                                <td class="center">0</td>
+                                                                <td class="center">0</td>
+                                                            </tr>
+                                                            <tr class="even gradeC">
+                                                                <td>1</td>
+                                                                <td>N</td>
+                                                                <td>Fan</td>
+                                                                <td>主臥室</td>
+                                                                <td class="center">0</td>
+                                                                <td class="center">0</td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                            <!-- /.panel-body -->
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="panel panel-yellow">
+                                            <div class="panel-heading">
+                                                選擇節點與動作
+                                            </div>
+                                            <!-- /.panel-heading -->
+                                            <div class="panel-body">
+                                                <div class="col-md-6">
+                                                    <h4>節點:<input type="text" id="SelectNodeName" disabled></h4>
+                                                    <h4>應用:<input type="text" id="SelectNodeApp" disabled></h4>
+                                                </div>
+                                                <div class="col-md-6" id="NodeNSwitch" hidden>
+                                                    <h4>開關:  <input checked data-toggle="toggle" type="checkbox" id="NodeN1Switch"></h4>
+                                                </div>
+                                                <div class="col-md-6" id="NodeLSwitch" hidden>
+                                                    <h4>開關1:  <input checked data-toggle="toggle" type="checkbox" id="NodeL1Switch"></h4>
+                                                    <h4>開關2:  <input checked data-toggle="toggle" type="checkbox" id="NodeL2Switch"></h4>
+                                                    <h4>開關3:  <input checked data-toggle="toggle" type="checkbox" id="NodeL3Switch"></h4>
+                                                </div>
+                                            </div>
+                                            <!-- /.panel-body -->
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="panel panel-primary">
+                                            <div class="panel-heading">
+                                                設定日期與時間
+                                            </div>
+                                            <!-- /.panel-heading -->
+                                            <div class="panel-body">
+                                                <div class="col-md-6">
+                                                    <h4>日期:<input type="text" id="datepicker"></h4>
+                                                    <h4>時間:<input type="text" id="timepicker"></h4>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <h4>設定:<input type="text" id="selectDateTime" disabled></h4>
+                                                    <p></p>
+                                                    <button type="button" class="btn btn-danger" id="btnCheckSchedule">
+                                                        確認排程
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="panel panel-info">
+                                            <div class="panel-heading">
+                                                確認排程資料
+                                            </div>
+                                            <!-- /.panel-heading -->
+                                            <div class="panel-body">
+                                                <div class="dataTable_wrapper">
+                                                    <table class="table table-striped table-bordered" id="tableScheduleSetting">
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <h1></h1>
+                                        <button type="button" class="btn btn-lg btn-success" id="btnSubmitSchedule">
+                                            確認送出
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <!-- /.panel-body -->
                     </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="panel panel-yellow">
-                        <div class="panel-heading">
-                            選擇節點與動作
-                        </div>
-                        <!-- /.panel-heading -->
-                        <div class="panel-body">
-                            <div class="col-md-6">
-                                <h4>節點:
-                                <input type="text" id="SelectNodeName" disabled>
-                            </h4>
-                                <h4>應用:
-                                <input type="text" id="SelectNodeApp" disabled>
-                            </h4>
-                            </div>
-                            <div class="col-md-6" id="NodeNSwitch" hidden>
-                                <h4>開關:  <input checked data-toggle="toggle" type="checkbox" id="NodeN1Switch"></h4>
-                            </div>
-                            <div class="col-md-6" id="NodeLSwitch" hidden>
-                                <h4>開關1:  <input checked data-toggle="toggle" type="checkbox" id="NodeL1Switch"></h4>
-                                <h4>開關2:  <input checked data-toggle="toggle" type="checkbox" id="NodeL2Switch"></h4>
-                                <h4>開關3:  <input checked data-toggle="toggle" type="checkbox" id="NodeL3Switch"></h4>
-                            </div>
-                        </div>
-                        <!-- /.panel-body -->
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="panel panel-primary">
-                        <div class="panel-heading">
-                            設定日期與時間
-                        </div>
-                        <!-- /.panel-heading -->
-                        <div class="panel-body">
-                            <div class="col-md-6">
-                                <h4>日期:
-                                <input type="text" id="datepicker">
-                            </h4>
-                                <h4>時間:
-                                <input type="text" id="timepicker">
-                            </h4>
-                            </div>
-                            <div class="col-md-6">
-                                <h4>設定:
-                                <input type="text" id="selectDateTime" disabled></h4>
-                                <p></p>
-                                <button type="button" class="btn btn-danger" id="btnCheckSchedule">
-                                    確認排程
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-12">
-                    <div class="panel panel-info">
-                        <div class="panel-heading">
-                            確認排程資料
-                        </div>
-                        <!-- /.panel-heading -->
-                        <div class="panel-body">
-                            <div class="dataTable_wrapper">
-                                <table class="table table-striped table-bordered" id="tableScheduleSetting">
-                                    <!-- <thead>
-                                        <tr>
-                                            <th>ID</th>
-                                            <th>時間</th>
-                                            <th>命令</th>
-                                        </tr>
-                                    </thead>
-                                     <tbody>
-                                        <tr class="odd gradeX">
-                                            <td>1</td>
-                                            <td>2016/1/19 上午8:38:15</td>
-                                            <td>0</td>
-                                        </tr>
-                                    </tbody> -->
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!--  <h3>週期控制</h3> -->
-            </div>
-            <div class="row">
-                <div class="col-md-12">
-                    <h1></h1>
-                    <button type="button" class="btn btn-lg btn-success" id="btnSubmitSchedule">
-                        確認送出
-                    </button>
                 </div>
             </div>
         </div>
