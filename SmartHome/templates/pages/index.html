@@ -267,7 +267,7 @@
                         </a>
                     </div>
                 </div> -->
-                <div class="col-lg-3 col-md-6">
+                   <div class="col-lg-3 col-md-6">
                     <div class="panel panel-success">
                         <div class="panel-heading">
                             <div class="row">
@@ -276,13 +276,13 @@
                                 </div>
                                 <div class="col-xs-9 text-right">
                                     <div class="huge"></div>
-                                    <div class="huge">舒眠模式</div>
+                                    <div class="huge">外出模式</div>
                                 </div>
                             </div>
                         </div>
-                        <a href="#">
+                        <a id="btnEnvOutDoor">
                             <div class="panel-footer">
-                                <span class="pull-left">View Details</span>
+                                <span class="pull-left">開啟</span>
                                 <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
                                 <div class="clearfix"></div>
                             </div>
@@ -298,13 +298,35 @@
                                 </div>
                                 <div class="col-xs-9 text-right">
                                     <div class="huge"></div>
-                                    <div class="huge">劇院模式</div>
+                                    <div class="huge">防竊盜</div>
                                 </div>
                             </div>
                         </div>
-                        <a href="#">
+                        <a id="btnEnvProtect">
                             <div class="panel-footer">
-                                <span class="pull-left">View Details</span>
+                                <span class="pull-left">開啟</span>
+                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                <div class="clearfix"></div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="panel panel-red">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <div class="col-xs-3">
+                                    <i class="fa fa-user fa-5x"></i>
+                                </div>
+                                <div class="col-xs-9 text-right">
+                                    <div class="huge"></div>
+                                    <div class="huge">舒眠模式</div>
+                                </div>
+                            </div>
+                        </div>
+                        <a id="btnEnvSleep">
+                            <div class="panel-footer">
+                                <span class="pull-left">開啟</span>
                                 <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
                                 <div class="clearfix"></div>
                             </div>
@@ -328,6 +350,7 @@
     <script src="{% static "bower_components/morrisjs/morris.min.js" %}"></script>
     <!-- Custom Theme JavaScript -->
     <script src="{% static "dist/js/sb-admin-2.js" %}"></script>
+    <script src="{% static "js/EnvControl.js" %}"></script>
 </body>
 
 </html>
