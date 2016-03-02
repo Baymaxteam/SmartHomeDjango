@@ -35,14 +35,14 @@ var Obj_IRnode = {
     ]
 }
 
+
 var nodeUrlBase = "http://192.168.31.245:8000/api/V1/node/"
 
 $(document).ready(function() {
     console.log("document ready");
-
     // 一次得到所有狀態的resufl
     // 獲得目前開關所有的狀態
-    get_NodeBtnStatus();
+    get_NodeBtnStatus(true);
 
     // 使用者控制開關
     // post_NodeBtnStatus();
@@ -93,34 +93,40 @@ $(document).ready(function() {
         });
     });
 
+    // 確認L節點得狀態
+    var timerticker = setInterval(get_NodeStatus, 3000);
+
 });
 
-function get_NodeBtnStatus() {
+function get_NodeBtnStatus(b_firstTimer) {
 
     // 0223 change status bug
     // check N node status
-    for (var i = 0; i < Obj_Nnode.ID.length; i++) {
-        var nodeUrL = nodeUrlBase + Obj_Nnode.ID[i] + "/";
-        console.log(nodeUrL);
-        $.ajax({
-            url: nodeUrL,
-            dataType: "json",
-            success: function(response) {
-                console.log(response);
-                var index = Obj_Nnode.ID.indexOf(response.ID.toString());
-                Obj_Nnode.State[index] = response.State.toString();
+    if (b_firstTimer == true) {
+        for (var i = 0; i < Obj_Nnode.ID.length; i++) {
+            var nodeUrL = nodeUrlBase + Obj_Nnode.ID[i] + "/";
+            console.log(nodeUrL);
+            $.ajax({
+                url: nodeUrL,
+                dataType: "json",
+                success: function(response) {
+                    console.log(response);
+                    var index = Obj_Nnode.ID.indexOf(response.ID.toString());
+                    Obj_Nnode.State[index] = response.State.toString();
 
-                if (Obj_Nnode.State[index].toString() == "0") {
-                    Obj_Nnode.DOMList[index].bootstrapToggle('off');
-                } else {
-                    Obj_Nnode.DOMList[index].bootstrapToggle('on');
+                    if (Obj_Nnode.State[index].toString() == "0") {
+                        Obj_Nnode.DOMList[index].bootstrapToggle('off');
+                    } else {
+                        Obj_Nnode.DOMList[index].bootstrapToggle('on');
+                    }
+                },
+                error: function(response) {
+                    console.log("error");
                 }
-            },
-            error: function(response) {
-                console.log("error");
-            }
-        });
+            });
+        }
     }
+
 
     // check L node status
     for (var i = 0; i < Obj_Lnode.ID.length; i++) {
@@ -154,20 +160,7 @@ function get_NodeBtnStatus() {
 
 
 // no use
-function getNodeState(nodeurl) {
 
-    $.ajax({
-        url: nodeurl,
-        type: "GET",
-        success: function(response) {
-            console.log(response);
-            return response;
-        },
-        error: function(response) {
-            console.log("error");
-        }
-    });
-}
 
 // check node status
 function checkNodeNState(State, nodeUrl) {
@@ -269,4 +262,31 @@ function Conveter_LnodeBit2State(inputStrArray) {
     }
     return total.toString();
 
+}
+
+
+function get_NodeStatus() {
+    // console.log("timer");
+    get_NodeBtnStatus(false);
+
+}
+
+function abortTimer() { // to be called when you want to stop the timer
+    clearInterval(timerticker);
+}
+
+
+function getNodeLState(nodeurl) {
+
+    $.ajax({
+        url: nodeurl,
+        type: "GET",
+        success: function(response) {
+            console.log(response);
+            return response;
+        },
+        error: function(response) {
+            console.log("error");
+        }
+    });
 }

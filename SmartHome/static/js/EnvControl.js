@@ -3,7 +3,7 @@
 // var EnvProtectUrl = "env/protect/"
 // var EnvSleepUrl = "env/sleep/"
 // var EnvWelcomeUr = "env/comHome/
-var EnvUrlBase = "http://192.168.31.245:8000/api/V1/env/"
+var EnvUrlBase = "http://192.168.31.245:8000/api/env"
 
 var Obj_EnvControl = {
     DOMList: [$('#btnEnvOutDoor'), $('#btnEnvProtect'), $('#btnEnvSleep')],
@@ -21,7 +21,6 @@ $(document).ready(function() {
             var EnvUrl = EnvUrlBase + Obj_EnvControl.EnvURL[i] + "/";
             // console.log(EnvUrl);
             post_EnvControl(Obj_EnvControl.Commend[i], EnvUrl);
-
         });
     });
 
