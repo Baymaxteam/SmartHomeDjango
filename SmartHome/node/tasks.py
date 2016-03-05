@@ -120,7 +120,7 @@ def node_one_reset(address):
 		print('<In noSerialPortMode> node_one_reset({0})'.format(address))
 
 
-@periodic_task(run_every=(crontab(minute='*/5')), name="PcomdRouting", ignore_result=True)
+@periodic_task(run_every=(crontab(minute='*/3')), name="PcomdRouting", ignore_result=True)
 def nodeCheck():
 	if noSerialPortMode == False:
 		xbee.Send_P_package()
