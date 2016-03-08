@@ -241,7 +241,7 @@ CELERY_TIMEZONE = 'Asia/Taipei'
 CELERYBEAT_SCHEDULE = {
 'Periodic-every-2-seconds': {
     'task': 'SmartHome.node.tasks.nodeCurrentRepo',
-    'schedule': timedelta(seconds=2),
+    'schedule': timedelta(seconds=1),
 }
 }
 
