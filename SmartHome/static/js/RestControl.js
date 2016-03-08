@@ -47,10 +47,6 @@ var Obj_IRnode = {
 }
 
 
-
-
-
-
 var nodeUrlBase = "http://192.168.31.245:8000/api/V1/node/"
 
 $(document).ready(function() {
@@ -98,7 +94,7 @@ $(document).ready(function() {
                 } else {
 
                 }
-                // console.log(Obj_Lnode.State[i]);
+                 console.log(Obj_Lnode.State[i]);
                 // var LnoseSTATE = "";
                 // LnoseSTATE = Conveter_LnodeBit2State(Obj_Lnode.State[i]);
                 // checkNodeLState(LnoseSTATE, nodeUrl);
