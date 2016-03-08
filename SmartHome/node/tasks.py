@@ -186,10 +186,11 @@ def nodeCurrentRepo():
 					node_name = address[rec_address]
 					if node_name in SL_pair:
 						node_L_one_turn.apply_async((S_node_state, SL_pair[node_name]))
-						node_obj = Nodes.objects.get(Address = SL_pair[node_name])
-						addedtime = pytz.timezone("Asia/Taipei").localize(datetime.datetime.now(), is_dst=None)
-						NodeState.objects.create(NodeID = node_obj, State = S_node_state, Added = addedtime)
 						print('收到'+node_name+', 下命令給'+SL_pair[node_name])
+						
+					node_obj = Nodes.objects.get(Address = SL_pair[node_name])
+					addedtime = pytz.timezone("Asia/Taipei").localize(datetime.datetime.now(), is_dst=None)
+					NodeState.objects.create(NodeID = node_obj, State = S_node_state, Added = addedtime)
 
 				elif 'Current' in data:
 					rec_address = data['nodeAddress']
