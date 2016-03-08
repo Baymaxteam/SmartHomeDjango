@@ -21,13 +21,14 @@ if not settings.configured:
 
 
 app = Celery('SmartHome')
+
 # app.conf.update(
-#     ELERYBEAT_SCHEDULE = {'add-every—5-seconds': {
-#         'task': 'add',
-#         'schedule': timedelta(seconds=5),
-#         'args': (16, 16)
+#     CELERYBEAT_SCHEDULE = {
+#     'Periodic-every-10-seconds': {
+#         'task': 'nodeCurrentRepo',
+#         'schedule': timedelta(seconds=10),
 #     },
-#     }
+# }
 # )
 
 class CeleryConfig(AppConfig):

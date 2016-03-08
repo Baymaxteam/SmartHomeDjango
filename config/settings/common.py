@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/dev/ref/settings/
 from __future__ import absolute_import, unicode_literals
 
 import environ
+from datetime import timedelta
 
 ROOT_DIR = environ.Path(__file__) - 3  # (/a/b/myfile.py - 3 = /)
 APPS_DIR = ROOT_DIR.path('SmartHome')
@@ -237,6 +238,12 @@ INSTALLED_APPS += ('kombu.transport.django',)
 BROKER_URL = env("CELERY_BROKER_URL", default='redis://localhost:6379/0')
 RESULT_BACKEND = env("CELERY_RESULT_BACKEND", default = 'redis://localhost:6379/0')
 CELERY_TIMEZONE = 'Asia/Taipei'
+CELERYBEAT_SCHEDULE = {
+'Periodic-every-2-seconds': {
+    'task': 'SmartHome.node.tasks.nodeCurrentRepo',
+    'schedule': timedelta(seconds=2),
+}
+}
 
 ########## END CELERY
 

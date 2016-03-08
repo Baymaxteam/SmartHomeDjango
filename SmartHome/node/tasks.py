@@ -124,7 +124,7 @@ def node_one_reset(address):
 def nodeCheck():
 	if noSerialPortMode == False:
 		xbee.Send_P_package()
-		nodeCurrentRepo.apply_async(countdown=60) # 60秒後 去接收回傳的封包
+		# nodeCurrentRepo.apply_async(countdown=60) # 60秒後 去接收回傳的封包
 
 		# address = {'00 13 A2 00 40 EC 3A A4':'Nnode1', '00 13 A2 00 40 EC 3A B7':'Nnode2', 
   #                  '00 13 A2 00 40 EC 3A 97':'Nnode3', '00 13 A2 00 40 B3 2D 41':'Nnode4',
@@ -162,37 +162,76 @@ def nodeCheck():
 
 @shared_task
 def nodeCurrentRepo():
+	print('收資料囉')
 	if noSerialPortMode == False:
 		address = {'00 13 A2 00 40 EC 3A A4':'Nnode1',  
                    '00 13 A2 00 40 EC 3A 97':'Nnode3', '00 13 A2 00 40 B3 2D 41':'Nnode4',
                    '00 13 A2 00 40 EC 3A 98':'Nnode5', 
                    '00 13 A2 00 40 B3 2D 4F':'Lnode1', '00 13 A2 00 40 B3 2D 5B':'Lnode2',
-                   '00 13 A2 00 40 EC 3A BE':'IRnode'}  # '00 13 A2 00 40 EC 3A B7':'Nnode2', '00 13 A2 00 40 B3 31 65':'Nnode6',
+                   '00 13 A2 00 40 EC 3A BE':'IRnode',
+                   '00 13 A2 00 40 B5 AB 49':'Snode1', '00 13 A2 00 40 B3 2D 4C':'Snode2'}  # '00 13 A2 00 40 EC 3A B7':'Nnode2', '00 13 A2 00 40 B3 31 65':'Nnode6',
+		SL_pair = {'Snode1':'00 13 A2 00 40 B3 2D 4F', 'Snode2':'00 13 A2 00 40 B3 2D 5B'}
+
 		rep = xbeeListen.Receive()
 		# rep = xbee.Currentreport()
 		if type(rep) is list:
-			print(str(len(rep))+' nodes are online...')
+			# print(str(len(rep))+' nodes are online...')
+			print('收到'+ str(len(rep))+'個封包')
 			for data in rep:
-				try:
+				print('封包內容：')	
+				print(data)
+				if 'state' in data:
+					S_node_state = int(data['state'])
 					rec_address = data['nodeAddress']
-					# print(rec_address)
-					# print(address)
+					node_name = address[rec_address]
+					if node_name in SL_pair:
+						node_L_one_turn.apply_async((S_node_state, SL_pair[node_name]))
+						print('收到'+node_name+', 下命令給'+SL_pair[node_name])
+						
+				elif 'Current' in data:
+					rec_address = data['nodeAddress']
 					try:
 						address.pop(rec_address)
 					except:
 						print('repeat address')
-					node_obj = Nodes.objects.get(Address = data['nodeAddress'])
-				except:
-					print('Error! undefined address: {0}'.format(rec_address))
-					# return
-					raise
-				addedtime = pytz.timezone("Asia/Taipei").localize(datetime.datetime.now(), is_dst=None)
-				CurrentState.objects.create(NodeID = node_obj, State = data['Contect'], Added = addedtime)
-			if len(address) >0 :
-				for deadnode in address:
-					print('DeadNode: '+ address[deadnode])
-					node_one_reset.apply_async((deadnode,))
-					time.sleep(1)
+					try:
+						node_obj = Nodes.objects.get(Address = data['nodeAddress'])
+					except:
+						print('unKnow Arrdess: '+ data['nodeAddress'])
+						continue	
+					addedtime = pytz.timezone("Asia/Taipei").localize(datetime.datetime.now(), is_dst=None)
+					CurrentState.objects.create(NodeID = node_obj, State = data['Current'], Added = addedtime)
+				else:
+					print('怪怪的')
+				# try:
+				# 	rec_address = data['nodeAddress']
+				# 	print('收到地址： ' + rec_address)
+				# 	# print(address)
+				# 	try:
+				# 		address.pop(rec_address)
+				# 	except:
+				# 		print('repeat address')
+				# 	node_obj = Nodes.objects.get(Address = data['nodeAddress'])
+				# except:
+				# 	print('Error! undefined address: {0}'.format(rec_address))
+				# 	try:
+				# 		S_node_state = data['state']
+				# 		print(S_node_state)
+				# 		node_address = '00 13 A2 00 40 B3 2D 4F'
+				# 		node_L_one_turn.apply_async((S_node_state, node_address))
+				# 	except:
+				# 		print('怪怪嘚')
+				# 		continue
+				# 	# return
+				# 	# raise
+				# 	continue
+				# addedtime = pytz.timezone("Asia/Taipei").localize(datetime.datetime.now(), is_dst=None)
+				# CurrentState.objects.create(NodeID = node_obj, State = data['Current'], Added = addedtime)
+			# if len(address) >0 :
+			# 	for deadnode in address:
+			# 		print('DeadNode: '+ address[deadnode])
+			# 		node_one_reset.apply_async((deadnode,))
+			# 		time.sleep(0.5)
 
 		print('nodeCurrentRepo: {0}'.format(rep))
 	else:
