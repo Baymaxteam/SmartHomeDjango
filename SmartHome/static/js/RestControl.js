@@ -167,6 +167,7 @@ function get_NodeBtnStatus(b_firstTimer) {
                 // console.log(index);
                 console.log(Obj_Lnode.State[index]);
                 for (var i in Obj_Lnode.DOMList[index]) {
+                    console.log("index: " + index);
                     console.log("here: " + i);
                     if (Obj_Lnode.State[index][i].toString() == "0") {
 
