@@ -94,7 +94,7 @@ $(document).ready(function() {
     });
 
     // 確認L節點得狀態
-    var timerticker = setInterval(get_NodeStatus, 3000);
+    var timerticker = setInterval(get_NodeStatus, 4000);
 
 });
 

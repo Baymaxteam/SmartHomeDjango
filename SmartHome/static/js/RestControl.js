@@ -84,16 +84,24 @@ $(document).ready(function() {
         $.each(Obj_Lnode.DOMList[i], function(j) {
             Obj_Lnode.DOMList[i][j].change(function(event) {
                 var nodeUrl = nodeUrlBase + Obj_Lnode.ID[i] + "/";
+                var LnoseSTATE = "";
 
-                if ($(this).prop("checked") == true) {
+                if (($(this).prop("checked") == true) && (Obj_Lnode.State[i][j] == "0")) {
                     Obj_Lnode.State[i][j] = "1";
-                } else {
+                    LnoseSTATE = Conveter_LnodeBit2State(Obj_Lnode.State[i]);
+                    checkNodeLState(LnoseSTATE, nodeUrl);
+
+                } else if (($(this).prop("checked") != true) && (Obj_Lnode.State[i][j] == "1")) {
                     Obj_Lnode.State[i][j] = "0";
+                    LnoseSTATE = Conveter_LnodeBit2State(Obj_Lnode.State[i]);
+                    checkNodeLState(LnoseSTATE, nodeUrl);
+                } else {
+
                 }
                 // console.log(Obj_Lnode.State[i]);
-                var LnoseSTATE = "";
-                LnoseSTATE = Conveter_LnodeBit2State(Obj_Lnode.State[i]);
-                checkNodeLState(LnoseSTATE, nodeUrl);
+                // var LnoseSTATE = "";
+                // LnoseSTATE = Conveter_LnodeBit2State(Obj_Lnode.State[i]);
+                // checkNodeLState(LnoseSTATE, nodeUrl);
             });
         });
 
@@ -160,14 +168,26 @@ function get_NodeBtnStatus(b_firstTimer) {
                 console.log(Obj_Lnode.State[index]);
                 for (var i in Obj_Lnode.DOMList[index]) {
                     if (Obj_Lnode.State[index][i].toString() == "0") {
+
                         Obj_Lnode.DOMList[index][i].bootstrapToggle('off');
                         Obj_Snode.DOMList[index][i][0].bootstrapToggle('off');
                         Obj_Snode.DOMList[index][i][1].bootstrapToggle('off');
-                    } else {
+                    } else if (Obj_Lnode.State[index][i].toString() == "1") {
                         Obj_Lnode.DOMList[index][i].bootstrapToggle('on');
-                         Obj_Snode.DOMList[index][i][0].bootstrapToggle('on');
+                        Obj_Snode.DOMList[index][i][0].bootstrapToggle('on');
                         Obj_Snode.DOMList[index][i][1].bootstrapToggle('on');
                     }
+
+                    // if ((Obj_Lnode.State[index][i].toString() == "0") && (Obj_Lnode.DOMList[index][i].prop('checked') == true)) {
+
+                    //     Obj_Lnode.DOMList[index][i].bootstrapToggle('off');
+                    //     Obj_Snode.DOMList[index][i][0].bootstrapToggle('off');
+                    //     Obj_Snode.DOMList[index][i][1].bootstrapToggle('off');
+                    // } else if ((Obj_Lnode.State[index][i].toString() == "1") && (Obj_Lnode.DOMList[index][i].prop('checked') != true)) {
+                    //     Obj_Lnode.DOMList[index][i].bootstrapToggle('on');
+                    //     Obj_Snode.DOMList[index][i][0].bootstrapToggle('on');
+                    //     Obj_Snode.DOMList[index][i][1].bootstrapToggle('on');
+                    // }
                 }
             },
             error: function(response) {
