@@ -17,6 +17,17 @@ var Obj_Lnode = {
     ]
 }
 
+var Obj_Snode = {
+    DOMList: [
+        [
+            [$('#btnCurtain11'), $('#btnCurtain12')],
+            [$('#btnCurtain21'), $('#btnCurtain22')],
+            [$('#btnCurtain31'), $('#btnCurtain32')]
+        ]
+    ],
+    ID: ["7"]
+}
+
 var Obj_IRnode = {
     DOMList: [
         $('#btnTVON'), $('#btnMenu'), $('#btnTVEXIT'), $('#btnTVStop'),
@@ -34,6 +45,8 @@ var Obj_IRnode = {
         "tv8", "tv9", "tv0", "tventer"
     ]
 }
+
+
 
 
 
@@ -96,7 +109,7 @@ $(document).ready(function() {
     });
 
     // 確認L節點得狀態
-    var timerticker = setInterval(get_NodeStatus, 3000);
+    // var timerticker = setInterval(get_NodeStatus, 4000);
 
 });
 
@@ -148,8 +161,12 @@ function get_NodeBtnStatus(b_firstTimer) {
                 for (var i in Obj_Lnode.DOMList[index]) {
                     if (Obj_Lnode.State[index][i].toString() == "0") {
                         Obj_Lnode.DOMList[index][i].bootstrapToggle('off');
+                        Obj_Snode.DOMList[index][i][0].bootstrapToggle('off');
+                        Obj_Snode.DOMList[index][i][1].bootstrapToggle('off');
                     } else {
                         Obj_Lnode.DOMList[index][i].bootstrapToggle('on');
+                         Obj_Snode.DOMList[index][i][0].bootstrapToggle('on');
+                        Obj_Snode.DOMList[index][i][1].bootstrapToggle('on');
                     }
                 }
             },
