@@ -423,6 +423,7 @@ def IRset(request, commend):
 def ResetAll(request): 
 	node_all_reset()
 	print('ResetAll')
+	return HttpResponse(status=204)
 
 @csrf_exempt
 def ResetIRcommand(request): 
@@ -457,6 +458,7 @@ def ResetIRcommand(request):
 	node_obj = Nodes.objects.get(ID = 9)
 	for keys in defaultIRcommand.keys():
 		IRcommend.objects.create(NodeID = node_obj, Commend = keys, RawCode = defaultIRcommand[keys])
+	return HttpResponse(status=204)
 	
 
 

@@ -26,6 +26,6 @@ urlpatterns = [
     # 全體Reset
     url(r'V1/ResetAll/$', views.ResetAll),
     # Reset IR Command
-    url(r'V1/ResetCommand/$', views.ResetIRcommand)
+    url(r'V1/ResetIRCommand/$', views.ResetIRcommand)
 
 ]
