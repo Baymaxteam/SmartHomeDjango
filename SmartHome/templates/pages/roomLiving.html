@@ -143,6 +143,8 @@
                                     <h4>電器控制</h4>
                                     <div class="row">
                                         <div class="col-md-12">
+                                          <!--   <label class="checkbox">
+                                                <input checked data-toggle="toggle" type="checkbox" data-onstyle="success" id="btnTimer"> timer</label> -->
                                             <table class="table table-striped table-bordered table-hover" id="tableLivingControl">
                                                 <thead>
                                                     <tr>
@@ -197,9 +199,9 @@
                                                         <td>床頭 開關檯燈</td>
                                                         <td>
                                                             <label class="checkbox">
-                                                                <input checked data-toggle="toggle" type="checkbox" data-onstyle="warning" id="btnCurtain11" > 檯燈1狀態</label>
+                                                                <input checked data-toggle="toggle" type="checkbox" data-onstyle="warning" id="btnCurtain11"> 檯燈1狀態</label>
                                                             <label class="checkbox">
-                                                                <input checked data-toggle="toggle" type="checkbox" data-onstyle="warning" id="btnCurtain21" > 檯燈2狀態</label>
+                                                                <input checked data-toggle="toggle" type="checkbox" data-onstyle="warning" id="btnCurtain21"> 檯燈2狀態</label>
                                                             <label class="checkbox">
                                                                 <input checked data-toggle="toggle" type="checkbox" data-onstyle="warning" id="btnCurtain31"> 檯燈3狀態</label>
                                                         </td>
@@ -210,11 +212,11 @@
                                                         <td>門口 開關檯燈</td>
                                                         <td>
                                                             <label class="checkbox">
-                                                                <input checked data-toggle="toggle" type="checkbox" data-onstyle="warning" id="btnCurtain12" > 檯燈1狀態</label>
+                                                                <input checked data-toggle="toggle" type="checkbox" data-onstyle="warning" id="btnCurtain12"> 檯燈1狀態</label>
                                                             <label class="checkbox">
-                                                                <input checked data-toggle="toggle" type="checkbox" data-onstyle="warning" id="btnCurtain22" > 檯燈2狀態</label>
+                                                                <input checked data-toggle="toggle" type="checkbox" data-onstyle="warning" id="btnCurtain22"> 檯燈2狀態</label>
                                                             <label class="checkbox">
-                                                                <input checked data-toggle="toggle" type="checkbox" data-onstyle="warning" id="btnCurtain32" > 檯燈3狀態</label>
+                                                                <input checked data-toggle="toggle" type="checkbox" data-onstyle="warning" id="btnCurtain32"> 檯燈3狀態</label>
                                                         </td>
                                                     </tr>
                                                 </tbody>
@@ -243,11 +245,14 @@
                                                     <a class="btn btn-large btn-default " id="btnTVON">
                                                         <i class="fa fa-power-off fa-3x pull-left"></i>開關</a>
                                                     <a class="btn btn-large btn-default " id="btnMenu">
-                                                        <i class="fa fa-home fa-3x pull-left"></i>主選單</a>
+                                                        <i class="fa fa-home fa-3x pull-left"></i>節目表</a>
                                                     <a class="btn btn-large btn-default " id="btnTVEXIT">
-                                                        <i class="fa fa-reply fa-3x pull-left"></i>跳出</a>
-                                                    <a class="btn btn-large btn-default " id="btnTVStop">
-                                                        <i class="fa fa-stop fa-3x pull-left"></i>靜止</a>
+                                                        <i class="fa fa-reply fa-3x pull-left"></i>返回</a>
+                                                    <a class="btn btn-large btn-default " id="btnTVBoardcast">
+                                                        <i class="fa fa-wifi fa-3x pull-left"></i>廣播</a>
+                                                    <a class="btn btn-large btn-default " id="btnTVinfo">
+                                                        <i class="fa fa-info-circle fa-3x pull-left"></i>資訊</a>
+                                                    </a>
                                                 </td>
                                             </tr>
                                             <tr class="even gradeC">
@@ -256,13 +261,13 @@
                                                 <td>功能</td>
                                                 <td>
                                                     <a class="btn btn-large btn-default" id="btnTVChannelUp">
-                                                        <i class="fa fa-chevron-circle-left fa-3x pull-left"></i>向上轉台</a>
+                                                        <i class="fa fa-chevron-circle-left fa-3x pull-left"></i>頻道+</a>
                                                     <a class="btn btn-large btn-default" id="btnTVChannelDown">
-                                                        <i class="fa  fa-chevron-circle-right fa-3x pull-left"></i>向下轉台</a>
+                                                        <i class="fa  fa-chevron-circle-right fa-3x pull-left"></i>頻道-</a>
                                                     <a class="btn btn-large btn-default " id="btnTVVoiceUp">
-                                                        <i class="fa fa-volume-up  fa-3x pull-left"></i>增加音量</a>
+                                                        <i class="fa fa-volume-up  fa-3x pull-left"></i>音量+</a>
                                                     <a class="btn btn-large btn-default" id="btnTVVoiceDown">
-                                                        <i class="fa fa-volume-down fa-3x pull-left"></i>減低音量</a>
+                                                        <i class="fa fa-volume-down fa-3x pull-left"></i>音量-</a>
                                                     <a class="btn btn-large btn-default" id="btnTVMute">
                                                         <i class="fa fa-microphone-slash fa-3x pull-left"></i>靜音</a>
                                                 </td>
@@ -309,22 +314,36 @@
                                             <tr class="even gradeC">
                                                 <!--    <td>1</td>
                                                         <td>P</td> -->
-                                                <td>速度控制</td>
+                                                <td>其他控制</td>
                                                 <td>
-                                                    <a class="btn btn-large btn-default" id="btnTVUP">
-                                                        <i class="fa  fa-fast-backward fa-3x pull-left" id="btnTV2Back"></i>兩倍倒帶</a>
-                                                    <a class="btn btn-large btn-default" href="#">
-                                                        <i class="fa fa-backward fa-3x pull-left">
+                                                    <a class="btn btn-large btn-default" id="btnTVScan">
+                                                        <i class="fa fa-search fa-3x pull-left"></i>搜尋</a>
+                                                    <a class="btn btn-large btn-default" id="btnTVLanguage">
+                                                        <i class="fa fa-volume-off fa-3x pull-left">
                                                             
-                                                        </i>倒帶</a>
-                                                    <a class="btn btn-large btn-default " href="#">
-                                                        <i class="fa fa-pause fa-3x pull-left"></i>暫停</a>
+                                                        </i>語言切換</a>
+                                                    <a class="btn btn-large btn-default " id="btnTVDisplay">
+                                                        <i class="fa fa-tablet fa-3x pull-left"></i>畫面</a>
+                                                    <a class="btn btn-large btn-default " id="btnTVEenergy">
+                                                        <i class="fa fa-bolt fa-3x pull-left"></i>省電
+                                                </td>
+                                            </tr>
+                                            <tr class="even gradeC">
+                                                <!--    <td>1</td>
+                                                        <td>P</td> -->
+                                                <td>我的最愛</td>
+                                                <td>
                                                     <a class="btn btn-large btn-default" href="#">
-                                                        <i class="fa fa-play fa-3x pull-left"></i>播放</a>
+                                                        <i class="fa fa-thumbs-up fa-3x pull-left"></i>喜愛一</a>
                                                     <a class="btn btn-large btn-default" href="#">
-                                                        <i class="fa fa-forward fa-3x pull-left"></i>快轉</a>
+                                                        <i class="fa fa-thumbs-up fa-3x pull-left"></i>喜愛二</a>
                                                     <a class="btn btn-large btn-default" href="#">
-                                                        <i class="fa fa-fast-forward fa-3x pull-left"></i>兩倍快轉</a>
+                                                        <i class="fa fa-thumbs-up fa-3x pull-left"></i>喜愛三</a>
+                                                    <a class="btn btn-large btn-default" href="#">
+                                                        <i class="fa fa-thumbs-up fa-3x pull-left"></i>喜愛四</a>
+                                                    <a class="btn btn-large btn-default" href="#">
+                                                        <i class="fa fa-thumbs-up fa-3x pull-left"></i>喜愛五</a>
+                                                    </a>
                                                 </td>
                                             </tr>
                                         </tbody>
