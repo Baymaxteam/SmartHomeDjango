@@ -34,17 +34,22 @@ var Obj_IRnode = {
         $('#btnTVChannelUp'), $('#btnTVChannelDown'), $('#btnTVVoiceUp'), $('#btnTVVoiceDown'),
         $('#btnTVMute'), $('#btnTV1'), $('#btnTV2'), $('#btnTV3'),
         $('#btnTV4'), $('#btnTV5'), $('#btnTV6'), $('#btnTV7'),
-        $('#btnTV8'), $('#btnTV9'), $('#btnTV0'),$('#btnTVEnter')
+        $('#btnTV8'), $('#btnTV9'), $('#btnTV0'), $('#btnTVEnter'),
+        $('#btnTVLanguage'), $('#btnTVDisplay'), $('#btnTVScan'), $('#btnTVinfo'),
+        $('#btnTVEenergy'), $('#btnTVBoardcast')
     ],
     ID: ["10"],
     State: [
-        "power", "menu", "exit", "stop",
+        "power", "menu", "back", "stop",
         "chup", "chdown", "voiceup", "voicedown",
         "mute", "tv1", "tv2", "tv3",
         "tv4", "tv5", "tv6", "tv7",
-        "tv8", "tv9", "tv0", "tventer"
+        "tv8", "tv9", "tv0", "tventer",
+        "language", "display", "scan", "info",
+        "energy", "boardcast"
     ]
 }
+
 
 
 var nodeUrlBase = "http://192.168.31.245:8000/api/V1/node/"
