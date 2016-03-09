@@ -5,6 +5,8 @@ var statMonthUrl = "http://192.168.31.215:8000/api/V1/bill/house/month/";
 var statDayUrl = "http://192.168.31.215:8000/api/V1/bill/house/day/";
 var statNodeUrl = "http://192.168.31.215:8000/api/V1/bill/house/node/";
 
+ var nodeUrl = "http://192.168.31.245:8000/api/V1/node/";
+
 var statNodeData = [
     ["1", "檯燈", "客廳", "1", "85"],
     ["2", "微波爐", "客廳", "1", "45"],
@@ -158,7 +160,7 @@ $(document).ready(function() {
     showMonthdata();
     showYeardata();
     showDaydata();
-    showNodedata();
+    get_AllNodeList(nodeUrl);
 });
 
 function showNodedata() {
@@ -320,3 +322,51 @@ function showYeardata() {
     $.plot($("#Year-bar-chart"), [barData], barOptions);
 
 }
+
+ function get_AllNodeList(nodeUrl) {
+     var NodeTable = [];
+     $.ajax({
+         url: nodeUrl,
+         dataType: "json",
+         success: function(response) {
+             responseJson = response;
+             console.log(responseJson);
+
+             for (var index = 0; index < responseJson.length; index++) {
+                 var tmp = [responseJson[index].ID.toString(), responseJson[index].Type,
+                     responseJson[index].Appliances, responseJson[index].Group,
+                     responseJson[index].State, responseJson[index].CurrentState.toString()
+                 ];
+                 console.log(tmp);
+                 NodeTable.push(tmp)
+             }
+             // display data
+             showNodeTable(NodeTable)
+         },
+         error: function(response) {
+             console.log("error");
+         }
+     });
+
+     function showNodeTable(data) {
+         $('#tableNodeStatus').DataTable({
+             responsive: true,
+             destroy: true,
+             data: data,
+             bAutoWidth: false,
+             columns: [{
+                 title: "ID"
+             }, {
+                 title: "類型"
+             }, {
+                 title: "應用"
+             }, {
+                 title: "位置"
+             }, {
+                 title: "狀態"
+             }, {
+                 title: "預估電費"
+             }]
+         });
+     }
+ }
