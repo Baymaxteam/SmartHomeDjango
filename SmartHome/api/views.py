@@ -414,7 +414,7 @@ def IRset(request, commend):
 			obj.save()
 		except: # 如果找不到，則新增
 			# rawcode = ', '.join(IRpack)
-			rawcode = IRpack
+			rawcode = IRpack[0]
 			node_obj = Nodes.objects.get(ID = 9)
 			IRcommend.objects.create(NodeID = node_obj, Commend = commend, RawCode = rawcode)
 		# 找到就回傳
