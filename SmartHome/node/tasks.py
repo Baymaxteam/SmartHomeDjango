@@ -6,6 +6,7 @@ from celery.decorators import periodic_task
 
 from SmartHome.api.models import *
 from .XBee import XBee
+from operator import xor
 
 import platform
 import time 
@@ -30,10 +31,17 @@ except:
 	noSerialPortMode = True
 	print('No SerialPort Mode!!')
 
-
 # Windows: xbee = XBee("COM7")
 # OSX: xbee = XBee("/dev/cu.usbserial-FTYVE8XDA")
 # Ubuntu: xbee = XBee("/dev/ttyUSB0")
+timeNow = pytz.timezone("Asia/Taipei").localize(datetime.datetime.now(), is_dst=None)
+node_LastState_time = {'Nnode1':timeNow,  
+			           'Nnode3':timeNow,
+			           'Nnode4':timeNow,
+			           'Nnode5':timeNow, 
+			           'Lnode1':timeNow,
+			           'Lnode2':timeNow,
+			           'IRnode':timeNow} 
 
 @shared_task
 def test(param):
@@ -124,7 +132,7 @@ def node_one_reset(address):
 def nodeCheck():
 	if noSerialPortMode == False:
 		xbee.Send_P_package()
-		# nodeCurrentRepo.apply_async(countdown=60) # 60秒後 去接收回傳的封包
+		check_goddeadnode.apply_async(countdown=5) # 5秒後 檢查是否有死掉的node
 
 		# address = {'00 13 A2 00 40 EC 3A A4':'Nnode1', '00 13 A2 00 40 EC 3A B7':'Nnode2', 
   #                  '00 13 A2 00 40 EC 3A 97':'Nnode3', '00 13 A2 00 40 B3 2D 41':'Nnode4',
@@ -162,7 +170,6 @@ def nodeCheck():
 
 @shared_task
 def nodeCurrentRepo():
-	print('收資料囉')
 	if noSerialPortMode == False:
 		address = {'00 13 A2 00 40 EC 3A A4':'Nnode1',  
                    '00 13 A2 00 40 EC 3A 97':'Nnode3', '00 13 A2 00 40 B3 2D 41':'Nnode4',
@@ -187,24 +194,32 @@ def nodeCurrentRepo():
 					if node_name in SL_pair:
 						node_L_one_turn.apply_async((S_node_state, SL_pair[node_name]))
 						print('收到'+node_name+', 下命令給'+SL_pair[node_name])
-						
+
 					node_obj = Nodes.objects.get(Address = rec_address)
+					laststate = NodeState.objects.all().filter(NodeID = node_obj).latest('Added').State
+					laststate = int(laststate)
+					# 修正 8 9 10 命令的問題
+					if S_node_state == 8:
+						laststate = xor(laststate, 1)
+					elif S_node_state == 9:
+						laststate = xor(laststate, 2)
+					elif S_node_state == 10:
+						laststate = xor(laststate, 4)
 					addedtime = pytz.timezone("Asia/Taipei").localize(datetime.datetime.now(), is_dst=None)
-					NodeState.objects.create(NodeID = node_obj, State = S_node_state, Added = addedtime)
+					NodeState.objects.create(NodeID = node_obj, State = laststate, Added = addedtime)
 
 				elif 'Current' in data:
 					rec_address = data['nodeAddress']
-					try:
-						address.pop(rec_address)
-					except:
-						print('repeat address')
+					nodeName = address[rec_address]
 					try:
 						node_obj = Nodes.objects.get(Address = data['nodeAddress'])
 					except:
 						print('unKnow Arrdess: '+ data['nodeAddress'])
 						continue	
 					addedtime = pytz.timezone("Asia/Taipei").localize(datetime.datetime.now(), is_dst=None)
+					node_LastState_time[nodeName] = addedtime
 					CurrentState.objects.create(NodeID = node_obj, State = data['Current'], Added = addedtime)
+					
 				else:
 					print('怪怪的')
 				# try:
@@ -231,17 +246,35 @@ def nodeCurrentRepo():
 				# 	continue
 				# addedtime = pytz.timezone("Asia/Taipei").localize(datetime.datetime.now(), is_dst=None)
 				# CurrentState.objects.create(NodeID = node_obj, State = data['Current'], Added = addedtime)
+			###### Reset 命令 #######
 			# if len(address) >0 :
 			# 	for deadnode in address:
 			# 		print('DeadNode: '+ address[deadnode])
 			# 		node_one_reset.apply_async((deadnode,))
 			# 		time.sleep(0.5)
-
-		print('nodeCurrentRepo: {0}'.format(rep))
+		# print(node_LastState_time)
+		print('nodeRepo: {0}'.format(rep))
+		print(node_LastState_time)
 	else:
 		print('<In noSerialPortMode> node_CurrentRepo()')
 
-
+@shared_task
+def check_goddeadnode():
+	if noSerialPortMode == False:
+		print('check_goddeadnode()')
+		address = {'Nnode1':'00 13 A2 00 40 EC 3A A4',  
+                   'Nnode3':'00 13 A2 00 40 EC 3A 97', 'Nnode4':'00 13 A2 00 40 B3 2D 41',
+                   'Nnode5':'00 13 A2 00 40 EC 3A 98', 
+                   'Lnode1':'00 13 A2 00 40 B3 2D 4F', 'Lnode2':'00 13 A2 00 40 B3 2D 5B',
+                   'IRnode':'00 13 A2 00 40 EC 3A BE',} 
+		timeNow = pytz.timezone("Asia/Taipei").localize(datetime.datetime.now(), is_dst=None)
+		for keys in node_LastState_time.keys():
+			if (timeNow - node_LastState_time[keys]).seconds > 120: #兩分鐘沒回應
+				node_one_reset.apply_async((address[keys],))
+				node_LastState_time[keys] = timeNow
+				print(keys+' Reset!!')
+	else:
+		print('<In noSerialPortMode> check_goddeadnode()')
 
 # @shared_task
 # def nodeTest():
