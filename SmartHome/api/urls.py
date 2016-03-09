@@ -22,6 +22,10 @@ urlpatterns = [
     # 智慧控制
     url(r'V1/env/(?P<env_case>\w+)/$', views.env_control),
     # IR對碼
-    url(r'V1/IRset/(?P<commend>\w+)/$', views.IRset)
+    url(r'V1/IRset/(?P<commend>\w+)/$', views.IRset),
+    # 全體Reset
+    url(r'V1/ResetAll/$', views.ResetAll),
+    # Reset IR Command
+    url(r'V1/ResetCommand/$', views.ResetIRcommand)
 
 ]

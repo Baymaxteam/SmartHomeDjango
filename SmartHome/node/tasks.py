@@ -79,12 +79,13 @@ def node_L_one_turn(state, address):
 def IR_node_send(commd):
 	try:
 		rawcode = IRcommend.objects.get(Commend = commd).RawCode
-		[pack1, pack2, pack3] = rawcode.split(",") 
+		# [pack1, pack2, pack3] = rawcode.split(",") 
 	except:
 		print("Can't find commd: {0}".format(commd))
 
 	if noSerialPortMode == False:
-		xbee.IR_node_send(pack1, pack2, pack3)
+		# xbee.IR_node_send(pack1, pack2, pack3)
+		xbee.IRSend(rawcode)
 		print('IR_node_send: {0}'.format(rawcode))
 		# time.sleep(1)
 		# node_one_reset.apply_async(('00 13 A2 00 40 C2 8B B7',))

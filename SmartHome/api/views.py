@@ -408,15 +408,56 @@ def IRset(request, commend):
 		print('IR Receive: {0}'.format(IRpack))
 		try:
 			obj = IRcommend.objects.get(Commend = commend)
-			rawcode = obj.RawCode 
+			# rawcode = obj.RawCode 
+			obj.RawCode = rawcode
+			obj.save()
 		except: # 如果找不到，則新增
-			rawcode = ', '.join(IRpack)
+			# rawcode = ', '.join(IRpack)
 			node_obj = Nodes.objects.get(ID = 9)
 			IRcommend.objects.create(NodeID = node_obj, Commend = commend, RawCode = rawcode)
 		# 找到就回傳
 		data = {'commend': commend, 'RawCode': rawcode}
 		return JSONResponse(data)
 
+@csrf_exempt
+def ResetAll(): 
+	node_all_reset()
+	print('ResetAll')
+
+@csrf_exempt
+def ResetIRcommand(): 
+	print('ResetIRcommand!')
+	defaultIRcommand = {'power': 	"7E 00 16 10 00 00 13 A2 00 40 EC 3A BE FF FE 00 00 72 01 20 00 87 78 EF 10",
+					   	'chup':  	"7E 00 16 10 00 00 13 A2 00 40 EC 3A BE FF FE 00 00 72 01 20 00 57 A8 EF 10",
+    					'chdown': 	"7E 00 16 10 00 00 13 A2 00 40 EC 3A BE FF FE 00 00 72 01 20 00 C7 38 EF 10",
+    					'voiceup': 	"7E 00 16 10 00 00 13 A2 00 40 EC 3A BE FF FE 00 00 72 01 20 00 E7 18 EF 10",
+    					'voicedown':"7E 00 16 10 00 00 13 A2 00 40 EC 3A BE FF FE 00 00 72 01 20 00 D7 28 EF 10",
+    					'mute':     "7E 00 16 10 00 00 13 A2 00 40 EC 3A BE FF FE 00 00 72 01 20 00 05 FA EF 10",
+					    'back':     "7E 00 16 10 00 00 13 A2 00 40 EC 3A BE FF FE 00 00 72 01 20 00 07 F8 EF 10",
+    					'tv1':      "7E 00 16 10 00 00 13 A2 00 40 EC 3A BE FF FE 00 00 72 01 20 00 15 EA EF 10",
+ 					   	'tv2':      "7E 00 16 10 00 00 13 A2 00 40 EC 3A BE FF FE 00 00 72 01 20 00 0D F2 EF 10",
+    					'tv3':      "7E 00 16 10 00 00 13 A2 00 40 EC 3A BE FF FE 00 00 72 01 20 00 35 CA EF 10",
+					    'tv4':      "7E 00 16 10 00 00 13 A2 00 40 EC 3A BE FF FE 00 00 72 01 20 00 95 6A EF 10",
+					    'tv5':      "7E 00 16 10 00 00 13 A2 00 40 EC 3A BE FF FE 00 00 72 01 20 00 8D 72 EF 10",
+					    'tv6':      "7E 00 16 10 00 00 13 A2 00 40 EC 3A BE FF FE 00 00 72 01 20 00 85 7A EF 10",
+					    'tv7':      "7E 00 16 10 00 00 13 A2 00 40 EC 3A BE FF FE 00 00 72 01 20 00 D5 2A EF 10",
+    					'tv8':      "7E 00 16 10 00 00 13 A2 00 40 EC 3A BE FF FE 00 00 72 01 20 00 CD 32 EF 10",
+					    'tv9':      "7E 00 16 10 00 00 13 A2 00 40 EC 3A BE FF FE 00 00 72 01 20 00 C5 3A EF 10",
+    					'tv0':      "7E 00 16 10 00 00 13 A2 00 40 EC 3A BE FF FE 00 00 72 01 20 00 4D B2 EF 10",
+					    'enter':    "7E 00 16 10 00 00 13 A2 00 40 EC 3A BE FF FE 00 00 72 01 20 00 8F 70 EF 10",
+  	  					'language': "7E 00 16 10 00 00 13 A2 00 40 EC 3A BE FF FE 00 00 72 01 20 00 45 BA EF 10",
+    					'display':  "7E 00 16 10 00 00 13 A2 00 40 EC 3A BE FF FE 00 00 72 01 20 00 EF 10 EF 10",
+					    'scan':     "7E 00 16 10 00 00 13 A2 00 40 EC 3A BE FF FE 00 00 72 01 20 00 A5 5A EF 10",
+    					'info':     "7E 00 16 10 00 00 13 A2 00 40 EC 3A BE FF FE 00 00 72 01 20 00 AF 50 EF 10",
+    					'energy':   "7E 00 16 10 00 00 13 A2 00 40 EC 3A BE FF FE 00 00 72 01 20 00 2F D0 EF 10",
+    					'boardcast':"7E 00 16 10 00 00 00 00 00 00 00 00 00 FF FE 00 00 72 01 20 00 7F 80 EF 10",
+    					}
+	obj = IRcommend.objects.all()
+	obj.delete()
+	node_obj = Nodes.objects.get(ID = 9)
+	for keys in defaultIRcommand.keys():
+		IRcommend.objects.create(NodeID = node_obj, Commend = keys, RawCode = defaultIRcommand[keys])
+	
 
 
 

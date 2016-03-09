@@ -91,8 +91,8 @@ class XBee():
            Receives data from serial and checks buffer for potential messages.
            Returns the next message in the queue if available.
         """
-        print('請於一秒後按下')
-        sleep(3)
+        print('請按三下按鍵')
+        sleep(5)
         self.RxMessages.clear()
         remaining = self.serial.inWaiting()
         IRPack = []
