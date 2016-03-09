@@ -254,7 +254,7 @@ def nodeCurrentRepo():
 			# 		time.sleep(0.5)
 		# print(node_LastState_time)
 		print('nodeRepo: {0}'.format(rep))
-		print(node_LastState_time)
+		# print(node_LastState_time)
 	else:
 		print('<In noSerialPortMode> node_CurrentRepo()')
 
