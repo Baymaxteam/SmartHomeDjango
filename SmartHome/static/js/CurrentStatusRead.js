@@ -1,11 +1,10 @@
 //Flot Line Chart
 
-var statYearUrl = "http://192.168.31.215:8000/api/V1/bill/house/year/";
-var statMonthUrl = "http://192.168.31.215:8000/api/V1/bill/house/month/";
-var statDayUrl = "http://192.168.31.215:8000/api/V1/bill/house/day/";
-var statNodeUrl = "http://192.168.31.215:8000/api/V1/bill/house/node/";
+var statYearUrl = "http://192.168.31.245:8000/api/V1/bill/house/year/";
+var statMonthUrl = "http://192.168.31.245:8000/api/V1/bill/house/month/";
+var statDayUrl = "http://192.168.31.245:8000/api/V1/bill/house/day/";
+var statNodeUrl = "http://192.168.31.245:8000/api/V1/bill/house/node/";
 
- var nodeUrl = "http://192.168.31.245:8000/api/V1/node/";
 
 var statNodeData = [
     ["1", "檯燈", "客廳", "1", "85"],
@@ -113,32 +112,32 @@ var monthstatdata = {
 var daystatdata = {
     'Interval': 'day',
     'data': [
-        
-            [1456185600000, 15.9],
-            [1456189200000, 20.3],
-            [1456192800000, 14.4],
-            [1456196400000, 21.1],
-            [1456200000000, 21],
-            [1456203600000, 15.9],
-            [1456207200000, 16.9],
-            [1456210800000, 15.9],
-            [1456214400000, 17.9],
-            [1456218000000, 15.9],
-            [1456221600000, 13.9],
-            [1456225200000, 15.9],
-            [1456228800000, 11.1],
-            [1456232400000, 23.1],
-            [1456236000000, 24.1],
-            [1456239600000, 21.1],
-            [1456243200000, 24.5],
-            [1456246800000, 21.1],
-            [1456250400000, 21.1],
-            [1456254000000, 16.5],
-            [1456257600000, 24.5],
-            [1456261200000, 22.5],
-            [1456264800000, 16.5],
-            [1456268400000, 16.5]
-        
+
+        [1456185600000, 15.9],
+        [1456189200000, 20.3],
+        [1456192800000, 14.4],
+        [1456196400000, 21.1],
+        [1456200000000, 21],
+        [1456203600000, 15.9],
+        [1456207200000, 16.9],
+        [1456210800000, 15.9],
+        [1456214400000, 17.9],
+        [1456218000000, 15.9],
+        [1456221600000, 13.9],
+        [1456225200000, 15.9],
+        [1456228800000, 11.1],
+        [1456232400000, 23.1],
+        [1456236000000, 24.1],
+        [1456239600000, 21.1],
+        [1456243200000, 24.5],
+        [1456246800000, 21.1],
+        [1456250400000, 21.1],
+        [1456254000000, 16.5],
+        [1456257600000, 24.5],
+        [1456261200000, 22.5],
+        [1456264800000, 16.5],
+        [1456268400000, 16.5]
+
     ]
 };
 
@@ -146,46 +145,35 @@ var daystatdata = {
 $(document).ready(function() {
     console.log("document ready");
 
-    // $.ajax({
-    //     url: statUrl,
-    //     dataType: "json",
-    //     success: function(response) {
-    //         console.log(response);
-    //     },
-    //     error: function(response) {
-    //         console.log("error");
-    //     }
-    // });
-
     showMonthdata();
     showYeardata();
-    showDaydata();
-    get_AllNodeList(nodeUrl);
+    get_Daydata(statDayUrl);
+    get_AllNodeList(statNodeUrl);
 });
 
-function showNodedata() {
-    $('#tableNodeStatus').DataTable({
-        bFilter: false,
-        paging: false,
-        responsive: true,
-        destroy: true,
-        data: statNodeData,
+// function showNodedata() {
+//     $('#tableNodeStatus').DataTable({
+//         bFilter: false,
+//         paging: false,
+//         responsive: true,
+//         destroy: true,
+//         data: statNodeData,
 
-        columns: [{
-            title: "ID"
-        }, {
-            title: "應用"
-        }, {
-            title: "位置"
-        }, {
-            title: "狀態"
-        }, {
-            title: "預估電費NTD(本日)"
-        }]
-    });
-}
+//         columns: [{
+//             title: "ID"
+//         }, {
+//             title: "應用"
+//         }, {
+//             title: "位置"
+//         }, {
+//             title: "狀態"
+//         }, {
+//             title: "預估電費NTD(本日)"
+//         }]
+//     });
+// }
 
-    
+
 
 function showDaydata() {
 
@@ -323,50 +311,102 @@ function showYeardata() {
 
 }
 
- function get_AllNodeList(nodeUrl) {
-     var NodeTable = [];
-     $.ajax({
-         url: nodeUrl,
-         dataType: "json",
-         success: function(response) {
-             responseJson = response;
-             console.log(responseJson);
+function get_AllNodeList(nodeUrl) {
+    $.ajax({
+        url: nodeUrl,
+        dataType: "json",
+        success: function(response) {
+            console.log(response);
+            showNodeTable(response)
+        },
+        error: function(response) {
+            console.log("error");
+        }
+    });
 
-             for (var index = 0; index < responseJson.length; index++) {
-                 var tmp = [responseJson[index].ID.toString(), responseJson[index].Type,
-                     responseJson[index].Appliances, responseJson[index].Group,
-                     responseJson[index].State, responseJson[index].CurrentState.toString()
-                 ];
-                 console.log(tmp);
-                 NodeTable.push(tmp)
-             }
-             // display data
-             showNodeTable(NodeTable)
-         },
-         error: function(response) {
-             console.log("error");
-         }
-     });
+    function showNodeTable(data) {
+        $('#tableNodeStatus').DataTable({
+            responsive: true,
+            destroy: true,
+            data: data,
+            columns: [{
+                title: "ID"
+            }, {
+                title: "應用"
+            }, {
+                title: "位置"
+            }, {
+                title: "狀態"
+            }, {
+                title: "預估電費"
+            }]
+        });
+    }
+}
 
-     function showNodeTable(data) {
-         $('#tableNodeStatus').DataTable({
-             responsive: true,
-             destroy: true,
-             data: data,
-             bAutoWidth: false,
-             columns: [{
-                 title: "ID"
-             }, {
-                 title: "類型"
-             }, {
-                 title: "應用"
-             }, {
-                 title: "位置"
-             }, {
-                 title: "狀態"
-             }, {
-                 title: "預估電費"
-             }]
-         });
-     }
- }
+function get_Daydata(nodeUrl) {
+
+    $.ajax({
+        url: nodeUrl,
+        dataType: "json",
+        success: function(response) {
+            console.log(response);
+            showDay(response);
+        },
+        error: function(response) {
+            console.log("error");
+        }
+    });
+
+
+
+    function showDay(data) {
+        var barOptions = {
+            series: {
+                bars: {
+                    show: true,
+                    barWidth: 2232000
+                }
+            },
+            xaxis: {
+                mode: "time",
+                timeformat: "%I:%M %p",
+                // timeformat: "%m/%d",
+                // twelveHourClock: true,
+                //minTickSize: [1, "day"]
+                minTickSize: [1, "hour"]
+            },
+            yaxis: {
+                axisLabel: "平均電費",
+                axisLabelUseCanvas: true,
+                axisLabelFontSizePixels: 12,
+                axisLabelFontFamily: 'Verdana, Arial',
+                axisLabelPadding: 2,
+                tickFormatter: function(v, axis) {
+                    return "$" + v;
+                }
+            },
+            grid: {
+                hoverable: true
+            },
+            legend: {
+                show: false
+            },
+            tooltip: true,
+            tooltipOpts: {
+                content: "x: %x, y: %y"
+            }
+        };
+        var barData = {
+            label: "bar",
+            color: "#ff0000",
+            data: data.data
+        };
+
+        $.plot($("#Day-bar-chart"), [barData], barOptions);
+    }
+
+
+
+
+}
