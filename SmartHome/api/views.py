@@ -420,12 +420,12 @@ def IRset(request, commend):
 		return JSONResponse(data)
 
 @csrf_exempt
-def ResetAll(): 
+def ResetAll(request): 
 	node_all_reset()
 	print('ResetAll')
 
 @csrf_exempt
-def ResetIRcommand(): 
+def ResetIRcommand(request): 
 	print('ResetIRcommand!')
 	defaultIRcommand = {'power': 	"7E 00 16 10 00 00 13 A2 00 40 EC 3A BE FF FE 00 00 72 01 20 00 87 78 EF 10",
 					   	'chup':  	"7E 00 16 10 00 00 13 A2 00 40 EC 3A BE FF FE 00 00 72 01 20 00 57 A8 EF 10",
