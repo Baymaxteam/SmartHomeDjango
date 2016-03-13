@@ -55,12 +55,15 @@ var Obj_IRnode = {
 var nodeUrlBase = "http://192.168.31.245:8000/api/V1/node/"
 
 
-
 $(document).ready(function() {
     console.log("document ready");
     // 一次得到所有狀態的resufl
     // 獲得目前開關所有的狀態
     get_NodeBtnStatus(true);
+
+    $('#btnIRTVRecord').bootstrapToggle("off");
+    // 對碼初始狀態為0
+
 
     // 使用者控制開關
     // post_NodeBtnStatus();
@@ -71,7 +74,7 @@ $(document).ready(function() {
 
             var nodeUrl = nodeUrlBase + Obj_Nnode.ID[i] + "/";
             // console.log(NnodeUrl);
-            if ($(this).prop("checked") == true) {
+            if ($(this).prop("checked") === true) {
                 Obj_Nnode.State[i] = "1";
             } else {
                 Obj_Nnode.State[i] = "0";
@@ -89,19 +92,19 @@ $(document).ready(function() {
                 var nodeUrl = nodeUrlBase + Obj_Lnode.ID[i] + "/";
                 var LnoseSTATE = "";
 
-                if (($(this).prop("checked") == true) && (Obj_Lnode.State[i][j].toString() == "0")) {
+                if (($(this).prop("checked") === true) && (Obj_Lnode.State[i][j].toString() == "0")) {
                     Obj_Lnode.State[i][j] = "1";
                     LnoseSTATE = Conveter_LnodeBit2State(Obj_Lnode.State[i]);
                     checkNodeLState(LnoseSTATE, nodeUrl);
 
-                } else if (($(this).prop("checked") != true) && (Obj_Lnode.State[i][j].toString() == "1")) {
+                } else if (($(this).prop("checked") !== true) && (Obj_Lnode.State[i][j].toString() == "1")) {
                     Obj_Lnode.State[i][j] = "0";
                     LnoseSTATE = Conveter_LnodeBit2State(Obj_Lnode.State[i]);
                     checkNodeLState(LnoseSTATE, nodeUrl);
                 } else {
 
                 }
-                console.log(Obj_Lnode.State[i]);
+                // console.log(Obj_Lnode.State[i]);
                 // var LnoseSTATE = "";
                 // LnoseSTATE = Conveter_LnodeBit2State(Obj_Lnode.State[i]);
                 // checkNodeLState(LnoseSTATE, nodeUrl);
@@ -114,16 +117,26 @@ $(document).ready(function() {
     $.each(Obj_IRnode.DOMList, function(i) {
         Obj_IRnode.DOMList[i].click(function(event) {
             var nodeUrl = nodeUrlBase + Obj_IRnode.ID + "/";
-            checkNodeIRState(Obj_IRnode.State[i], nodeUrl);
-            console.log(Obj_IRnode.State[i]);
+
+            if (Obj_IRnode.RecordMode === true) {
+                nodeUrl = nodeUrl + "IRset/" + Obj_IRnode.State[i] + "/";
+                console.log(nodeUrl);
+                $('#IRRecordModal').modal('show');
+                checkNodeIRState(Obj_IRnode.State[i], nodeUrl);
+
+            } else {
+
+                checkNodeIRState(Obj_IRnode.State[i], nodeUrl);
+                // console.log(Obj_IRnode.State[i]);
+            }
+
         });
     });
 
 
 
     // 確認L節點得狀態
-
-    var timerticker = setInterval(timerFunciton, 3000);
+    setInterval(timerFunciton, 3000);
     // $('#btnTimer').change(function(event) {
     //     /* Act on the event */
     //     if ($(this).prop("checked") == true){
@@ -136,6 +149,16 @@ $(document).ready(function() {
     //     }
     // });
 
+    // 對碼模式
+    $('#btnIRTVRecord').change(function(event) {
+        if ($(this).prop("checked") === true) {
+            Obj_IRnode.RecordMode = true;
+
+        } else {
+            Obj_IRnode.RecordMode = false;
+
+        }
+    });
 
 
 });
@@ -144,22 +167,22 @@ function get_NodeBtnStatus(b_firstTimer) {
 
     // 0223 change status bug
     // check N node status
-    if (b_firstTimer == true) {
+    if (b_firstTimer === true) {
         for (var i = 0; i < Obj_Nnode.ID.length; i++) {
             var nodeUrL = nodeUrlBase + Obj_Nnode.ID[i] + "/";
-            console.log(nodeUrL);
+            // console.log(nodeUrL);
             $.ajax({
                 url: nodeUrL,
                 dataType: "json",
                 success: function(response) {
-                    console.log(response);
+                    // console.log(response);
                     var index = Obj_Nnode.ID.indexOf(response.ID.toString());
                     Obj_Nnode.State[index] = response.State.toString();
 
                     if (Obj_Nnode.State[index].toString() == "0") {
-                        Obj_Nnode.DOMList[index].bootstrapToggle('off');
+                        Obj_Nnode.DOMList[index].bootstrapToggle("off");
                     } else {
-                        Obj_Nnode.DOMList[index].bootstrapToggle('on');
+                        Obj_Nnode.DOMList[index].bootstrapToggle("on");
                     }
                 },
                 error: function(response) {
@@ -173,30 +196,30 @@ function get_NodeBtnStatus(b_firstTimer) {
     // check L node status
     for (var i = 0; i < Obj_Lnode.ID.length; i++) {
         var nodeUrL = nodeUrlBase + Obj_Lnode.ID[i] + "/";
-        console.log(nodeUrL);
+        // console.log(nodeUrL);
         var index = [];
 
         $.ajax({
             url: nodeUrL,
             dataType: "json",
             success: function(response) {
-                console.log(response);
+                // console.log(response);
 
                 index = Obj_Lnode.ID.indexOf(response.ID.toString());
                 Obj_Lnode.State[index] = Conveter_LnodeState2Bit(response.State.toString());
-                console.log("L node Sate: " + Obj_Lnode.State[index]);
+                // console.log("L node Sate: " + Obj_Lnode.State[index]);
 
                 for (var i in Obj_Lnode.DOMList[index]) {
                     // console.log("index: " + index);
                     // console.log("here: " + i);
                     if (Obj_Lnode.State[index][i].toString() == "0") {
-                        Obj_Lnode.DOMList[index][i].bootstrapToggle('off');
-                        Obj_Snode.DOMList[index][i][0].bootstrapToggle('off');
-                        Obj_Snode.DOMList[index][i][1].bootstrapToggle('off');
+                        Obj_Lnode.DOMList[index][i].bootstrapToggle("off");
+                        Obj_Snode.DOMList[index][i][0].bootstrapToggle("off");
+                        Obj_Snode.DOMList[index][i][1].bootstrapToggle("off");
                     } else if (Obj_Lnode.State[index][i].toString() == "1") {
-                        Obj_Lnode.DOMList[index][i].bootstrapToggle('on');
-                        Obj_Snode.DOMList[index][i][0].bootstrapToggle('on');
-                        Obj_Snode.DOMList[index][i][1].bootstrapToggle('on');
+                        Obj_Lnode.DOMList[index][i].bootstrapToggle("on");
+                        Obj_Snode.DOMList[index][i][0].bootstrapToggle("on");
+                        Obj_Snode.DOMList[index][i][1].bootstrapToggle("on");
                     } else {
 
                     }
@@ -230,9 +253,9 @@ function checkNodeNState(State, nodeUrl) {
     var close = '{"State": 0}';
     // ON status --> close
     if (State == "1") {
-        nodeChangeState(open, nodeUrl)
+        nodeChangeState(open, nodeUrl);
     } else {
-        nodeChangeState(close, nodeUrl)
+        nodeChangeState(close, nodeUrl);
     }
 
 }
@@ -243,7 +266,7 @@ function checkNodeLState(State, nodeUrl) {
     sendStatus = sendStatus + State + '}';
     // console.log(sendStatus);
     // ON status --> close
-    nodeChangeState(sendStatus, nodeUrl)
+    nodeChangeState(sendStatus, nodeUrl);
 }
 
 function checkNodeIRState(State, nodeUrl) {
@@ -252,7 +275,7 @@ function checkNodeIRState(State, nodeUrl) {
 
     // console.log(sendStatus);
     // ON status --> close
-    nodeChangeState(sendStatus, nodeUrl)
+    nodeChangeState(sendStatus, nodeUrl);
 
 }
 
@@ -328,7 +351,7 @@ function Conveter_LnodeBit2State(inputStrArray) {
 
 
 function timerFunciton() {
-    console.log("timer");
+    // console.log("timer");
     get_NodeBtnStatus(false);
 
 }
