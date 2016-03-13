@@ -195,8 +195,11 @@ def nodeCurrentRepo():
 					if node_name in SL_pair:
 						node_L_one_turn.apply_async((S_node_state, SL_pair[node_name]))
 						print('收到'+node_name+', 下命令給'+SL_pair[node_name])
-
-					node_obj = Nodes.objects.get(Address = rec_address)
+					try:
+						node_obj = Nodes.objects.get(Address = rec_address)
+					except:
+						print("Can't find this address in DB....")
+						continue
 					laststate = NodeState.objects.all().filter(NodeID = node_obj).latest('Added').State
 					laststate = int(laststate)
 					# 修正 8 9 10 命令的問題
