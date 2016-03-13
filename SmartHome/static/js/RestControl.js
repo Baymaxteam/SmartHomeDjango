@@ -223,6 +223,17 @@ function get_NodeBtnStatus(b_firstTimer) {
                     } else {
 
                     }
+
+                    // if ((Obj_Lnode.State[index][i].toString() == "0") && (Obj_Lnode.DOMList[index][i].prop('checked') == true)) {
+
+                    //     Obj_Lnode.DOMList[index][i].bootstrapToggle('off');
+                    //     Obj_Snode.DOMList[index][i][0].bootstrapToggle('off');
+                    //     Obj_Snode.DOMList[index][i][1].bootstrapToggle('off');
+                    // } else if ((Obj_Lnode.State[index][i].toString() == "1") && (Obj_Lnode.DOMList[index][i].prop('checked') != true)) {
+                    //     Obj_Lnode.DOMList[index][i].bootstrapToggle('on');
+                    //     Obj_Snode.DOMList[index][i][0].bootstrapToggle('on');
+                    //     Obj_Snode.DOMList[index][i][1].bootstrapToggle('on');
+                    // }
                 }
             },
             error: function(response) {
