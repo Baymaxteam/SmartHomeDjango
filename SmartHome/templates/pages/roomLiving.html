@@ -227,6 +227,26 @@
                                 </div>
                                 <div class="tab-pane fade" id="profile-pills">
                                     <h4>電視控制</h4>
+                                    <label class="checkbox">正常模式 OFF
+                                        <input data-toggle="toggle" type="checkbox" data-onstyle="danger" id="btnIRTVRecord"> 對碼模式 ON</label>
+                                    <!-- 對碼模式 Modal -->
+                                    <div class="modal fade" id="IRRecordModal" role="dialog">
+                                        <div class="modal-dialog">
+                                            <!-- Modal content-->
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                    <h4 class="modal-title">對碼模式開啟</h4>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <p>請點擊遙控器，進行紅外線對碼<br>等待3秒，確認是否測試成功</p>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-success" data-dismiss="modal">Close</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                     <table class="table table-striped table-bordered table-hover" id="tableLivingControl">
                                         <thead>
                                             <tr>
