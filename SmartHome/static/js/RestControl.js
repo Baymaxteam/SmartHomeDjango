@@ -116,15 +116,17 @@ $(document).ready(function() {
 
     $.each(Obj_IRnode.DOMList, function(i) {
         Obj_IRnode.DOMList[i].click(function(event) {
-            var nodeUrl = nodeUrlBase + Obj_IRnode.ID + "/";
+            // var nodeUrl = nodeUrlBase + Obj_IRnode.ID + "/";
 
             if (Obj_IRnode.RecordMode === true) {
-                nodeUrl = nodeUrl + "IRset/" + Obj_IRnode.State[i] + "/";
+                // nodeUrl = nodeUrl + "IRset/" + Obj_IRnode.State[i] + "/";
+                var nodeUrl = "http://192.168.31.245:8000/api/V1/IRset/" + Obj_IRnode.State[i] + "/";
                 console.log(nodeUrl);
                 $('#IRRecordModal').modal('show');
                 checkNodeIRState(Obj_IRnode.State[i], nodeUrl);
 
             } else {
+                var nodeUrl = nodeUrlBase + Obj_IRnode.ID + "/";
 
                 checkNodeIRState(Obj_IRnode.State[i], nodeUrl);
                 // console.log(Obj_IRnode.State[i]);
