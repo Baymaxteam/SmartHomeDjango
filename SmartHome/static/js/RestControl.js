@@ -2,6 +2,8 @@
 
 var responseJson = [];
 
+var nodeUrlBase = "../api/V1/node/";
+
 var Obj_Nnode = {
     DOMList: [$('#btnMainLight'), $('#btnWallLight'), $('#btnFan')],
     ID: ["1", "2", "3"],
@@ -53,7 +55,7 @@ var Obj_IRnode = {
 };
 
 
-var nodeUrlBase = "http://192.168.31.245:8000/api/V1/node/";
+
 
 $(document).ready(function() {
     console.log("document ready");

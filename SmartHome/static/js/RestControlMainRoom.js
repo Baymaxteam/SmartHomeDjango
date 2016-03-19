@@ -1,6 +1,8 @@
 //Flot Line Chart
 var responseJson = [];
 
+var nodeUrlBase = "../api/V1/node/";
+
 var Obj_Nnode = {
     DOMList: [$('#btnMainLight'), $('#btnWallLight'), $('#btnFan')],
     ID: ["4", "5", "6"],
@@ -52,7 +54,7 @@ var Obj_IRnode = {
 
 
 
-var nodeUrlBase = "http://192.168.31.245:8000/api/V1/node/"
+
 
 
 $(document).ready(function() {

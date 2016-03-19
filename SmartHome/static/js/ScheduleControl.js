@@ -16,8 +16,8 @@
  ];
 
 
- var nodeUrl = "http://192.168.31.245:8000/api/V1/node/";
- var scheduleUrl = "http://192.168.31.245:8000/api/V1/schedule/";
+ var nodeUrl = "../api/V1/node/";
+ var scheduleUrl = "../api/V1/schedule/";
 
  $(document).ready(function() {
      // InitInputItem
