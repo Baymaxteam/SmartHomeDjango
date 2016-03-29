@@ -2,25 +2,32 @@
 
 var responseJson = [];
 
+// var nodeUrlBase = "http://192.168.1.59:8000/api/V1/node/";
 var nodeUrlBase = "../api/V1/node/";
 
 var Obj_Nnode = {
-    DOMList: [$('#btnMainLight'), $('#btnWallLight'), $('#btnFan')],
     ID: ["1", "2", "3"],
-    State: ["0", "0", "0"]
+    DOMList: [$('#btnMainLight'), $('#btnWallLight'), $('#btnFan')],
+    AlarmDOMList: [$('#btnMainLightAlarm'), $('#btnWallLightAlarm'), $('#btnFanAlarm')],
+    State: ["0", "0", "0"],
+    Current: [0.0, 0.0, 0.0]
 };
 
 var Obj_Lnode = {
+    ID: ["7"],
     DOMList: [
         [$('#btnCurtain1'), $('#btnCurtain2'), $('#btnCurtain3')]
     ],
-    ID: ["7"],
+    AlarmDOMList: [$('#btnCurtainAlarm')],
+
     State: [
-        ["0", "0", "1"]
-    ]
+        ["0", "0", "0"]
+    ],
+    Current: [0.0]
 };
 
 var Obj_Snode = {
+    ID: ["7"],
     DOMList: [
         [
             [$('#btnCurtain11'), $('#btnCurtain12')],
@@ -28,10 +35,10 @@ var Obj_Snode = {
             [$('#btnCurtain31'), $('#btnCurtain32')]
         ]
     ],
-    ID: ["7"]
 };
 
 var Obj_IRnode = {
+    ID: ["9"],
     DOMList: [
         $('#btnTVON'), $('#btnMenu'), $('#btnTVEXIT'), $('#btnTVStop'),
         $('#btnTVChannelUp'), $('#btnTVChannelDown'), $('#btnTVVoiceUp'), $('#btnTVVoiceDown'),
@@ -41,7 +48,7 @@ var Obj_IRnode = {
         $('#btnTVLanguage'), $('#btnTVDisplay'), $('#btnTVScan'), $('#btnTVinfo'),
         $('#btnTVEenergy'), $('#btnTVBoardcast')
     ],
-    ID: ["9"],
+
     State: [
         "power", "menu", "back", "stop",
         "chup", "chdown", "voiceup", "voicedown",
@@ -53,8 +60,6 @@ var Obj_IRnode = {
     ],
     RecordMode: [false]
 };
-
-
 
 
 $(document).ready(function() {
@@ -140,7 +145,7 @@ $(document).ready(function() {
 
 
     // 確認L節點得狀態
-    setInterval(timerFunciton, 3000);
+    setInterval(timerFunciton, 4000);
     // $('#btnTimer').change(function(event) {
     //     /* Act on the event */
     //     if ($(this).prop("checked") == true){
@@ -171,38 +176,49 @@ function get_NodeBtnStatus(b_firstTimer) {
 
     // 0223 change status bug
     // check N node status
-    if (b_firstTimer === true) {
-        for (var i = 0; i < Obj_Nnode.ID.length; i++) {
-            var nodeUrL = nodeUrlBase + Obj_Nnode.ID[i] + "/";
-            // console.log(nodeUrL);
-            $.ajax({
-                url: nodeUrL,
-                dataType: "json",
-                success: function(response) {
-                    // console.log(response);
-                    var index = Obj_Nnode.ID.indexOf(response.ID.toString());
-                    Obj_Nnode.State[index] = response.State.toString();
 
-                    if (Obj_Nnode.State[index].toString() == "0") {
-                        Obj_Nnode.DOMList[index].bootstrapToggle("off");
-                    } else {
-                        Obj_Nnode.DOMList[index].bootstrapToggle("on");
-                    }
-                },
-                error: function(response) {
-                    console.log("error");
+    var nodeUrL = "";
+    var index = 0;
+    for (var i = 0; i < Obj_Nnode.ID.length; i++) {
+        nodeUrL = nodeUrlBase + Obj_Nnode.ID[i] + "/";
+        // console.log(nodeUrL);
+        $.ajax({
+            url: nodeUrL,
+            dataType: "json",
+            success: function(response) {
+                // console.log(response);
+                index = Obj_Nnode.ID.indexOf(response.ID.toString());
+                Obj_Nnode.State[index] = response.State.toString();
+                Obj_Nnode.Current[index] = response.CurrentState;
+                // console.log(Obj_Nnode.Current[index]);
+
+                if (Obj_Nnode.State[index].toString() == "0") {
+                    Obj_Nnode.DOMList[index].bootstrapToggle("off");
+                } else {
+                    Obj_Nnode.DOMList[index].bootstrapToggle("on");
                 }
-            });
-        }
+
+
+                // console.log(Obj_Nnode.Current[index]);
+                if (Obj_Nnode.Current[index] <= 300) {
+                    Obj_Nnode.AlarmDOMList[index].bootstrapToggle("off");
+                } else {
+                    Obj_Nnode.AlarmDOMList[index].bootstrapToggle("on");
+                }
+            },
+            error: function(response) {
+                console.log("error");
+            }
+        });
     }
 
+    nodeUrL = "";
+    index = 0;
 
     // check L node status
     for (var i = 0; i < Obj_Lnode.ID.length; i++) {
-        var nodeUrL = nodeUrlBase + Obj_Lnode.ID[i] + "/";
+        nodeUrL = nodeUrlBase + Obj_Lnode.ID[i] + "/";
         // console.log(nodeUrL);
-        var index = [];
-
         $.ajax({
             url: nodeUrL,
             dataType: "json",
@@ -211,16 +227,19 @@ function get_NodeBtnStatus(b_firstTimer) {
 
                 index = Obj_Lnode.ID.indexOf(response.ID.toString());
                 Obj_Lnode.State[index] = Conveter_LnodeState2Bit(response.State.toString());
+                Obj_Lnode.Current[index] = response.CurrentState;
+                // console.log(index);
+                // console.log(Obj_Lnode.Current[index]);
                 // console.log("L node Sate: " + Obj_Lnode.State[index]);
 
                 for (var i in Obj_Lnode.DOMList[index]) {
                     // console.log("index: " + index);
                     // console.log("here: " + i);
-                    if (Obj_Lnode.State[index][i].toString() == "0") {
+                    if (Obj_Lnode.State[index][i].toString() === "0") {
                         Obj_Lnode.DOMList[index][i].bootstrapToggle("off");
                         Obj_Snode.DOMList[index][i][0].bootstrapToggle("off");
                         Obj_Snode.DOMList[index][i][1].bootstrapToggle("off");
-                    } else if (Obj_Lnode.State[index][i].toString() == "1") {
+                    } else if (Obj_Lnode.State[index][i].toString() === "1") {
                         Obj_Lnode.DOMList[index][i].bootstrapToggle("on");
                         Obj_Snode.DOMList[index][i][0].bootstrapToggle("on");
                         Obj_Snode.DOMList[index][i][1].bootstrapToggle("on");
@@ -239,6 +258,13 @@ function get_NodeBtnStatus(b_firstTimer) {
                     //     Obj_Snode.DOMList[index][i][1].bootstrapToggle('on');
                     // }
                 }
+
+                if (Obj_Lnode.Current[index] <= 300) {
+                    Obj_Lnode.AlarmDOMList[index].bootstrapToggle("off");
+                } else {
+                    Obj_Lnode.AlarmDOMList[index].bootstrapToggle("on");
+                }
+
             },
             error: function(response) {
                 console.log("error");
