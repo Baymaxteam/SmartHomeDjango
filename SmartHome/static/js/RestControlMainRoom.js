@@ -1,7 +1,8 @@
 //Flot Line Chart
 var responseJson = [];
 
-var nodeUrlBase = "../api/V1/node/";
+var nodeUrlBase = "http://192.168.1.59:8000/api/V1/node/";
+// var nodeUrlBase = "../api/V1/node/";
 
 
 var Obj_Nnode = {
@@ -77,7 +78,7 @@ $(document).ready(function() {
     // N node
     $.each(Obj_Nnode.ID, function(i) {
         // console.log(i);
-     Obj_Nnode.DOMList[i].change(function(event) {
+        Obj_Nnode.DOMList[i].change(function(event) {
 
             var nodeUrl = nodeUrlBase + Obj_Nnode.ID[i] + "/";
             // console.log(NnodeUrl);
@@ -151,7 +152,7 @@ $(document).ready(function() {
 
 
     // 確認L節點得狀態
-    setInterval(timerFunciton, 4000);
+    setInterval(timerFunciton, 1500);
     // $('#btnTimer').change(function(event) {
     //     /* Act on the event */
     //     if ($(this).prop("checked") == true){
@@ -204,12 +205,15 @@ function get_NodeBtnStatus(b_firstTimer) {
                     Obj_Nnode.DOMList[index].bootstrapToggle("on");
                 }
 
-
-                // console.log(Obj_Nnode.Current[index]);
+                var LED = Obj_Nnode.AlarmDOMList[index];
+                // 電流狀態更新
                 if (Obj_Nnode.Current[index] <= 300) {
-                    Obj_Nnode.AlarmDOMList[index].bootstrapToggle("off");
+
+                    LED.removeClass("led-red");
+                    LED.addClass("led-green");
                 } else {
-                    Obj_Nnode.AlarmDOMList[index].bootstrapToggle("on");
+                    LED.removeClass("led-green");
+                    LED.addClass("led-red");
                 }
             },
             error: function(response) {
@@ -252,23 +256,16 @@ function get_NodeBtnStatus(b_firstTimer) {
                     } else {
 
                     }
-
-                    // if ((Obj_Lnode.State[index][i].toString() == "0") && (Obj_Lnode.DOMList[index][i].prop('checked') == true)) {
-
-                    //     Obj_Lnode.DOMList[index][i].bootstrapToggle('off');
-                    //     Obj_Snode.DOMList[index][i][0].bootstrapToggle('off');
-                    //     Obj_Snode.DOMList[index][i][1].bootstrapToggle('off');
-                    // } else if ((Obj_Lnode.State[index][i].toString() == "1") && (Obj_Lnode.DOMList[index][i].prop('checked') != true)) {
-                    //     Obj_Lnode.DOMList[index][i].bootstrapToggle('on');
-                    //     Obj_Snode.DOMList[index][i][0].bootstrapToggle('on');
-                    //     Obj_Snode.DOMList[index][i][1].bootstrapToggle('on');
-                    // }
                 }
 
+                var LED = Obj_Lnode.AlarmDOMList[index];
+                // 電流狀態更新
                 if (Obj_Lnode.Current[index] <= 300) {
-                    Obj_Lnode.AlarmDOMList[index].bootstrapToggle("off");
+                    LED.removeClass("led-red");
+                    LED.addClass("led-green");
                 } else {
-                    Obj_Lnode.AlarmDOMList[index].bootstrapToggle("on");
+                    LED.removeClass("led-green");
+                    LED.addClass("led-red");
                 }
 
             },
@@ -278,6 +275,7 @@ function get_NodeBtnStatus(b_firstTimer) {
         });
     }
 }
+
 
 
 // no use

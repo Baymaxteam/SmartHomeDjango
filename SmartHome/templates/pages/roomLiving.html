@@ -102,13 +102,13 @@
             </div>
             <!-- /.navbar-static-side -->
         </nav>
-         <div id="page-wrapper">
+        <div id="page-wrapper">
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="page-header">
                             <h1>客廳! <small>玩轉家電</small></h1>
-                            <!-- <picture>
+                           <!--  <picture>
                                 <source srcset="picture/smallLivingRoom.jpg" media="(max-width: 40em) and (orientation: landscape)">
                                 <source srcset="picture/smallLivingRoom.jpg" media="(max-width: 40em) and (orientation: portrait)">
                                 <source srcset="picture/LivingRoom.jpg" media="(min-width: 40em) and (orientation: landscape)">
@@ -117,12 +117,10 @@
                             </picture> -->
                         </div>
                     </div>
-                    <!-- /.col-lg-12 -->
                 </div>
                 <div class="row">
                     <div class="panel panel-info">
-                        <div class="panel-heading">
-                            控制面板
+                        <div class="panel-heading"><i class="fa fa-tachometer"></i> 控制面板
                         </div>
                         <!-- /.panel-heading -->
                         <div class="panel-body">
@@ -152,7 +150,7 @@
                                                         <th>類型</th> -->
                                                         <th>應用</th>
                                                         <th>控制</th>
-                                                        <th>過載警報</th>
+                                                        <th>使用狀態</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -163,8 +161,9 @@
                                                         <td>
                                                             <input checked data-toggle="toggle" type="checkbox" data-onstyle="success" id="btnMainLight">
                                                         </td>
-                                                         <td>
-                                                            <input checked data-toggle="toggle" type="checkbox" data-onstyle="danger" id="btnMainLightAlarm">
+                                                        <td>
+                                                            <div class="led led-green" id="btnMainLightAlarm">
+                                                            </div>
                                                         </td>
                                                     </tr>
                                                     <tr class="odd gradeX">
@@ -174,8 +173,9 @@
                                                         <td>
                                                             <input checked data-toggle="toggle" type="checkbox" data-onstyle="success" id="btnWallLight">
                                                         </td>
-                                                          <td>
-                                                            <input checked data-toggle="toggle" type="checkbox" data-onstyle="danger" id="btnWallLightAlarm">
+                                                        <td>
+                                                            <div class="led led-green" id="btnWallLightAlarm">
+                                                            </div>
                                                         </td>
                                                     </tr>
                                                     </tr>
@@ -186,10 +186,10 @@
                                                         <td>
                                                             <input checked data-toggle="toggle" type="checkbox" data-onstyle="success" id="btnFan">
                                                         </td>
-                                                           <td>
-                                                            <input checked data-toggle="toggle" type="checkbox" data-onstyle="danger" id="btnFanAlarm">
+                                                        <td>
+                                                            <div class="led led-green" id="btnFanAlarm">
+                                                            </div>
                                                         </td>
-
                                                     </tr>
                                                     <tr class="even gradeC">
                                                         <!--    <td>1</td>
@@ -203,11 +203,11 @@
                                                             <label class="checkbox">
                                                                 <input checked data-toggle="toggle" type="checkbox" data-onstyle="success" id="btnCurtain3"> 檯燈3</label>
                                                         </td>
-                                                            <td>
-                                                            <input checked data-toggle="toggle" type="checkbox" data-onstyle="danger" id="btnCurtainAlarm">
+                                                        <td>
+                                                            <div class="led led-green" id="btnCurtainAlarm">
+                                                            </div>
                                                         </td>
                                                     </tr>
-
                                                 </tbody>
                                             </table>
                                         </div>
@@ -228,7 +228,8 @@
                                                     <h4 class="modal-title">對碼模式開啟</h4>
                                                 </div>
                                                 <div class="modal-body">
-                                                    <p>請點擊遙控器，進行紅外線對碼<br>等待3秒，確認是否測試成功</p>
+                                                    <p>請點擊遙控器，進行紅外線對碼
+                                                        <br>等待3秒，確認是否測試成功</p>
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-success" data-dismiss="modal">Close</button>
