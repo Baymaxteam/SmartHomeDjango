@@ -209,11 +209,11 @@ function get_NodeBtnStatus(b_firstTimer) {
                 // 電流狀態更新
                 if (Obj_Nnode.Current[index] <= 300) {
 
-                    LED.removeClass("led-red");
+                    LED.removeClass("led-orange");
                     LED.addClass("led-green");
                 } else {
                     LED.removeClass("led-green");
-                    LED.addClass("led-red");
+                    LED.addClass("led-orange");
                 }
             },
             error: function(response) {
