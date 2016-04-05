@@ -203,6 +203,7 @@ def house_bill(request, Interval):
 		month = pytz.timezone("Asia/Taipei").localize(datetime.datetime.now(), is_dst=None).month
 		day = pytz.timezone("Asia/Taipei").localize(datetime.datetime.now(), is_dst=None).day
 		hour = pytz.timezone("Asia/Taipei").localize(datetime.datetime.now(), is_dst=None).hour
+
 		if Interval == 'year': #今年
 			Echarge = [546.199, 511.042, 0, 0, 0, 0, 0, 0, 0, 0 ,0 ,0]		
 			for idx in range(12):
@@ -295,64 +296,76 @@ def house_bill(request, Interval):
 			# retern_data = {'Interval': Interval, 'data': Echarge}
 
 		elif Interval == 'day': #今天
-			retern_data = {"Interval":"day","data":[[1456185600000.0,random.randint(10,100)],[1456189200000.0,random.randint(10,100)],[1456192800000.0,random.randint(10,100)],[1456196400000.0,random.randint(10,100)],[1456200000000.0,random.randint(10,100)],[1456203600000.0,random.randint(10,100)],[1456207200000.0,random.randint(10,100)],[1456210800000.0,0],[1456214400000.0,0],[1456218000000.0,0],[1456221600000.0,0],[1456225200000.0,0],[1456228800000.0,0],[1456232400000.0,0],[1456236000000.0,0],[1456239600000.0,0],[1456243200000.0,0],[1456246800000.0,0],[1456250400000.0,0],[1456254000000.0,0],[1456257600000.0,0],[1456261200000.0,0],[1456264800000.0,0],[1456268400000.0,0]]}
+			# retern_data = {"Interval":"day","data":[[1456185600000.0,random.randint(10,100)],[1456189200000.0,random.randint(10,100)],[1456192800000.0,random.randint(10,100)],[1456196400000.0,random.randint(10,100)],[1456200000000.0,random.randint(10,100)],[1456203600000.0,random.randint(10,100)],[1456207200000.0,random.randint(10,100)],[1456210800000.0,0],[1456214400000.0,0],[1456218000000.0,0],[1456221600000.0,0],[1456225200000.0,0],[1456228800000.0,0],[1456232400000.0,0],[1456236000000.0,0],[1456239600000.0,0],[1456243200000.0,0],[1456246800000.0,0],[1456250400000.0,0],[1456254000000.0,0],[1456257600000.0,0],[1456261200000.0,0],[1456264800000.0,0],[1456268400000.0,0]]}
 
 
-			# #######
-			# cs_day = CurrentState.objects.all().filter(Added__year=year).filter(Added__month=month).filter(Added__day=day)
-			# temp = []
-			# for i in range(24):
-			# 	temp.append([0,0])
-			# State_list = cs_day.values_list('Added', 'State')
+			#######
+			cs_day = CurrentState.objects.all().filter(Added__year=year).filter(Added__month=month).filter(Added__day=day)
+			temp = []
+			for i in range(24):
+				temp.append([0,0])
+			State_list = cs_day.values_list('Added', 'State')
 			# ## Debug 
 			# Timetag1 = datetime.datetime.now()
 			# print("1."+ str(Timetag1))
 			# ##
-			# # ## 這裡很慢啊...約10秒
-			# for x in State_list:
-			# 	hour = x[0].astimezone(pytz.timezone("Asia/Taipei")).hour
-			# 	temp[hour-1][0]+=x[1] #第一個存值
-			# 	temp[hour-1][1]+=1 #第二個存數量
+			# ## 這裡很慢啊...約10秒
+			for x in State_list:
+				hour = x[0].astimezone(pytz.timezone("Asia/Taipei")).hour
+				temp[hour-1][0]+=x[1] #第一個存值
+				temp[hour-1][1]+=1 #第二個存數量
 			# # ##
 			# Timetag2 = datetime.datetime.now()
 			# print("2."+ str(Timetag2))
 			# print("  delta:"+ str(Timetag2-Timetag1))
 			# ##
-			# Echarge = []
-			# for idx, y in enumerate(temp):
-			# 	timestamp = (datetime.datetime(year, month, day, idx, 0)+ datetime.timedelta(hours=8)).timestamp()*1000
-			# 	if y[1] != 0:
-			# 		Echarge.append([timestamp, y[0]/y[1]*110/1000/1000*3*3])
-			# 	else:
-			# 		Echarge.append([timestamp, 0])
-			# retern_data = {'Interval': Interval, 'data': Echarge}
+			Echarge = []
+			for idx, y in enumerate(temp):
+				timestamp = (datetime.datetime(year, month, day, idx, 0)+ datetime.timedelta(hours=8)).timestamp()*1000
+				if y[1] != 0:
+					Echarge.append([timestamp, y[0]/y[1]*110/1000/1000*3*3])
+				else:
+					Echarge.append([timestamp, 0])
+			retern_data = {'Interval': Interval, 'data': Echarge}
 
-		# elif Interval == 'hour':  #這個小時
-		# 	cs_hour = CurrentState.objects.all().filter(Added__year=year).filter(Added__month=month).filter(Added__day=day).filter(Added__hour=hour)
-		# 	temp = []
-		# 	for i in range(60):
-		# 		temp.append([0,0])
-		# 	State_list = cs_hour.values_list('Added', 'State')
-		# 	for x in State_list:
-		# 		minute = x[0].astimezone(pytz.timezone("Asia/Taipei")).minute
-		# 		temp[minute][0]+=x[1] #第一個存值
-		# 		temp[minute][1]+=1 #第二個存數量
-		# 	Echarge = []
-		# 	for idx, y in enumerate(temp):
-		# 		timestamp = (datetime.datetime(year, month, day, hour, idx)+ datetime.timedelta(hours=8)).timestamp()
-		# 		if y[1] != 0:
-		# 			Echarge.append([timestamp, y[0]/y[1]*110/1000/1000*3*3])
-		# 		else:
-		# 			Echarge.append([timestamp, 0])
-		# 	retern_data = {'Interval': Interval, 'data': Echarge}
+		elif Interval == 'hour':  #這個小時
+			cs_hour = CurrentState.objects.all().filter(Added__year=year).filter(Added__month=month).filter(Added__day=day).filter(Added__hour=hour)
+			temp = []
+			for i in range(60):
+				temp.append([0,0])
+			State_list = cs_hour.values_list('Added', 'State')
+			for x in State_list:
+				minute = x[0].astimezone(pytz.timezone("Asia/Taipei")).minute
+				temp[minute][0]+=x[1] #第一個存值
+				temp[minute][1]+=1 #第二個存數量
+			Echarge = []
+			for idx, y in enumerate(temp):
+				timestamp = (datetime.datetime(year, month, day, hour, idx)+ datetime.timedelta(hours=8)).timestamp()
+				if y[1] != 0:
+					Echarge.append([timestamp, y[0]/y[1]*110/1000/1000*3*3])
+				else:
+					Echarge.append([timestamp, 0])
+			retern_data = {'Interval': Interval, 'data': Echarge}
 		elif Interval == 'node': #node列表
 		# [["1", "台燈", "客廳", "0", "10"],
     	#  ["2", "電風扇", "客廳", "1", "5"],
     	#  ["3", "微波爐", "客廳", "1", "80"]]
 			node_objs = Nodes.objects.all().order_by('ID')
 			# 客廳、主臥房
-			retern_data = [[str(x.ID), x.Appliances,  str(x.Group), x.states.last().State, str(random.randint(10,100))] for x in  node_objs] 
-		
+			retern_data = []
+			for x in  node_objs:
+				ID = str(x.ID)
+				Appl = x.Appliances
+				Group = str(x.Group)
+				try:
+					state = x.states.last().State
+				except:
+					state = ''
+				try:
+					Cstate = x.current_states.last().State
+				except:
+					Cstate = ''
+			retern_data += [ID, Appl, Group, state, Cstate]
 
 		return JSONResponse(retern_data)
 

@@ -15,12 +15,11 @@ class House(models.Model):
 
 
 class Nodes(models.Model):
-    ID = models.IntegerField(blank=True, null=True,
-                             validators=[MinValueValidator(0),
+    ID = models.IntegerField(validators=[MinValueValidator(0),
                                          MaxValueValidator(100)])
     Address = models.CharField(max_length = 100)
-    Type = models.CharField(max_length = 2)
-    Appliances = models.CharField(max_length = 100)
+    Type = models.CharField(max_length = 2, blank=True, null=True)
+    Appliances = models.CharField(max_length = 100, blank=True, null=True)
     # on_delete 指的是外鍵關聯對象刪除後的行為, related_name為反向查詢的名稱
     Group = models.ForeignKey(House, related_name='nodes',
                                      on_delete=models.SET_NULL,
