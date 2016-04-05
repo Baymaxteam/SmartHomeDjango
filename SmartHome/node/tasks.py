@@ -178,7 +178,7 @@ def nodeCurrentRepo():
                    '00 13 A2 00 40 B3 2D 4F':'Lnode1', '00 13 A2 00 40 B3 2D 5B':'Lnode2',
                    '00 13 A2 00 40 EC 3A BE':'IRnode',
                    '00 13 A2 00 40 B5 AB 49':'Snode1', '00 13 A2 00 40 B3 2D 4C':'Snode2','00 13 A2 00 40 B3 31 65':'Nnode6'}  # '00 13 A2 00 40 EC 3A B7':'Nnode2', '00 13 A2 00 40 B3 31 65':'Nnode6',
-		SL_pair = {'Snode1':'00 13 A2 00 40 B3 2D 4F', 'Snode2':'00 13 A2 00 40 B3 2D 5B'
+		SL_pair = {'Snode1':'00 13 A2 00 40 B3 2D 4F', 'Snode2':'00 13 A2 00 40 B3 2D 5B',
 				   'Lnode1':'00 13 A2 00 40 B5 AB 49', 'Lnode2':'00 13 A2 00 40 B3 2D 4C'}
 
 		# rep = xbeeListen.Receive()
@@ -202,19 +202,28 @@ def nodeCurrentRepo():
 					if node_name in SL_pair:
 						node_L_one_turn.apply_async((S_node_state, SL_pair[node_name]))
 						print('收到'+node_name+', 下命令給'+SL_pair[node_name])
-					try:
+
+					if node_name == 'Snode1' or node_name == 'Snode2':
 						node_obj = Nodes.objects.get(Address = SL_pair[node_name])
-					except:
+					elif node_name == 'Lnode1' or node_name == 'Lnode2':
 						node_obj = Nodes.objects.get(Address = rec_address)
+					else:
+						print('unKnow Arrdess: '+ data['nodeAddress'])
+						continue
+
+					# try:
+					# 	node_obj = Nodes.objects.get(Address = SL_pair[node_name])
+					# except:
 						# 新增未知節點進資料庫
 						# a = Nodes.objects.all()
 						# new_NodeID = max([x.ID for x in a])+1
 						# addedtime = pytz.timezone("Asia/Taipei").localize(datetime.datetime.now(), is_dst=None)  
 						# Nodes.objects.create(ID = new_NodeID, Address = rec_address, Added = addedtime, Updated = addedtime)
 						# print("New Node! Create than...")
-						# print('unKnow Arrdess: '+ data['nodeAddress'])
+						# print('unKnow Arrdess: '+ data['nodeAddress']+'  Check L nodes...')
 						# node_obj = Nodes.objects.get(Address = rec_address)
 						# continue
+						
 					laststate = NodeState.objects.all().filter(NodeID = node_obj).latest('Added').State
 					laststate = int(laststate)
 					# 修正 8 9 10 命令的問題
