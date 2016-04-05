@@ -365,7 +365,7 @@ def house_bill(request, Interval):
 					Cstate = x.current_states.last().State
 				except:
 					Cstate = ''
-			retern_data += [ID, Appl, Group, state, Cstate]
+				retern_data += [ID, Appl, Group, state, Cstate]
 
 		return JSONResponse(retern_data)
 
