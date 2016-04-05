@@ -178,7 +178,8 @@ def nodeCurrentRepo():
                    '00 13 A2 00 40 B3 2D 4F':'Lnode1', '00 13 A2 00 40 B3 2D 5B':'Lnode2',
                    '00 13 A2 00 40 EC 3A BE':'IRnode',
                    '00 13 A2 00 40 B5 AB 49':'Snode1', '00 13 A2 00 40 B3 2D 4C':'Snode2','00 13 A2 00 40 B3 31 65':'Nnode6'}  # '00 13 A2 00 40 EC 3A B7':'Nnode2', '00 13 A2 00 40 B3 31 65':'Nnode6',
-		SL_pair = {'Snode1':'00 13 A2 00 40 B3 2D 4F', 'Snode2':'00 13 A2 00 40 B3 2D 5B'}
+		SL_pair = {'Snode1':'00 13 A2 00 40 B3 2D 4F', 'Snode2':'00 13 A2 00 40 B3 2D 5B'
+				   'Lnode1':'00 13 A2 00 40 B5 AB 49', 'Lnode2':'00 13 A2 00 40 B3 2D 4C'}
 
 		# rep = xbeeListen.Receive()
 		rep = xbee.Receive()
