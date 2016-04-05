@@ -192,7 +192,12 @@ def nodeCurrentRepo():
 				if 'state' in data:
 					S_node_state = int(data['state'])
 					rec_address = data['nodeAddress']
-					node_name = address[rec_address]
+					try:
+						node_name = address[rec_address]
+					except:
+						print('unKnow Arrdess: '+ data['nodeAddress'])
+						continue
+						
 					if node_name in SL_pair:
 						node_L_one_turn.apply_async((S_node_state, SL_pair[node_name]))
 						print('收到'+node_name+', 下命令給'+SL_pair[node_name])
