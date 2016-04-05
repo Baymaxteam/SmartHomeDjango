@@ -223,16 +223,16 @@ def nodeCurrentRepo():
 						# print('unKnow Arrdess: '+ data['nodeAddress']+'  Check L nodes...')
 						# node_obj = Nodes.objects.get(Address = rec_address)
 						# continue
-						
+
 					laststate = NodeState.objects.all().filter(NodeID = node_obj).latest('Added').State
 					laststate = int(laststate)
 					# 修正 8 9 10 命令的問題
 					if S_node_state == 8:
-						laststate = xor(laststate, 4)
+						laststate = xor(laststate, 1)
 					elif S_node_state == 9:
 						laststate = xor(laststate, 2)
 					elif S_node_state == 10:
-						laststate = xor(laststate, 1)
+						laststate = xor(laststate, 4)
 					addedtime = pytz.timezone("Asia/Taipei").localize(datetime.datetime.now(), is_dst=None)
 					NodeState.objects.create(NodeID = node_obj, State = laststate, Added = addedtime)
 
