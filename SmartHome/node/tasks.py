@@ -202,7 +202,7 @@ def nodeCurrentRepo():
 						node_L_one_turn.apply_async((S_node_state, SL_pair[node_name]))
 						print('收到'+node_name+', 下命令給'+SL_pair[node_name])
 					try:
-						node_obj = Nodes.objects.get(Address = rec_address)
+						node_obj = Nodes.objects.get(Address = SL_pair[node_name])
 					except:
 						# 新增未知節點進資料庫
 						# a = Nodes.objects.all()
