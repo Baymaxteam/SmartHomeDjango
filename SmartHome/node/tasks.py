@@ -205,11 +205,12 @@ def nodeCurrentRepo():
 						node_obj = Nodes.objects.get(Address = rec_address)
 					except:
 						# 新增未知節點進資料庫
-						a = Nodes.objects.all()
-						new_NodeID = max([x.ID for x in a])+1
-						addedtime = pytz.timezone("Asia/Taipei").localize(datetime.datetime.now(), is_dst=None)  
-						Nodes.objects.create(ID = new_NodeID, Address = rec_address, Added = addedtime, Updated = addedtime)
-						print("New Node! Create than...")
+						# a = Nodes.objects.all()
+						# new_NodeID = max([x.ID for x in a])+1
+						# addedtime = pytz.timezone("Asia/Taipei").localize(datetime.datetime.now(), is_dst=None)  
+						# Nodes.objects.create(ID = new_NodeID, Address = rec_address, Added = addedtime, Updated = addedtime)
+						# print("New Node! Create than...")
+						print('unKnow Arrdess: '+ data['nodeAddress'])
 						# node_obj = Nodes.objects.get(Address = rec_address)
 						continue
 					laststate = NodeState.objects.all().filter(NodeID = node_obj).latest('Added').State
@@ -231,13 +232,14 @@ def nodeCurrentRepo():
 						node_obj = Nodes.objects.get(Address = data['nodeAddress'])
 					except:
 						# 新增未知節點進資料庫
-						a = Nodes.objects.all()
-						new_NodeID = max([x.ID for x in a])+1
-						addedtime = pytz.timezone("Asia/Taipei").localize(datetime.datetime.now(), is_dst=None)  
-						Nodes.objects.create(ID = new_NodeID, Address = rec_address, Added = addedtime, Updated = addedtime)
-						node_obj = Nodes.objects.get(Address = rec_address)
+						# a = Nodes.objects.all()
+						# new_NodeID = max([x.ID for x in a])+1
+						# addedtime = pytz.timezone("Asia/Taipei").localize(datetime.datetime.now(), is_dst=None)  
+						# Nodes.objects.create(ID = new_NodeID, Address = rec_address, Added = addedtime, Updated = addedtime)
+						# node_obj = Nodes.objects.get(Address = rec_address)
 						print('unKnow Arrdess: '+ data['nodeAddress'])
-						print("New Node! Create than...")	
+						continue
+						# print("New Node! Create than...")	
 					addedtime = pytz.timezone("Asia/Taipei").localize(datetime.datetime.now(), is_dst=None)
 					node_LastState_time[nodeName] = addedtime
 					CurrentState.objects.create(NodeID = node_obj, State = data['Current'], Added = addedtime)
