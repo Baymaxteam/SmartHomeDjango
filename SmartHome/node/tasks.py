@@ -215,8 +215,8 @@ def nodeCurrentRepo():
 
 				elif 'Current' in data:
 					rec_address = data['nodeAddress']
-					nodeName = address[rec_address]
 					try:
+						nodeName = address[rec_address]
 						node_obj = Nodes.objects.get(Address = data['nodeAddress'])
 					except:
 						print('unKnow Arrdess: '+ data['nodeAddress'])
