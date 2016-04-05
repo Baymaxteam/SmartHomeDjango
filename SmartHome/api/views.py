@@ -358,7 +358,7 @@ def house_bill(request, Interval):
 
 
 @csrf_exempt
-def Node_cs_detail(request, Interval): 
+def Node_cs_detail(request, NodeID): 
 	try:
 		node_obj = Nodes.objects.get(ID = NodeID)
 	except Nodes.DoesNotExist:
