@@ -1,8 +1,8 @@
 //Flot Line Chart
 var responseJson = [];
 
-var nodeUrlBase = "http://192.168.1.59:8000/api/V1/node/";
-// var nodeUrlBase = "../api/V1/node/";
+// var nodeUrlBase = "http://192.168.1.59:8000/api/V1/node/";
+var nodeUrlBase = "../api/V1/node/";
 
 
 var Obj_Nnode = {
