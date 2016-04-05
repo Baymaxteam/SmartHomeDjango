@@ -180,7 +180,8 @@ def nodeCurrentRepo():
                    '00 13 A2 00 40 B5 AB 49':'Snode1', '00 13 A2 00 40 B3 2D 4C':'Snode2','00 13 A2 00 40 B3 31 65':'Nnode6'}  # '00 13 A2 00 40 EC 3A B7':'Nnode2', '00 13 A2 00 40 B3 31 65':'Nnode6',
 		SL_pair = {'Snode1':'00 13 A2 00 40 B3 2D 4F', 'Snode2':'00 13 A2 00 40 B3 2D 5B'}
 
-		rep = xbeeListen.Receive()
+		# rep = xbeeListen.Receive()
+		rep = xbee.Receive()
 		# rep = xbee.Currentreport()
 		if type(rep) is list:
 			# print(str(len(rep))+' nodes are online...')
