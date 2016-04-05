@@ -205,15 +205,16 @@ def nodeCurrentRepo():
 					try:
 						node_obj = Nodes.objects.get(Address = SL_pair[node_name])
 					except:
+						node_obj = Nodes.objects.get(Address = rec_address)
 						# 新增未知節點進資料庫
 						# a = Nodes.objects.all()
 						# new_NodeID = max([x.ID for x in a])+1
 						# addedtime = pytz.timezone("Asia/Taipei").localize(datetime.datetime.now(), is_dst=None)  
 						# Nodes.objects.create(ID = new_NodeID, Address = rec_address, Added = addedtime, Updated = addedtime)
 						# print("New Node! Create than...")
-						print('unKnow Arrdess: '+ data['nodeAddress'])
+						# print('unKnow Arrdess: '+ data['nodeAddress'])
 						# node_obj = Nodes.objects.get(Address = rec_address)
-						continue
+						# continue
 					laststate = NodeState.objects.all().filter(NodeID = node_obj).latest('Added').State
 					laststate = int(laststate)
 					# 修正 8 9 10 命令的問題
