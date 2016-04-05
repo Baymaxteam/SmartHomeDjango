@@ -205,7 +205,7 @@ def nodeCurrentRepo():
 						node_obj = Nodes.objects.get(Address = rec_address)
 					except:
 						# 新增未知節點進資料庫
-						a = Nodes.objects.all().NodeID
+						a = Nodes.objects.all()
 						new_NodeID = max([x.ID for x in a])+1
 						addedtime = pytz.timezone("Asia/Taipei").localize(datetime.datetime.now(), is_dst=None)  
 						Nodes.objects.create(ID = new_NodeID, Address = rec_address, Added = addedtime, Updated = addedtime)
@@ -231,7 +231,7 @@ def nodeCurrentRepo():
 						node_obj = Nodes.objects.get(Address = data['nodeAddress'])
 					except:
 						# 新增未知節點進資料庫
-						a = Nodes.objects.all().NodeID
+						a = Nodes.objects.all()
 						new_NodeID = max([x.ID for x in a])+1
 						addedtime = pytz.timezone("Asia/Taipei").localize(datetime.datetime.now(), is_dst=None)  
 						Nodes.objects.create(ID = new_NodeID, Address = rec_address, Added = addedtime, Updated = addedtime)
