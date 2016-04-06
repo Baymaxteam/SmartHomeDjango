@@ -66,10 +66,10 @@ class NodesSerializer(serializers.ModelSerializer):
 		fields = ('ID', 'Address', 'Type', 'Appliances', 'Group','Added', 'Updated', 'State', 'CurrentState')
 	
 	def node_state(self, obj):
-		return obj.states.last().State # 要回傳字串
+		return obj.states.last().State # 要回傳字串 #回傳最後一筆狀態
 
 	def node_Amp(self, obj):
-		return obj.current_states.last().State
+		return int(float(obj.current_states.last().State)/100) #轉換成安培單位
 		
 	# def node_state(self, obj):
 	# 	end_date = datetime.datetime.now()
@@ -120,7 +120,7 @@ class NodeslistSerializer(serializers.ModelSerializer):
 		return obj.states.last().State # 要回傳字串
 
 	def node_Amp(self, obj):
-		return obj.current_states.last().State
+		return int(float(obj.current_states.last().State)/100) #轉換成安培單位
 
 
 
