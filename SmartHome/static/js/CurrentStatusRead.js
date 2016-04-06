@@ -5,8 +5,6 @@ var statMonthUrl = "../api/V1/bill/house/month/";
 var statDayUrl = "../api/V1/bill/house/day/";
 var statNodeUrl = "../api/V1/bill/house/node/";
 
-
-
 var statNodeData = [
     ["1", "檯燈", "客廳", "1", "85"],
     ["2", "微波爐", "客廳", "1", "45"],

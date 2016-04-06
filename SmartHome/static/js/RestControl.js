@@ -61,6 +61,7 @@ var Obj_IRnode = {
     RecordMode: [false]
 };
 
+var alarmvalue = 30;
 
 $(document).ready(function() {
     console.log("document ready");
@@ -206,7 +207,7 @@ function get_NodeBtnStatus(b_firstTimer) {
 
                 var LED = Obj_Nnode.AlarmDOMList[index];
                 // 電流狀態更新
-                if (Obj_Nnode.Current[index] <= 300) {
+                if (Obj_Nnode.Current[index] <= alarmvalue) {
 
                     LED.removeClass("led-orange");
                     LED.addClass("led-green");
@@ -259,7 +260,7 @@ function get_NodeBtnStatus(b_firstTimer) {
 
                 var LED = Obj_Lnode.AlarmDOMList[index];
                 // 電流狀態更新
-                if (Obj_Lnode.Current[index] <= 300) {
+                if (Obj_Lnode.Current[index] <= alarmvalue) {
                     LED.removeClass("led-red");
                     LED.addClass("led-green");
                 } else {
