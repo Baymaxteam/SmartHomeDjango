@@ -61,6 +61,7 @@ var Obj_IRnode = {
     RecordMode: [false]
 };
 
+// 300 mA
 var alarmvalue = 30;
 
 $(document).ready(function() {
