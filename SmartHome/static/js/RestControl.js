@@ -259,15 +259,15 @@ function get_NodeBtnStatus(b_firstTimer) {
                     }
                 }
 
-                var LED = Obj_Lnode.AlarmDOMList[index];
-                // 電流狀態更新
-                if (Obj_Lnode.Current[index] <= alarmvalue) {
-                    LED.removeClass("led-red");
-                    LED.addClass("led-green");
-                } else {
-                    LED.removeClass("led-green");
-                    LED.addClass("led-red");
-                }
+                // var LED = Obj_Lnode.AlarmDOMList[index];
+                // // 電流狀態更新
+                // if (Obj_Lnode.Current[index] <= alarmvalue) {
+                //     LED.removeClass("led-red");
+                //     LED.addClass("led-green");
+                // } else {
+                //     LED.removeClass("led-green");
+                //     LED.addClass("led-red");
+                // }
 
             },
             error: function(response) {
