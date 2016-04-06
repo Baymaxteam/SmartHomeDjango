@@ -337,7 +337,7 @@ function get_AllNodeList(nodeUrl) {
             }, {
                 title: "狀態"
             }, {
-                title: "即時耗電(mA)"
+                title: "即時耗電(A)"
             }]
         });
     }
