@@ -172,14 +172,18 @@ def nodeCheck():
 @shared_task
 def nodeCurrentRepo():
 	if noSerialPortMode == False:
+		##20160407 把兩個備用的L取代兩個S
 		address = {'00 13 A2 00 40 EC 3A A4':'Nnode1',  
                    '00 13 A2 00 40 EC 3A 97':'Nnode3', '00 13 A2 00 40 B3 2D 41':'Nnode4',
                    '00 13 A2 00 40 EC 3A 98':'Nnode5', 
                    '00 13 A2 00 40 B3 2D 4F':'Lnode1', '00 13 A2 00 40 B3 2D 5B':'Lnode2',
                    '00 13 A2 00 40 EC 3A BE':'IRnode',
-                   '00 13 A2 00 40 B5 AB 49':'Snode1', '00 13 A2 00 40 B3 2D 4C':'Snode2','00 13 A2 00 40 B3 31 65':'Nnode6'}  # '00 13 A2 00 40 EC 3A B7':'Nnode2', '00 13 A2 00 40 B3 31 65':'Nnode6',
-		SL_pair = {'Snode1':'00 13 A2 00 40 B3 2D 4F', 'Snode2':'00 13 A2 00 40 B3 2D 5B',
-				   'Lnode1':'00 13 A2 00 40 B5 AB 49', 'Lnode2':'00 13 A2 00 40 B3 2D 4C'}
+                   '00 13 A2 00 40 B5 AB 49':'Snode1', '00 13 A2 00 40 B3 2D 4C':'Snode2','00 13 A2 00 40 B3 31 65':'Nnode6',
+                   '00 13 A2 00 40 BA 79 B8':'LBnode1','00 13 A2 00 40 BA 79 B9':'LBnode2' }  # '00 13 A2 00 40 EC 3A B7':'Nnode2', '00 13 A2 00 40 B3 31 65':'Nnode6',
+		# SL_pair = {'Snode1':'00 13 A2 00 40 B3 2D 4F', 'Snode2':'00 13 A2 00 40 B3 2D 5B',
+		# 		   'Lnode1':'00 13 A2 00 40 B5 AB 49', 'Lnode2':'00 13 A2 00 40 B3 2D 4C'}
+		SL_pair = {'LBnode1':'00 13 A2 00 40 B3 2D 4F', 'LBnode2':'00 13 A2 00 40 B3 2D 5B',
+				   'Lnode1':'00 13 A2 00 40 BA 79 B8', 'Lnode2':'00 13 A2 00 40 BA 79 B9'}
 
 		# rep = xbeeListen.Receive()
 		rep = xbee.Receive()
@@ -203,7 +207,8 @@ def nodeCurrentRepo():
 						node_L_one_turn.apply_async((S_node_state, SL_pair[node_name]))
 						print('收到'+node_name+', 下命令給'+SL_pair[node_name])
 
-					if node_name == 'Snode1' or node_name == 'Snode2':
+					# if node_name == 'Snode1' or node_name == 'Snode2':
+					if node_name == 'LBnode1' or node_name == 'LBnode2':
 						node_obj = Nodes.objects.get(Address = SL_pair[node_name])
 					elif node_name == 'Lnode1' or node_name == 'Lnode2':
 						node_obj = Nodes.objects.get(Address = rec_address)
