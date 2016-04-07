@@ -311,7 +311,7 @@ function showYeardata() {
 }
 
 function get_AllNodeList(nodeUrl) {
-    var statNodeTable = [];
+    var statNodeTable = [][];
     var item = ["ID","Appliances","Group","State","CurrentState"]; 
     var i , j = 0;
     
