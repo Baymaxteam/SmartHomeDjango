@@ -69,7 +69,7 @@ class NodesSerializer(serializers.ModelSerializer):
 		return obj.states.last().State # 要回傳字串 #回傳最後一筆狀態
 
 	def node_Amp(self, obj):
-		return int(float(obj.current_states.last().State)/100) #轉換成安培單位
+		return str(float(obj.current_states.last().State)*10) #轉換成豪安培mA單位
 		
 	# def node_state(self, obj):
 	# 	end_date = datetime.datetime.now()
@@ -120,7 +120,7 @@ class NodeslistSerializer(serializers.ModelSerializer):
 		return obj.states.last().State # 要回傳字串
 
 	def node_Amp(self, obj):
-		return int(float(obj.current_states.last().State)/100) #轉換成安培單位
+		return str(float(obj.current_states.last().State)*10) #轉換成毫安培mA單位
 
 
 

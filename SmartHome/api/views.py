@@ -323,7 +323,7 @@ def house_bill(request, Interval):
 			for idx, y in enumerate(temp):
 				timestamp = (datetime.datetime(year, month, day, idx, 0)+ datetime.timedelta(hours=8)).timestamp()*1000
 				if y[1] != 0:
-					Echarge.append([timestamp, y[0]/y[1]*110/1000/1000*3*3])
+					Echarge.append([timestamp, y[0]/y[1]*110/100/1000*3*60]) 
 				else:
 					Echarge.append([timestamp, 0])
 			retern_data = {'Interval': Interval, 'data': Echarge}
@@ -342,7 +342,7 @@ def house_bill(request, Interval):
 			for idx, y in enumerate(temp):
 				timestamp = (datetime.datetime(year, month, day, hour, idx)+ datetime.timedelta(hours=8)).timestamp()
 				if y[1] != 0:
-					Echarge.append([timestamp, y[0]/y[1]*110/1000/1000*3*3])
+					Echarge.append([timestamp, y[0]/y[1]*110/100/1000*3])
 				else:
 					Echarge.append([timestamp, 0])
 			retern_data = {'Interval': Interval, 'data': Echarge}
@@ -362,10 +362,11 @@ def house_bill(request, Interval):
 				except:
 					state = ''
 				try:
-					Cstate = x.current_states.last().State
+					Cstate = str(float(x.current_states.last().State)*10)
 				except:
 					Cstate = ''
 				retern_data.append([ID, Appl, Group, state, Cstate])
+
 
 		return JSONResponse(retern_data)
 
