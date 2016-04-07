@@ -311,7 +311,7 @@ function showYeardata() {
 }
 
 function get_AllNodeList(nodeUrl) {
-    var statNodeTable = [];
+    var statNodeTable = [[]];
     var item = ["ID","Appliances","Group","State","CurrentState"]; 
     var i , j = 0;
     
@@ -324,7 +324,7 @@ function get_AllNodeList(nodeUrl) {
             // 暫時改成nodelist 去要
             for (i = 0; i < len; i++) {
                 for (j = 0; j < 5; j++){
-                    statNodeTable[j][i] = response[i][j];
+                    statNodeTable[j][i] = response[i][item[j]];
                 }
             }
            
