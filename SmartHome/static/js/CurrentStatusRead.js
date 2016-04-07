@@ -326,7 +326,7 @@ function get_AllNodeList(nodeUrl) {
             for (i = 0; i < len; i++) {
                 tmp = [];
                 for (j = 0; j < 5; j++){
-                    tmp.push = response[i][item[j]];
+                     tmp.push(response[i][item[j]]);
 
                 }
                 statNodeTable.push(tmp);
