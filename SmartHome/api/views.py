@@ -116,6 +116,10 @@ def Node_detail(request, NodeID):
 			if commd in range(8):
 				vailded = True
 				node_L_one_turn.apply_async((commd, node_obj.Address))
+				if(node_obj.Address == '00 13 A2 00 40 B3 2D 4F'):
+					node_L_one_turn.apply_async((commd, '00 13 A2 00 40 BA 79 B8'))
+				elif(node_obj.Address == '00 13 A2 00 40 B3 2D 5B'):
+					node_L_one_turn.apply_async((commd, '00 13 A2 00 40 BA 79 B9'))
 		elif nodeType == 'IR':
 			vailded = True
 			IR_node_send.apply_async((commd, ))
