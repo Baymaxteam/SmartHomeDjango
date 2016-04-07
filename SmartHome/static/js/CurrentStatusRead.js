@@ -311,7 +311,7 @@ function showYeardata() {
 }
 
 function get_AllNodeList(nodeUrl) {
-    var statNodeTable = [];
+    var statNodeTable = [[]];
     var i = 0;
     $.ajax({
         url: nodeUrl,
@@ -319,13 +319,14 @@ function get_AllNodeList(nodeUrl) {
         success: function(response) {
             console.log(response);
             var len = response.length;
-
+            // 暫時改成nodelist 去要
             for (i = 0; i < len; i++) {
-                statNodeTable[ID].push(response[i].ID);
-                statNodeTable[Appliances].push(response[i].Appliances);
-                statNodeTable[Group].push(response[i].Group);
-                statNodeTable[State].push(response[i].State);
-                statNodeTable[CurrentState].push(response[i].CurrentState);
+                
+                statNodeTable[0].push(response[i].ID);
+                statNodeTable[1].push(response[i].Appliances);
+                statNodeTable[2].push(response[i].Group);
+                statNodeTable[3].push(response[i].State);
+                statNodeTable[4].push(response[i].CurrentState);
                
             }
            
