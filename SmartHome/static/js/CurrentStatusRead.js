@@ -321,18 +321,14 @@ function get_AllNodeList(nodeUrl) {
             var len = response.length;
 
             for (i = 0; i < len; i++) {
-                statNodeTable.ID = push(response[i].ID);
-                statNodeTable.Appliances = push(response[i].Appliances);
-                statNodeTable.Group = push(response[i].Group);
-                statNodeTable.State = push(response[i].State);
-                statNodeTable.CurrentState = push(response[i].CurrentState);
-
+                statNodeTable.ID.push(response[i].ID);
+                statNodeTable.Appliances.push(response[i].Appliances);
+                statNodeTable.Group.push(response[i].Group);
+                statNodeTable.State.push(response[i].State);
+                statNodeTable.CurrentState.push(response[i].CurrentState);
+               
             }
-            // statNodeTable.ID = response.ID;
-            // statNodeTable.Appliances = response.Appliances;
-            // statNodeTable.Group = response.Group;
-            // statNodeTable.State = response.State;
-            // statNodeTable.State = response.CurrentState;
+           
             console.log(statNodeTable);
             showNodeTable(statNodeTable);
         },
