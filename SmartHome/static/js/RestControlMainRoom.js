@@ -63,7 +63,7 @@ var Obj_IRnode = {
 }
 
 // 500 mA
-var alarmvalue = 0.5;
+var alarmvalue = 200;
 
 $(document).ready(function() {
     console.log("document ready");

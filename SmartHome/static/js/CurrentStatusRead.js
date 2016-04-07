@@ -3,7 +3,7 @@
 var statYearUrl = "../api/V1/bill/house/year/";
 var statMonthUrl = "../api/V1/bill/house/month/";
 var statDayUrl = "../api/V1/bill/house/day/";
-var statNodeUrl = "../api/V1/bill/house/node/";
+var statNodeUrl = "../api/V1/node/";
 
 var statNodeData = [
     ["1", "檯燈", "客廳", "1", "85"],
@@ -311,12 +311,19 @@ function showYeardata() {
 }
 
 function get_AllNodeList(nodeUrl) {
+    var statNodeTable =[];
     $.ajax({
         url: nodeUrl,
         dataType: "json",
         success: function(response) {
             console.log(response);
-            showNodeTable(response)
+            statNodeTable.ID = response.ID;
+            statNodeTable.Appliances = response.Appliances;
+            statNodeTable.Group = response.Group;
+            statNodeTable.State = response.State;
+            statNodeTable.State = response.CurrentState;
+            console.log(statNodeTable);
+            showNodeTable(statNodeTable);
         },
         error: function(response) {
             console.log("error");
@@ -337,7 +344,7 @@ function get_AllNodeList(nodeUrl) {
             }, {
                 title: "狀態"
             }, {
-                title: "即時耗電(A)"
+                title: "即時耗電(mA)"
             }]
         });
     }
