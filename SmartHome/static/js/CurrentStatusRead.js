@@ -324,7 +324,7 @@ function get_AllNodeList(nodeUrl) {
             // 暫時改成nodelist 去要
             for (i = 0; i < len; i++) {
                 for (j = 0; j < 5; j++){
-                    statNodeTable[i][j] = response[i][item[j];
+                    statNodeTable[i][j] = response[i][item[j]];
 
                 }
                
