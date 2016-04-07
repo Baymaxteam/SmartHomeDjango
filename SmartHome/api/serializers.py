@@ -72,7 +72,7 @@ class NodesSerializer(serializers.ModelSerializer):
 		day = pytz.timezone("Asia/Taipei").localize(datetime.datetime.now(), is_dst=None).day
 		try: 
 			current = str(float(obj.current_states.filter(Added__day=day).last().State)*10)#轉換成毫安培mA單位 #只取今天有傳值的
-		else:
+		except:
 			current = '0'
 		return current 
 		
@@ -128,7 +128,7 @@ class NodeslistSerializer(serializers.ModelSerializer):
 		day = pytz.timezone("Asia/Taipei").localize(datetime.datetime.now(), is_dst=None).day
 		try: 
 			current = str(float(obj.current_states.filter(Added__day=day).last().State)*10)#轉換成毫安培mA單位 #只取今天有傳值的
-		else:
+		except:
 			current = '0'
 		return current 
 
