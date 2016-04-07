@@ -318,7 +318,7 @@ function get_AllNodeList(nodeUrl) {
         dataType: "json",
         success: function(response) {
             console.log(response);
-            var len = response.length();
+            var len = response.length;
 
             for (i = 0; i < len; i++) {
                 statNodeTable.ID = push(response[i].ID);
