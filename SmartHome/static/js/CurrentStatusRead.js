@@ -321,11 +321,14 @@ function get_AllNodeList(nodeUrl) {
         success: function(response) {
             console.log(response);
             var len = response.length;
+            var tmp = [];
             // 暫時改成nodelist 去要
-            for (i = 0; i < len; i++) {
-                for (j = 0; j < 5; j++){
-                    statNodeTable[j][i] = response[i][item[j]];
+            for (j = 0; j < 5; j++){
+                for (i = 0; i < len; i++) {
+                
+                    tmp[i] = response[i][item[j]];
                 }
+                statNodeTable.push(tmp);
             }
            
             console.log(statNodeTable);

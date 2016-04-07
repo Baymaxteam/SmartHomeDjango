@@ -64,7 +64,7 @@ var Obj_IRnode = {
 
 // 500 mA
 var alarmvalue = 500;
-var RESTful_gettime = 3000;
+
 
 $(document).ready(function() {
     console.log("document ready");
@@ -155,7 +155,7 @@ $(document).ready(function() {
 
 
     // 確認L節點得狀態
-    setInterval(timerFunciton, RESTful_gettime);
+    setInterval(timerFunciton, 2500);
     // $('#btnTimer').change(function(event) {
     //     /* Act on the event */
     //     if ($(this).prop("checked") == true){
