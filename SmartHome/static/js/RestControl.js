@@ -153,7 +153,7 @@ $(document).ready(function() {
 
 
     // 確認L節點得狀態
-    setInterval(timerFunciton, 1500);
+    setInterval(timerFunciton, 3000);
     // $('#btnTimer').change(function(event) {
     //     /* Act on the event */
     //     if ($(this).prop("checked") == true){
