@@ -324,6 +324,7 @@ function get_AllNodeList(nodeUrl) {
             var tmp = [];
             // 暫時改成nodelist 去要
             for (j = 0; j < 5; j++){
+                tmp = [];
                 for (i = 0; i < len; i++) {
                 
                     tmp[i] = response[i][item[j]];
