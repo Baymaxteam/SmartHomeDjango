@@ -321,11 +321,11 @@ function get_AllNodeList(nodeUrl) {
             var len = response.length;
 
             for (i = 0; i < len; i++) {
-                statNodeTable.ID.push(response[i].ID);
-                statNodeTable.Appliances.push(response[i].Appliances);
-                statNodeTable.Group.push(response[i].Group);
-                statNodeTable.State.push(response[i].State);
-                statNodeTable.CurrentState.push(response[i].CurrentState);
+                statNodeTable.push(response[i].ID);
+                statNodeTable.push(response[i].Appliances);
+                statNodeTable.push(response[i].Group);
+                statNodeTable.push(response[i].State);
+                statNodeTable.push(response[i].CurrentState);
                
             }
            
