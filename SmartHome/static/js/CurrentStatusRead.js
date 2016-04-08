@@ -146,8 +146,8 @@ $(document).ready(function() {
 
     showMonthdata();
     showYeardata();
-    get_Daydata(statDayUrl);
     get_AllNodeList(statNodeUrl);
+    get_Daydata(statDayUrl);
 });
 
 // function showNodedata() {
