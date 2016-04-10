@@ -326,10 +326,10 @@ function get_AllNodeList(nodeUrl) {
             for (i = 0; i < len; i++) {
                 tmp = [];
                 for (j = 0; j < 5; j++){
-                     tmp.push(response[i][item[j]]);
-                     if (j == 4){
+                     
+                    if (j == 4){
                         tmp.push((response[i][item[j]]/1000));
-                     }else{
+                    }else{
                         tmp.push(response[i][item[j]]);
                     }
 
