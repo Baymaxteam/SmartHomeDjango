@@ -70,15 +70,17 @@ class NodesSerializer(serializers.ModelSerializer):
 		return obj.states.last().State # 要回傳字串 #回傳最後一筆狀態
 
 	def node_Amp(self, obj):
-		year = pytz.timezone("Asia/Taipei").localize(datetime.datetime.now(), is_dst=None).year
-		month = pytz.timezone("Asia/Taipei").localize(datetime.datetime.now(), is_dst=None).month
-		day = pytz.timezone("Asia/Taipei").localize(datetime.datetime.now(), is_dst=None).day
-		try: 
-			current = str(float(obj.current_states.filter(Added__year=year).filter(Added__month=month).filter(Added__day=day).last().State)*10)#轉換成毫安培mA單位 #只取今天有傳值的
-		except:
-			current = '0'
+		# year = pytz.timezone("Asia/Taipei").localize(datetime.datetime.now(), is_dst=None).year
+		# month = pytz.timezone("Asia/Taipei").localize(datetime.datetime.now(), is_dst=None).month
+		# day = pytz.timezone("Asia/Taipei").localize(datetime.datetime.now(), is_dst=None).day
+		# try: 
+		# 	current = str(float(obj.current_states.filter(Added__year=year).filter(Added__month=month).filter(Added__day=day).last().State)*10)#轉換成毫安培mA單位 #只取今天有傳值的
+		# except:
+		# 	current = '0'
+		# return current 
+		current = str(float(obj.current_states.last().State)*10)#轉換成毫安培mA單位 
 		return current 
-		
+
 	# def node_state(self, obj):
 	# 	end_date = datetime.datetime.now()
 	# 	start_date = end_date - datetime.timedelta(days=1)
@@ -128,13 +130,14 @@ class NodeslistSerializer(serializers.ModelSerializer):
 		return obj.states.last().State # 要回傳字串
 
 	def node_Amp(self, obj):
-		year = pytz.timezone("Asia/Taipei").localize(datetime.datetime.now(), is_dst=None).year
-		month = pytz.timezone("Asia/Taipei").localize(datetime.datetime.now(), is_dst=None).month
-		day = pytz.timezone("Asia/Taipei").localize(datetime.datetime.now(), is_dst=None).day
-		try: 
-			current = str(float(obj.current_states.filter(Added__year=year).filter(Added__month=month).filter(Added__day=day).last().State)*10)#轉換成毫安培mA單位 #只取今天有傳值的
-		except:
-			current = '0'
+		# year = pytz.timezone("Asia/Taipei").localize(datetime.datetime.now(), is_dst=None).year
+		# month = pytz.timezone("Asia/Taipei").localize(datetime.datetime.now(), is_dst=None).month
+		# day = pytz.timezone("Asia/Taipei").localize(datetime.datetime.now(), is_dst=None).day
+		# try: 
+		# 	current = str(float(obj.current_states.last().State)*10)#轉換成毫安培mA單位 #只取今天有傳值的
+		# except:
+		# 	current = '0'
+		current = str(float(obj.current_states.last().State)*10)#轉換成毫安培mA單位 
 		return current 
 
 
