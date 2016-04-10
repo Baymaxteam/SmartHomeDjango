@@ -327,9 +327,8 @@ function get_AllNodeList(nodeUrl) {
                 tmp = [];
                 for (j = 0; j < 5; j++){
                      tmp.push(response[i][item[j]]);
-                     if (item[j] == "CurrentState"){
-                        tmp.push(response[i][item[j]]);
-                        tmp = tmp /1000;
+                     if (j == 4){
+                        tmp.push((response[i][item[j]]/1000));
                      }else{
                         tmp.push(response[i][item[j]]);
                     }
