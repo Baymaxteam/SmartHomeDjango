@@ -332,7 +332,7 @@ function get_AllNodeList(nodeUrl) {
                 statNodeTable.push(tmp);
               
             }
-           
+            statNodeTable.CurrentState = statNodeTable.CurrentState/1000;
             console.log(statNodeTable);
             showNodeTable(statNodeTable);
         },
