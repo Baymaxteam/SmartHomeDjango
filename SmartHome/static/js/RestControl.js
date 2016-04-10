@@ -62,7 +62,7 @@ var Obj_IRnode = {
 };
 
 // 500 mA
-var alarmvalue = 500;
+var alarmvalue = 300;
 // get time 3s
 
 $(document).ready(function() {
