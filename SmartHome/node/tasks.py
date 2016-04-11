@@ -258,7 +258,8 @@ def nodeCurrentRepo():
 						# print("New Node! Create than...")	
 					addedtime = pytz.timezone("Asia/Taipei").localize(datetime.datetime.now(), is_dst=None)
 					node_LastState_time[nodeName] = addedtime
-					CurrentState.objects.create(NodeID = node_obj, State = data['Current'], Added = addedtime)
+					if(data['Current']<1500):#小餘15A才採納
+						CurrentState.objects.create(NodeID = node_obj, State = data['Current'], Added = addedtime)
 					
 				else:
 					print('怪怪的')
