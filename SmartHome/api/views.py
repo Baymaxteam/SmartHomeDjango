@@ -388,28 +388,51 @@ def Node_cs_detail(request, NodeID):
 	return JSONResponse(serializer.data)
 
 
-@csrf_exempt
+@csrf_exempt #情境模式
 def env_control(request, env_case): 
 	if env_case == 'goOUT': # 全關
 		node_All_turn.apply_async((0, ))
+		addedtime = pytz.timezone("Asia/Taipei").localize(datetime.datetime.now(), is_dst=None)
+		for NodeID in range(1,9):
+			node_obj = Nodes.objects.get(ID = NodeID)
+			NodeState.objects.create(NodeID = node_obj, State = 0, Added = addedtime)
 		print('<env_control> goOUT: node all close')
 
 	elif env_case == 'protect' : # 唯獨1號node打開
-		node_obj = Nodes.objects.get(ID = 1) 
+		addedtime = pytz.timezone("Asia/Taipei").localize(datetime.datetime.now(), is_dst=None)
 		node_All_turn.apply_async((0, ))
+		for NodeID in range(2,9):
+			node_obj = Nodes.objects.get(ID = NodeID)
+			NodeState.objects.create(NodeID = node_obj, State = 0, Added = addedtime)
+		node_obj = Nodes.objects.get(ID = 1) 
 		node_N_one_turn.apply_async((1, node_obj.Address, ))
+		NodeState.objects.create(NodeID = node_obj, State = 1, Added = addedtime)
 		print('<env_control> protect: only one node turn on')
 
 	elif env_case == 'sleep' : # 只開L node的中間按鈕
+		addedtime = pytz.timezone("Asia/Taipei").localize(datetime.datetime.now(), is_dst=None)
 		node_obj1 = Nodes.objects.get(ID = 7) 
 		node_obj2 = Nodes.objects.get(ID = 8) 
 		node_All_turn.apply_async((0, ))
+		for NodeID in range(1,9):
+			node_obj = Nodes.objects.get(ID = NodeID)
+			NodeState.objects.create(NodeID = node_obj, State = 0, Added = addedtime)
+		addedtime = pytz.timezone("Asia/Taipei").localize(datetime.datetime.now(), is_dst=None)
 		node_L_one_turn.apply_async((5, node_obj1.Address, ))
 		node_L_one_turn.apply_async((5, node_obj2.Address, ))
+		NodeState.objects.create(NodeID = node_obj1, State = 5, Added = addedtime)
+		NodeState.objects.create(NodeID = node_obj2, State = 5, Added = addedtime)
 		print('<env_control> sleep: only two L node turn on')
 
 	elif env_case == 'comeHome':
 		node_All_turn.apply_async((1, ))
+		addedtime = pytz.timezone("Asia/Taipei").localize(datetime.datetime.now(), is_dst=None)
+		for NodeID in range(1,9):
+			node_obj = Nodes.objects.get(ID = NodeID)
+			if(NodeID == 7 or NodeID == 8):
+				NodeState.objects.create(NodeID = node_obj, State = 7, Added = addedtime)
+			else:
+				NodeState.objects.create(NodeID = node_obj, State = 1, Added = addedtime)
 		print('<env_control> comeHome: node all turn on')
 
 	return HttpResponse(status=204)
