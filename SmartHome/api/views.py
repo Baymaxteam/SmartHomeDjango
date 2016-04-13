@@ -10,7 +10,8 @@ from .models import House, Nodes, NodeState, CurrentState, IRcommend, TaskSchedu
 from .serializers import HouseSerializer, NodesSerializer, NodeslistSerializer, TaskslistSerializer, CurrentStateSerializer
 from SmartHome.node.tasks import *
 
-node_all_reset();
+node_all_reset()
+calculateCurrentRepo()
 
 class JSONResponse(HttpResponse):
 	# """
@@ -209,11 +210,12 @@ def house_bill(request, Interval):
 		hour = pytz.timezone("Asia/Taipei").localize(datetime.datetime.now(), is_dst=None).hour
 
 		if Interval == 'year': #今年
-			Echarge = [546.199, 511.042, 0, 0, 0, 0, 0, 0, 0, 0 ,0 ,0]		
-			for idx in range(12):
-				timestamp = (datetime.datetime(year, idx+1, 1, 0, 0)+ datetime.timedelta(hours=8)).timestamp()*1000
-				Echarge[idx] = [timestamp , Echarge[idx]]
-			retern_data = {'Interval': Interval, 'data': Echarge}
+			retern_data = currentRepo.monthly
+			# Echarge = [546.199, 511.042, 0, 0, 0, 0, 0, 0, 0, 0 ,0 ,0]		
+			# for idx in range(12):
+			# 	timestamp = (datetime.datetime(year, idx+1, 1, 0, 0)+ datetime.timedelta(hours=8)).timestamp()*1000
+			# 	Echarge[idx] = [timestamp , Echarge[idx]]
+			# retern_data = {'Interval': Interval, 'data': Echarge}
 
 
 		#####
@@ -245,8 +247,7 @@ def house_bill(request, Interval):
 			# retern_data = {'Interval': Interval, 'data': Echarge}
 
 		elif Interval == 'month': #這個月
-			retern_data = {"Interval":"month","data":[[1454284800000.0,17.657],[1454371200000.0,17.651],[1454457600000.0,17.638],[1454544000000.0,17.624],[1454630400000.0,17.593],[1454716800000.0,17.605],[1454803200000.0,17.651],[1454889600000.0,17.589],[1454976000000.0,17.632],[1455062400000.0,17.602],[1455148800000.0,17.652],[1455235200000.0,17.606],[1455321600000.0,17.634],[1455408000000.0,17.598],[1455494400000.0,17.666],[1455580800000.0,17.614],[1455667200000.0,17.62007316666667],[1455753600000.0,17.649437666666664],[1455840000000.0,17.622947833333335],[1455926400000.0,17.59395366666667],[1456012800000.0,17.55722833333333],[1456099200000.0,0],[1456185600000.0,0],[1456272000000.0,0],[1456358400000.0,0],[1456444800000.0,0],[1456531200000.0,0],[1456617600000.0,0],[1456704000000.0,0]]}
-
+			retern_data = currentRepo.daily
 			# ######
 			# print('month'+str(month))
 			# cs_month = CurrentState.objects.all().filter(Added__year=year).filter(Added__month=month)

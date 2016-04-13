@@ -43,6 +43,67 @@ node_LastState_time = {'Nnode1':timeNow,
 			           'Lnode2':timeNow,
 			           'IRnode':timeNow} 
 
+class currentRepo():
+	yearly = {}
+	monthly= {}
+	daily={}
+	hourly={}
+
+
+currentRepo = currentRepo()
+
+
+@periodic_task(run_every=(crontab(minute=0, hour=0)), name="PcomdRouting", ignore_result=True) # Execute daily at midnight.
+def calculateCurrentRepo():
+	print('Call Funtion : calculateCurrentRepo()')
+	year = pytz.timezone("Asia/Taipei").localize(datetime.datetime.now(), is_dst=None).year
+	month = pytz.timezone("Asia/Taipei").localize(datetime.datetime.now(), is_dst=None).month
+	day = pytz.timezone("Asia/Taipei").localize(datetime.datetime.now(), is_dst=None).day
+	hour = pytz.timezone("Asia/Taipei").localize(datetime.datetime.now(), is_dst=None).hour
+	#####今年度資料
+	cs_year = CurrentState.objects.all().filter(Added__year=year)
+	Echarge = []
+	for month in range(1,13): # 12個月
+		dayrange = (datetime.datetime(year, month%12+1, 1) - datetime.timedelta(days = 1)).day  # 算一個月的天數
+		cs_set = cs_year.filter(Added__month=month)
+			#  累加取平均 算電費 回傳array
+		if(cs_set):
+			state = cs_set.values_list('State', flat=True)
+			Echarge.append(sum(state)/len(state)/100*110/1000*24*dayrange*3)
+		else: #沒有表示當年沒後續月份資料 直接補零（比較快）
+			Echarge.append(0)
+			continue
+	for idx in range(12):
+		timestamp = (datetime.datetime(year, idx+1, 1, 0, 0)+ datetime.timedelta(hours=8)).timestamp()*1000
+		Echarge[idx] = [timestamp , Echarge[idx]]
+	currentRepo.monthly = {'Interval': 'year', 'data': Echarge}
+	print('currentRepo.monthly = {0}'.format(currentRepo.monthly))
+	#####本月資料
+	cs_month = CurrentState.objects.all().filter(Added__year=year).filter(Added__month=month)
+	dayrange = (datetime.datetime(year, month%12+1, 1) - datetime.timedelta(days = 1)).day  # 算一個月的天數
+	temp = []
+	for i in range(dayrange):
+		temp.append([0,0])
+	State_list = cs_month.values_list('Added', 'State')
+	# ## 這裡很慢啊...約10秒
+	for x in State_list:
+		day = x[0].astimezone(pytz.timezone("Asia/Taipei")).day
+		temp[day][0]+=x[1] #第一個存值
+		temp[day][1]+=1 #第二個存數量
+	Echarge = []
+	for idx, y in enumerate(temp):
+		timestamp = (datetime.datetime(year, month, idx+1, 0, 0)+ datetime.timedelta(hours=8)).timestamp()*1000
+		if y[1] != 0:
+			Echarge.append([timestamp, y[0]/y[1]/100*110/1000*24*3])
+		else:
+			Echarge.append([timestamp, 0])
+	currentRepo.daily = {'Interval': 'month', 'data': Echarge}
+	print('currentRepo.daily = {0}'.format(currentRepo.daily))
+
+
+
+
+
 @shared_task
 def test(param):
     return 'The test task executed with argument "%s" ' % param

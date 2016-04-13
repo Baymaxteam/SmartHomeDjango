@@ -67,7 +67,10 @@ class NodesSerializer(serializers.ModelSerializer):
 		fields = ('ID', 'Address', 'Type', 'Appliances', 'Group','Added', 'Updated', 'State', 'CurrentState')
 	
 	def node_state(self, obj):
-		return obj.states.last().State # 要回傳字串 #回傳最後一筆狀態
+		if(obj.states.last()!=None):
+			return obj.states.last().State # 要回傳字串
+		else:
+			return 0
 
 	def node_Amp(self, obj):
 		# year = pytz.timezone("Asia/Taipei").localize(datetime.datetime.now(), is_dst=None).year
@@ -78,7 +81,10 @@ class NodesSerializer(serializers.ModelSerializer):
 		# except:
 		# 	current = '0'
 		# return current 
-		current = str(float(obj.current_states.last().State)*10)#轉換成毫安培mA單位 
+		if(obj.current_states.last()!=None):
+			current = str(float(obj.current_states.last().State)*10)#轉換成毫安培mA單位 
+		else:
+			current = 0
 		return current 
 
 	# def node_state(self, obj):
@@ -127,7 +133,10 @@ class NodeslistSerializer(serializers.ModelSerializer):
 		fields = ('ID', 'Type', 'Appliances', 'Group','Added', 'State', 'CurrentState')
 
 	def node_state(self, obj):
-		return obj.states.last().State # 要回傳字串
+		if(obj.states.last()!=None):
+			return obj.states.last().State # 要回傳字串
+		else:
+			return 0
 
 	def node_Amp(self, obj):
 		# year = pytz.timezone("Asia/Taipei").localize(datetime.datetime.now(), is_dst=None).year
@@ -137,7 +146,10 @@ class NodeslistSerializer(serializers.ModelSerializer):
 		# 	current = str(float(obj.current_states.last().State)*10)#轉換成毫安培mA單位 #只取今天有傳值的
 		# except:
 		# 	current = '0'
-		current = str(float(obj.current_states.last().State)*10)#轉換成毫安培mA單位 
+		if(obj.current_states.last()!=None):
+			current = str(float(obj.current_states.last().State)*10)#轉換成毫安培mA單位 
+		else:
+			current = 0
 		return current 
 
 
