@@ -264,8 +264,8 @@ def house_bill(request, Interval):
 			# # ## 這裡很慢啊...約10秒
 			# for x in State_list:
 			# 	day = x[0].astimezone(pytz.timezone("Asia/Taipei")).day
-			# 	temp[day-1][0]+=x[1] #第一個存值
-			# 	temp[day-1][1]+=1 #第二個存數量
+			# 	temp[day][0]+=x[1] #第一個存值
+			# 	temp[day][1]+=1 #第二個存數量
 			# # ##
 			# Timetag2 = datetime.datetime.now()
 			# print("2."+ str(Timetag2))
@@ -316,8 +316,8 @@ def house_bill(request, Interval):
 			# ## 這裡很慢啊...約10秒
 			for x in State_list:
 				hour = x[0].astimezone(pytz.timezone("Asia/Taipei")).hour
-				temp[hour-1][0]+=x[1] #第一個存值
-				temp[hour-1][1]+=1 #第二個存數量
+				temp[hour][0]+=x[1] #第一個存值
+				temp[hour][1]+=1 #第二個存數量
 			# # ##
 			# Timetag2 = datetime.datetime.now()
 			# print("2."+ str(Timetag2))
