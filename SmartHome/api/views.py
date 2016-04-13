@@ -392,6 +392,9 @@ def Node_cs_detail(request, NodeID):
 def env_control(request, env_case): 
 	if env_case == 'goOUT': # 全關
 		node_All_turn.apply_async((0, ))
+		# 也關S node
+		node_L_one_turn.apply_async((0, '00 13 A2 00 40 B3 2D 4C'))
+		node_L_one_turn.apply_async((0, '00 13 A2 00 40 B5 AB 49'))
 		addedtime = pytz.timezone("Asia/Taipei").localize(datetime.datetime.now(), is_dst=None)
 		for NodeID in range(1,9):
 			node_obj = Nodes.objects.get(ID = NodeID)
@@ -401,6 +404,9 @@ def env_control(request, env_case):
 	elif env_case == 'protect' : # 唯獨1號node打開
 		addedtime = pytz.timezone("Asia/Taipei").localize(datetime.datetime.now(), is_dst=None)
 		node_All_turn.apply_async((0, ))
+		# 也關S node
+		node_L_one_turn.apply_async((0, '00 13 A2 00 40 B3 2D 4C'))
+		node_L_one_turn.apply_async((0, '00 13 A2 00 40 B5 AB 49'))
 		for NodeID in range(2,9):
 			node_obj = Nodes.objects.get(ID = NodeID)
 			NodeState.objects.create(NodeID = node_obj, State = 0, Added = addedtime)
@@ -420,6 +426,9 @@ def env_control(request, env_case):
 		addedtime = pytz.timezone("Asia/Taipei").localize(datetime.datetime.now(), is_dst=None)
 		node_L_one_turn.apply_async((5, node_obj1.Address, ))
 		node_L_one_turn.apply_async((5, node_obj2.Address, ))
+		# 也開 node
+		node_L_one_turn.apply_async((5, '00 13 A2 00 40 B3 2D 4C'))
+		node_L_one_turn.apply_async((5, '00 13 A2 00 40 B5 AB 49'))
 		NodeState.objects.create(NodeID = node_obj1, State = 5, Added = addedtime)
 		NodeState.objects.create(NodeID = node_obj2, State = 5, Added = addedtime)
 		print('<env_control> sleep: only two L node turn on')
@@ -433,6 +442,9 @@ def env_control(request, env_case):
 				NodeState.objects.create(NodeID = node_obj, State = 7, Added = addedtime)
 			else:
 				NodeState.objects.create(NodeID = node_obj, State = 1, Added = addedtime)
+		# 也開S node
+		node_L_one_turn.apply_async((7, '00 13 A2 00 40 B3 2D 4C'))
+		node_L_one_turn.apply_async((7, '00 13 A2 00 40 B5 AB 49'))
 		print('<env_control> comeHome: node all turn on')
 
 	return HttpResponse(status=204)
