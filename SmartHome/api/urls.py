@@ -26,6 +26,9 @@ urlpatterns = [
     # 全體Reset
     url(r'V1/ResetAll/$', views.ResetAll),
     # Reset IR Command
-    url(r'V1/ResetIRCommand/$', views.ResetIRcommand)
+    url(r'V1/ResetIRCommand/$', views.ResetIRcommand),
+
+    #強迫計算統計量
+    url(r'V1/DEBUG/calCurrentRepo$', views.calCurrentRepo)
 
 ]

@@ -517,5 +517,9 @@ def ResetIRcommand(request):
 	return HttpResponse(status=204)
 	
 
+@csrf_exempt
+def	calCurrentRepo(request):
+	calculateCurrentRepo()
+	return HttpResponse(status=204)
 
 
