@@ -11,7 +11,7 @@ from .serializers import HouseSerializer, NodesSerializer, NodeslistSerializer, 
 from SmartHome.node.tasks import *
 
 node_all_reset()
-calculateCurrentRepo()
+calculateCurrentRepo.apply_async(countdown=300) # 5分鐘後再算
 
 class JSONResponse(HttpResponse):
 	# """
