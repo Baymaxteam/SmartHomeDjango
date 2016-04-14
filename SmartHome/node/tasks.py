@@ -53,7 +53,7 @@ class currentRepo():
 currentRepo = currentRepo()
 
 
-@periodic_task(run_every=(crontab(minute=0, hour=0)), name="calculateCurrentRepo", ignore_result=True) # Execute daily at midnight.
+# @periodic_task(run_every=(crontab(minute=0, hour=0)), name="calculateCurrentRepo", ignore_result=True) # Execute daily at midnight.
 def calculateCurrentRepo():
 	print('Call Funtion : calculateCurrentRepo()')
 	year = pytz.timezone("Asia/Taipei").localize(datetime.datetime.now(), is_dst=None).year
@@ -369,7 +369,7 @@ def check_goddeadnode():
 		print('check_goddeadnode()')
 		address = {'Nnode1':'00 13 A2 00 40 EC 3A A4',  
                    'Nnode3':'00 13 A2 00 40 EC 3A 97', 'Nnode4':'00 13 A2 00 40 B3 2D 41',
-                   'Nnode5':'00 13 A2 00 40 EC 3A 98', 
+                   'Nnode5':'00 13 A2 00 40 EC 3A 98', 'Nnode6':'00 13 A2 00 40 B3 31 65',
                    'Lnode1':'00 13 A2 00 40 B3 2D 4F', 'Lnode2':'00 13 A2 00 40 B3 2D 5B',
                    'IRnode':'00 13 A2 00 40 EC 3A BE',} 
 		timeNow = pytz.timezone("Asia/Taipei").localize(datetime.datetime.now(), is_dst=None)
