@@ -520,6 +520,7 @@ def ResetIRcommand(request):
 @csrf_exempt
 def	calCurrentRepo(request):
 	calculateCurrentRepo()
-	return HttpResponse(status=204)
+	data = {'month': currentRepo.daily, 'year': currentRepo.monthly}
+	return JSONResponse(data)
 
 
