@@ -57,7 +57,6 @@ currentRepo = currentRepo()
 def calculateCurrentRepo():
 	print('Call Funtion : calculateCurrentRepo()')
 	year = pytz.timezone("Asia/Taipei").localize(datetime.datetime.now(), is_dst=None).year
-	month = pytz.timezone("Asia/Taipei").localize(datetime.datetime.now(), is_dst=None).month
 	day = pytz.timezone("Asia/Taipei").localize(datetime.datetime.now(), is_dst=None).day
 	hour = pytz.timezone("Asia/Taipei").localize(datetime.datetime.now(), is_dst=None).hour
 	#####今年度資料
@@ -79,18 +78,23 @@ def calculateCurrentRepo():
 	currentRepo.monthly = {'Interval': 'year', 'data': Echarge}
 	print('currentRepo.monthly = {0}'.format(currentRepo.monthly))
 	#####本月資料
-	cs_month = CurrentState.objects.all().filter(Added__year=year).filter(Added__month=month)
+	month = pytz.timezone("Asia/Taipei").localize(datetime.datetime.now(), is_dst=None).month
+	cs_month = cs_year.filter(Added__month=month)
+	# print(month)
+	# print(cs_month)
 	dayrange = (datetime.datetime(year, month%12+1, 1) - datetime.timedelta(days = 1)).day  # 算一個月的天數
 	temp = []
 	for i in range(dayrange):
 		temp.append([0,0])
 	State_list = cs_month.values_list('Added', 'State')
+	# print(State_list)
 	# ## 這裡很慢啊...約10秒
 	for x in State_list:
 		day = x[0].astimezone(pytz.timezone("Asia/Taipei")).day
 		temp[day][0]+=x[1] #第一個存值
 		temp[day][1]+=1 #第二個存數量
 	Echarge = []
+	# print(temp)
 	for idx, y in enumerate(temp):
 		timestamp = (datetime.datetime(year, month, idx+1, 0, 0)+ datetime.timedelta(hours=8)).timestamp()*1000
 		if y[1] != 0:
