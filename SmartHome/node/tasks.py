@@ -53,7 +53,7 @@ class currentRepo():
 currentRepo = currentRepo()
 
 
-@periodic_task(run_every=(crontab(minute=0, hour=0)), name="PcomdRouting", ignore_result=True) # Execute daily at midnight.
+@periodic_task(run_every=(crontab(minute=0, hour=0)), name="calculateCurrentRepo", ignore_result=True) # Execute daily at midnight.
 def calculateCurrentRepo():
 	print('Call Funtion : calculateCurrentRepo()')
 	year = pytz.timezone("Asia/Taipei").localize(datetime.datetime.now(), is_dst=None).year
@@ -99,7 +99,6 @@ def calculateCurrentRepo():
 			Echarge.append([timestamp, 0])
 	currentRepo.daily = {'Interval': 'month', 'data': Echarge}
 	print('currentRepo.daily = {0}'.format(currentRepo.daily))
-
 
 
 
