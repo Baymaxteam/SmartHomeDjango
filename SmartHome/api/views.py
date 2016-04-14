@@ -328,7 +328,7 @@ def house_bill(request, Interval):
 			for idx, y in enumerate(temp):
 				timestamp = (datetime.datetime(year, month, day, idx, 0)+ datetime.timedelta(hours=8)).timestamp()*1000
 				if y[1] != 0:
-					Echarge.append([timestamp, y[0]/y[1]*110/100/1000*3*60]) 
+					Echarge.append([timestamp, y[0]/y[1]*110/100/1000*3]) 
 				else:
 					Echarge.append([timestamp, 0])
 			retern_data = {'Interval': Interval, 'data': Echarge}
