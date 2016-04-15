@@ -374,9 +374,10 @@ def check_goddeadnode():
                    'IRnode':'00 13 A2 00 40 EC 3A BE',} 
 		timeNow = pytz.timezone("Asia/Taipei").localize(datetime.datetime.now(), is_dst=None)
 		for keys in node_LastState_time.keys():
-			if (timeNow - node_LastState_time[keys]).seconds > 120: #兩分鐘沒回應
+			if (timeNow - node_LastState_time[keys]).seconds > 300: #五分鐘沒回應
 				node_one_reset.apply_async((address[keys],))
 				node_LastState_time[keys] = timeNow
+				print(node_LastState_time[keys])
 				print(keys+' Reset!!')
 	else:
 		print('<In noSerialPortMode> check_goddeadnode()')
